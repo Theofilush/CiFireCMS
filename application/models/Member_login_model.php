@@ -8,6 +8,7 @@ class Member_login_model extends CI_Model {
 		parent::__construct();
 	}
 
+
 	public function cek_email($email = '')
 	{
 		$dataEmail = decrypt($email);
@@ -18,6 +19,7 @@ class Member_login_model extends CI_Model {
 		$query = $this->db->get('t_user');
 		return $query->num_rows();
 	}
+
 
 	public function cek_reg_email($email = '')
 	{
@@ -32,6 +34,7 @@ class Member_login_model extends CI_Model {
 		else
 			return TRUE;
 	}
+
 
 	public function cek_login($input)
 	{
@@ -66,9 +69,9 @@ class Member_login_model extends CI_Model {
 		return $query;
 	}
 
+
 	public function insert_member(array $data)
 	{
 		return $this->db->insert('t_user', $data);
 	}
-
 } // End class.

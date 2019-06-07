@@ -8,6 +8,7 @@ class Admin_login_model extends CI_Model {
         parent::__construct();
     }
 
+
     public function cek_login_username($input_username = '')
     {
         $username = decrypt($input_username);
@@ -17,6 +18,7 @@ class Admin_login_model extends CI_Model {
         $query = $this->db->get('t_user');
         return $query->num_rows();
     }
+
 
     public function cek_login($input)
     {
@@ -48,6 +50,4 @@ class Admin_login_model extends CI_Model {
         $query = $query->row_array();
         return $query;
     }
-
-
 } // End class.

@@ -9,24 +9,12 @@ class Global_model extends CI_Model {
 	}
 
 
-	/**
-	 * - Fungsi insert data.
-	 * @param   string  $table
-	 * @param   array  	$data
-	 * @return  void
-	*/
 	public function insert($table, array $data)
 	{
 		$this->db->insert($this->_table, $data);
 	}
 
 
-	/**
-	 * - Fungsi delete data by id.
-	 * @param   string  	$table
-	 * @param   string|int  $id
-	 * @return  bol
-	*/
 	public function delete_by_id($table = '', $id = '')
 	{
 		$cek_id = $this->cek_id($table, $id);
@@ -41,12 +29,6 @@ class Global_model extends CI_Model {
 	}
 
 
-	/**
-	 * - Fungsi untuk pengecekan data id.
-	 * @param   string      $table
-	 * @param   string|int  $id
-	 * @return  int
-	*/
 	public function cek_id($table = '', $id = 0)
 	{
 		$int = 0;
@@ -62,25 +44,19 @@ class Global_model extends CI_Model {
 	}
 
 
-	/**
-	 * - Fungsi untuk megnambil data tema yang aktif.
-	 * @return  string
-	*/
 	public function get_theme_active()
 	{
 	   $query = $this->db->where('active','Y')->get('t_theme')->row_array();
 	   return $query;
 	}
 
-	/**
-	 * - Fungsi untuk megnambil data seting.
-	 * @return  string
-	*/
+
 	public function get_setting()
 	{
 		$query = $this->db->get('t_setting')->row_array();
 		return $query;
 	}
+
 
 	public function lang()
 	{
@@ -94,6 +70,4 @@ class Global_model extends CI_Model {
 		$result = $query['seotitle'];
 		return $result;
 	}
-
-
 } // End class
