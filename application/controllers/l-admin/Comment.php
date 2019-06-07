@@ -18,7 +18,7 @@ class Comment extends Admin_controller {
 
 	public function index()
 	{
-		if ($this->read_access == TRUE)
+		if ( $this->read_access == TRUE )
 		{
 			// block submit
 			if ($this->modify_access == TRUE && $this->_act == 'block')
@@ -129,11 +129,11 @@ class Comment extends Admin_controller {
 
 	public function view_detail($id = '')
 	{
-		if (!empty($id) && $this->input->is_ajax_request() == TRUE) 
+		if ( !empty($id) && $this->input->is_ajax_request() == TRUE ) 
 		{
 			$id = xss_filter($id, 'sql');
 			
-			if ($this->read_access == TRUE)
+			if ( $this->read_access == TRUE && $this->modify_access == TRUE)
 			{
 				$result = $this->mod_model->get_comment($id);
 				$_output= $result;
@@ -156,7 +156,7 @@ class Comment extends Admin_controller {
 			}
 			else
 			{
-				return $this->render_404();
+				return $this->render_403();
 			}
 		}
 		else
@@ -168,7 +168,7 @@ class Comment extends Admin_controller {
 
 	public function delete()
 	{
-		if ($this->input->is_ajax_request() == TRUE)
+		if ($this->input->is_ajax_request() && $this->delete_access == TRUE)
 		{
 			$data_pk = $this->input->post('data');
 			foreach ($data_pk as $key)
