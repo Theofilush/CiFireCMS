@@ -26,7 +26,7 @@
 					<button type="button" class="button btn-sm btn-default" onclick="window.location.href = '<?=admin_url($this->mod)?>';"> <i class="icon-arrow-left7 mr-2"></i><?=lang_line('button_back')?></button> 
 					<div class="btn-group pull-right mt-2 mb-2 mt-lg-0 mb-lg-0">
 						<button type="button" class="button btn-sm btn-default" onClick="window.location.href='<?=admin_url($this->mod.'/reply/'.$res_mail['id'])?>'"> <i class="icon-reply"></i> <span class="d-none d-lg-inline-block ml-2"><?=lang_line('button_reply')?></span> </button>
-						<button type="button" class="button btn-sm btn-default"> <i class="icon-printer"></i> <span class="d-none d-lg-inline-block ml-2"><?=lang_line('button_print')?></span> </button>
+						<!-- <button type="button" class="button btn-sm btn-default"> <i class="icon-printer"></i> <span class="d-none d-lg-inline-block ml-2"><?=lang_line('button_print')?></span> </button> -->
 						<button type="button" class="button btn-sm btn-default delete_read_mail" data-id="<?=encrypt($res_mail['id'])?>"> <i class="icon-bin"></i> <span class="d-none d-lg-inline-block ml-2"><?=lang_line('button_delete')?></span> </button> 
 					</div>
 			</div>
