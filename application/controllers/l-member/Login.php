@@ -31,12 +31,14 @@ class Login extends MY_Controller {
 		}
 	}
 
+
 	public function meta_title($param = '')
 	{
 		$title = !empty($param) ? lang_line('ci_member').' - '.$param : lang_line('ci_member');
 		$this->meta_title = $title;
 		return $this;
 	}
+
 
 	public function index()
 	{
@@ -154,6 +156,7 @@ class Login extends MY_Controller {
 		}
 	}
 
+
 	public function _cek_reg_email($email='')
 	{
 		if ( empty($email) )
@@ -212,7 +215,6 @@ class Login extends MY_Controller {
 			}
 		}
 	}
-
 
 
 	public function forgot()
@@ -309,6 +311,7 @@ class Login extends MY_Controller {
 		}
 	}
 
+
 	private function _submit($name=null,$value=null)
 	{
 		foreach ($this->input->post() as $key => $val)
@@ -319,7 +322,6 @@ class Login extends MY_Controller {
 
 		$input_name = explode(',', $name);
 		$input_value = explode(',', $value);
-
 
 		if (
 		    decrypt($input_name[0]) == decrypt($this->vars['input_email']) && 
@@ -382,11 +384,6 @@ class Login extends MY_Controller {
 	}
 
 
-
-
-
-
-
 	private function _cek_username($username = '') 
 	{
 		$cek_username = $this->login_model->cek_username($username);
@@ -403,11 +400,9 @@ class Login extends MY_Controller {
 	}
 
 
-
 	public function logout()
 	{
 		$this->session->sess_destroy();
 		redirect(member_url(), 'refresh');
 	}
-
 } // End Class.

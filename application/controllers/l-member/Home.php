@@ -9,13 +9,10 @@ class Home extends Member_controller {
 	{
 		parent::__construct();
 		$this->meta_title(lang_line('home_title'));
-		// $this->load->model('member/post_model');
 	}
-
 
 	public function index()
 	{
 		$this->render_view('home', $this->vars);
 	}
-
 } // End Class.

@@ -87,9 +87,7 @@ class Account extends Member_controller {
 					->get('t_user');
 				$contMail = $cek_email->num_rows();
 				$currentMail = $cek_email->row_array()['email'];
-				// $cek->num_rows() == 1 && 
-				// $cek->row_array()['id'] == $id || 
-				// $cek->num_rows() != 1
+
 				if ( 
 				      $contMail == 1 &&
 				      $currentMail == data_login('member','email') || 
@@ -158,17 +156,11 @@ class Account extends Member_controller {
 			{
 				$post_picture = "user/$img_name";
 
-				// CREATE IMAGE.
-
 				$this->load->library('simple_image');
-
-				// Ori
 				$this->simple_image
 				     ->fromFile(CONTENTPATH.'uploads/'.$post_picture)
 				     ->thumbnail(200, 200, 'center')
 				     ->toFile(CONTENTPATH.'uploads/'.$post_picture);
-
-				// $this->alert->set($this->mod,'success', 'success');
 			}
 			else
 			{
@@ -190,7 +182,7 @@ class Account extends Member_controller {
 	{
 		if ( $_SERVER['REQUEST_METHOD'] == 'POST' )
 		{
-			$rules = [
+			$this->form_validation->set_rules([
 				[
 					'field' => 'old-pass',
 					'label' => lang_line('old_password'),
@@ -210,9 +202,7 @@ class Account extends Member_controller {
 						'matches' => lang_line('err_match')
 					)
 				],
-			]; 
-			// $this->form_validation->set_message('matches', 'the two passwords do not match|');
-			$this->form_validation->set_rules($rules);
+			]);
 			if ( $this->form_validation->run() == TRUE ) 
 			{
 				$data = [
@@ -234,6 +224,7 @@ class Account extends Member_controller {
 			$this->render_view('account_password', $this->vars);
 		}
 	}
+
 
 	public function delete()
 	{
@@ -267,22 +258,25 @@ class Account extends Member_controller {
 		}
 	}
 
+
 	public function _cek_pass($pass='')
 	{
 		$in_pass = encrypt($pass);
 		$current_pass = data_login('member','password');
-		if ( empty($pass) ) {
+		
+		if ( empty($pass) ) 
+		{
 			$this->form_validation->set_message('_cek_pass', '%s '.lang_line('err_required'));
 			return FALSE;
 		} 
 		elseif ( decrypt($in_pass) == decrypt($current_pass) )
 		{
 			return TRUE;
-		} else {
+		} 
+		else 
+		{
 			$this->form_validation->set_message('_cek_pass', '%s '.lang_line('err_wrong'));
 			return FALSE;
 		}
 	}
-
-
 } // End class.

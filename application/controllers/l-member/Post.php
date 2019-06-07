@@ -107,6 +107,7 @@ class Post extends Member_controller {
 		}
 	}
 
+
 	public function delete()
 	{
 		if ( $this->input->is_ajax_request() == TRUE )
@@ -143,14 +144,14 @@ class Post extends Member_controller {
 			$this->vars['all_tag'] = $this->post_model->get_all_tag();
 			$this->vars['all_user'] = $this->post_model->get_all_user();
 
-			// Load View
 			$this->render_view('post_add', $this->vars);
 		}
 	}
 
+
 	private function _submit_add()
 	{
-		$rules = [
+		$this->form_validation->set_rules([
 			[
 				'field' => 'title',
 				'label' => lang_line('post_label_title'),
@@ -166,11 +167,9 @@ class Post extends Member_controller {
 				'label' => lang_line('post_label_content'),
 				'rules' => 'required',
 			]
-		];
+		]);
 
-		$this->form_validation->set_rules($rules);
-
-		if ( $this->form_validation->run() == TRUE ) // validation success.
+		if ( $this->form_validation->run() )
 		{
 			$tags_input = $this->input->post('tags');
 			$tags_input_s = explode(',', $tags_input);
@@ -201,7 +200,6 @@ class Post extends Member_controller {
 					$post_picture = "post/$img_name.$extension";
 
 					// CREATE IMAGE.
-
 					$this->load->library('simple_image');
 
 					// Ori
@@ -220,7 +218,6 @@ class Post extends Member_controller {
 					     ->fromFile(CONTENTPATH.'uploads/'.$post_picture)
 					     ->thumbnail(122, 91, 'center')
 					     ->toFile(CONTENTPATH.'thumbs/'.$post_picture);
-
 				}
 			}
 			// Set data post.
@@ -272,7 +269,6 @@ class Post extends Member_controller {
 			$this->vars['all_category'] = $this->post_model->get_all_category();
 			$this->vars['all_user']     = $this->post_model->get_all_user();
 			
-			// Load view
 			$this->render_view('post_edit', $this->vars);
 		}
 		else
@@ -289,8 +285,7 @@ class Post extends Member_controller {
 			$pk = $this->input->post('pk');
 			$id_post = xss_filter(decrypt($pk),'sql');
 
-
-			$rules = [
+			$this->form_validation->set_rules([
 				[
 					'field' => 'title',
 					'label' => lang_line('post_label_title'),
@@ -306,11 +301,9 @@ class Post extends Member_controller {
 					'label' => lang_line('post_label_content'),
 					'rules' => 'required',
 				]
-			];
+			]);
 
-			$this->form_validation->set_rules($rules);
-
-			if ( $this->form_validation->run() == TRUE ) // validation success.
+			if ( $this->form_validation->run() )
 			{
 				$tags_input = $this->input->post('tags');
 				$tags_input_s = explode(',', $tags_input);
@@ -340,8 +333,6 @@ class Post extends Member_controller {
 					{
 						$post_picture = "post/$img_name.$extension";
 
-						// CREATE IMAGE.
-
 						$this->load->library('simple_image');
 
 						// Ori
@@ -368,7 +359,6 @@ class Post extends Member_controller {
 					$data_picture = ['picture' => $post_picture];
 				}
 				// Set data post.
-
 				$data_post = array(
 					'title'         => xss_filter($this->input->post('title')),
 					'seotitle'      => seotitle($this->input->post('title')),
@@ -377,19 +367,17 @@ class Post extends Member_controller {
 					'image_caption' => xss_filter($this->input->post('image_caption')),
 					'tag'           => $tags,
 				);
+				// merge array $data_post & $data_picture
 				$data = array_merge_recursive($data_post,$data_picture);
 				// Insert data post to database.
 				$this->post_model->update_post($id_post, $data);
-				// set bootstrap alert message.
-				// $this->alert->set($this->mod, 'success', lang_line('form_message_add_success'));
-				// set json response status.
+
 				$response['success'] = true;
 				$response['alert']['type'] = 'success';
 				$response['alert']['content'] = lang_line('form_message_update_success');
 			}
 			else
 			{
-				// $this->alert->set($this->mod.'edit', 'danger', validation_errors());
 				$response['success'] = false;
 				$response['alert']['type'] = 'error';
 				$response['alert']['content'] = validation_errors();
@@ -423,8 +411,7 @@ class Post extends Member_controller {
 				'upload_path' => CONTENTPATH."uploads/post/",
 				'allowed_types' => 'gif|jpg|png|jpeg',
 				'file_name' => $img_name,
-				'max_size' => 1024 * 10, // 30mb
-				// 'overwrite' => TRUE
+				'max_size' => 1024 * 10
 			));
 
 			if ($this->upload->do_upload('fupload'))
@@ -436,54 +423,17 @@ class Post extends Member_controller {
 			}
 			else
 			{
-				// echo $this->upload->display_errors();
 				header("HTTP/1.1 400 Invalid extension.");
 				echo json_encode($response='ERROR');
 					return;
 			}
-			/*if ( is_uploaded_file($temp['tmp_name']) ) 
-			{
-				if ( isset($_SERVER['HTTP_ORIGIN']) ) 
-				{
-					// Same-origin requests won't set an origin. If the origin is set, it must be valid.
-					if(in_array($_SERVER['HTTP_ORIGIN'], $accepted_origins)){
-						header('Access-Control-Allow-Origin: ' . $_SERVER['HTTP_ORIGIN']);
-					}else{
-						header("HTTP/1.1 403 Origin Denied");
-						return;
-					}
-				}
-			  
-				// Sanitize input
-				if ( preg_match("/([^\w\s\d\-_~,;:\[\]\(\).])|([\.]{2,})/", $temp['name']) )
-				{
-					header("HTTP/1.1 400 Invalid file name.");
-					return;
-				}
-			  
-				// Verify extension
-				if ( !in_array(strtolower(pathinfo($temp['name'], PATHINFO_EXTENSION) ), $accepted_extension) )
-				{
-					header("HTTP/1.1 400 Invalid extension.");
-					return;
-				}
-			  
-				// Accept upload if there was no origin, or if it is an accepted origin
-				$filetowrite = $imageFolder . $temp['name'];
-				move_uploaded_file($temp['tmp_name'], $filetowrite);
-			  
-				// Respond to the successful upload with JSON.
-				echo json_encode(array('location' => site_url($filetowrite)));
-			} else {
-				// Notify editor that the upload failed
-				header("HTTP/1.1 500 Server Error");
-			}*/
 		}
 		else
 		{
 			return $this->render_404();
 		}
 	}
+
 
 	public function ajax_get_category()
 	{
@@ -552,7 +502,6 @@ class Post extends Member_controller {
 	}
 
 
-
 	public function _cek_add_seotitle($seotitle = '') 
 	{
 		$cek = $this->post_model->cek_seotitle(seotitle($seotitle));
@@ -562,7 +511,6 @@ class Post extends Member_controller {
 		}
 		return $cek;
 	}
-
 
 
 	public function _cek_edit_seotitle($id,$seotitle = '') 
