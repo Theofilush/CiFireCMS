@@ -43,6 +43,9 @@ $lang['button_detail'] = 'Detail';
 $lang['button_view'] = 'Lihat';
 
 $lang['button_send'] = 'Kirim';
+$lang['button_reply'] = 'Balas';
+$lang['button_back'] = 'Kembali';
+$lang['button_print'] = 'Cetak';
 
 $lang['button_add_new'] = 'Tambah Baru';
 $lang['button_edit'] = 'Ubah';

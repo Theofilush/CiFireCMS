@@ -39,6 +39,9 @@ $lang['button_detail'] = 'Detail';
 $lang['button_view'] = 'View';
 
 $lang['button_send'] = 'Send';
+$lang['button_reply'] = 'Reply';
+$lang['button_back'] = 'Back';
+$lang['button_print'] = 'Print';
 
 $lang['button_add_new'] = 'Add New';
 $lang['button_edit'] = 'Edit';
