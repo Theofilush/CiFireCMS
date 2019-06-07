@@ -54,7 +54,7 @@ Untuk menentukan web anda di akses dengan alamat **http** atau **https** silahka
 
 ```
 # non-www to www.
-RewriteCond %{HTTPS} off [OR]
+RewriteCond %{HTTPS} of [OR]
 RewriteCond %{HTTP_HOST} !^www\. [NC]
 RewriteCond %{HTTP_HOST} ^(?:www\.)?(.+)$ [NC]
 RewriteRule ^ https://www.%1%{REQUEST_URI} [L,NE,R=301]
