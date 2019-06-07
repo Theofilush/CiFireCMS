@@ -48,7 +48,7 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php/$1 [L,QSA]
 ```
 
-Untuk menentukan web anda di akses dengan alamat **http** atau **https** silahkan ubah konfigurasi file **.htaccess** sesuai aturan seperti berikut.
+Untuk menentukan web anda di akses dengan alamat **http** atau **https** silahkan ubah konfigurasi file **.htaccess** tambahkan kode berikut di bawah baris kode ``RewriteEngine On``.
 
 #### Redirect HTTP to HTTPS
 
