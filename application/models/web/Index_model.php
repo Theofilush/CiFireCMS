@@ -9,7 +9,6 @@ class Index_model extends CI_Model {
 	}
 
 
-
 	public function get_post_lmit_by_category($id_category = '', array $limit)
 	{
 		$query = $this->db
@@ -42,6 +41,7 @@ class Index_model extends CI_Model {
 		return $result;
 	}
 
+
 	public function get_category_by($col = 'id', $val = '1', $param = 'row')
 	{
 		$query = $this->db->where($col, $val);
@@ -55,6 +55,4 @@ class Index_model extends CI_Model {
 
 		return $result;
 	}
-
-
 } // End Class

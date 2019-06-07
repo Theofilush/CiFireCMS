@@ -9,7 +9,6 @@ class Search_model extends CI_Model {
 	}
 
 
-
 	public function Search($kata, $sort, $batas, $posisi)
 	{
 		$pisah_kata = explode(" ",$kata);
@@ -33,6 +32,7 @@ class Search_model extends CI_Model {
 		return $result;
 	}
 
+
 	public function jml_data($kata)
 	{
 		$pisah_kata = explode(" ",$kata);
@@ -53,5 +53,4 @@ class Search_model extends CI_Model {
 		$result = $query->num_rows();
 		return $result;
 	}
-
 } // End Class

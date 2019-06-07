@@ -10,6 +10,7 @@ class Post_model extends CI_Model {
 		parent::__construct();
 	}
 
+
 	public function cek_post($seotitle)
 	{
 		$segments = count($this->uri->segments);

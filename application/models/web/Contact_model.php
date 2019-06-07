@@ -11,7 +11,7 @@ class Contact_model extends CI_Model {
 	}
 
 
-	public function insert($data)
+	public function insert(array $data)
 	{
 		$this->db->insert('t_mail', $data);
 	}

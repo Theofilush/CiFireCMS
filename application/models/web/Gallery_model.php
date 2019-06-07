@@ -7,6 +7,7 @@ class Gallery_model extends CI_Model {
 	{
 		parent::__construct();
 	}
+	
 
 	public function all_albums()
 	{
@@ -17,6 +18,7 @@ class Gallery_model extends CI_Model {
 		$result = $query->result_array();
 		return $result;
 	}
+
 
 	public function album_cover($id_album = '')
 	{
@@ -34,6 +36,7 @@ class Gallery_model extends CI_Model {
 		return $result;
 	}
 
+
 	public function get_gallery_images($id_album = '')
 	{
 		$result = [];
@@ -48,6 +51,4 @@ class Gallery_model extends CI_Model {
 		}
 		return $result;
 	}
-
-
 } // End Class

@@ -10,6 +10,7 @@ class Tag_model extends CI_Model {
 		parent::__construct();
 	}
 
+
 	public function get_tag($seotitle)
 	{
 		$query = $this->db->where('seotitle', $seotitle);
@@ -65,5 +66,4 @@ class Tag_model extends CI_Model {
 
 		return $result;
 	}
-
 } // End Class
