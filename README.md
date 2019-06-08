@@ -111,9 +111,9 @@ define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'producti
 5. Creative-tim (Light Bootstrap Dashboard) sebagai pembuat template dasbor member.
 6. Easy Menu Manager sebagai pembuat component menu manager.
 7. Jquery, Bootstrap dan semua plugins jquery yang dipakai pada CiFireCMS.
-8. DwiraSurvivor PopojiCMS untuk inspirasi, saran serta rekomendasi sehingga engine CiFireCMS bisa rilis sebagaimana mestinya.
+8. DwiraSurvivor PopojiCMS untuk inspirasi, saran serta rekomendasi sehingga engine CiFireCMS bisa rilis.
 
 
-# License
+# Lisensi
 
 CiFireCMS dilisensikan di bawah MIT License.
