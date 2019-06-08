@@ -2,7 +2,6 @@
 var _jsDsCustoms = function () {
 	// Sidebar navigation
 	var _navigationSidebar = function() {
-
 		// Define default class names and options
 		var navClass = 'nav-sidebar',
 			navItemClass = 'nav-item',
@@ -13,7 +12,6 @@ var _jsDsCustoms = function () {
 			activeMod = admin_url + a_mod,
 			activeAct = admin_url + a_mod + a_act,
 			activePage = window.location.href;
-
 		// Configure collapsible functionality
 		$('.' + navClass).each(function() {
 			$(this).find('.' + navItemClass).has('.' + navSubmenuClass).children('.' + navItemClass + ' > ' + '.' + navLinkClass).not('.disabled').on('click', function (e) {
@@ -46,22 +44,12 @@ var _jsDsCustoms = function () {
 		// Scrollspy navigation
 		$('.nav-scrollspy').find('.' + navItemClass).has('.' + navSubmenuClass).children('.' + navItemClass + ' > ' + '.' + navLinkClass).off('click');
 
-
-
-
-		// var activeMod = admin_url + a_mod;
-		// var activeAct = admin_url + a_mod + a_act;
-		// var activePage = window.location.href;
-
 		$('ul#main_menu > li a').not('ul li ul a').each(function(){
 			var currentPage = $(this).attr('href');
-
 			if (activeMod === currentPage) {
 				$(this).parent().addClass('nav-item-open');
 				$('.li-'+a_mod).css('display','block');
-				// $('.li-'+a_mod+' li a').addClass('active');
 			} 
-
 		});
 
 		$('ul#main_menu li a').each(function(){
@@ -86,13 +74,11 @@ var _jsDsCustoms = function () {
 			console.warn('Warning - sticky.min.js is not loaded.');
 			return;
 		}
-
 		// Initialize
 		$('#sticky').stick_in_parent({
 			offset_top: 49,
 			parent: '.box-content'
 		});
-
 		// Detach on mobiles
 		$('.sidebar-mobile-component-toggle').on('click', function() {
 			$('#sticky').trigger("sticky_kit:detach");
@@ -147,7 +133,6 @@ var _jsDsCustoms = function () {
 		$('.fancybox').fancybox();
 	}
 
-	// Return objects assigned to module
 	return {
 		initComponents: function() {
 			_navigationSidebar();
@@ -165,7 +150,6 @@ document.addEventListener('DOMContentLoaded', function() {
 	_jsDsCustoms.initComponents();
 });
 
-// Js Notification
 
 function cfNotif(data){
 	Noty.overrideDefaults({
@@ -180,6 +164,7 @@ function cfNotif(data){
 		modal: true
 	}).show();
 }
+
 
 function cfAlert(data){
 	$('#alert-notif').html('<div class="alert alert-' + data['type'] + ' alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' + data['content'] + '</div>').show();
@@ -209,6 +194,7 @@ function dataTableDrawCallback() {
 		})
 	});
 }
+
 
 /**
  * Code From Tomi Candra https://web.facebook.com/kingtomay
@@ -247,7 +233,6 @@ function cfSwalDelete(pk,api_table,uri){
 			showLoaderOnConfirm: true,
 			preConfirm: function() {
 				return new Promise(function(resolve, reject) {
-					// $('[data-toggle="tooltip"]').tooltip('disable')
 					$.ajax({
 						type: 'POST',
 						url: dataUrl,
@@ -257,15 +242,8 @@ function cfSwalDelete(pk,api_table,uri){
 						success:function(response) {
 							if (response['success']==true) {
 								dataTable.row($('#DataTable tr.active')).remove().draw(false);
-								// cfNotif(response['alert']); // show notif
-								// $('html, body').animate({scrollTop:0});
 								resolve();
-								
 							} else {
-								// cfNotif({
-								// 	'type':'error',
-								// 	'content':'<i class="fa fa-exclamation-circle mr-2"></i> Error'
-								// });
 								Swal.fire({
 									position: 'top',
 									type: 'error',
@@ -274,19 +252,12 @@ function cfSwalDelete(pk,api_table,uri){
 									timer: 2500
 								})
 							};
-							// $('.swl_btn_del').find('i').removeClass('icon-spinner2 spinner').addClass('icon-bin');
-							
-							// setTimeout(function() {
-							// 	resolve();
-							// }, 1000000);
 						}
 					});
 				});
 			},
 		}).then( (result) => {
-			
 			if (result.value) {
-				// $('.swl_btn_del').find('i').removeClass('icon-bin').addClass('icon-spinner2 spinner');
 				Swal.fire({
 					position: 'top',
 					type: 'success',
@@ -295,20 +266,15 @@ function cfSwalDelete(pk,api_table,uri){
 					timer: 2500
 				})
 			}
-			else{
-				// $('[data-toggle="tooltip"]').tooltip('enable')
-			}
+			else{}
 		})
 	});
 }
 
 
-
 function cfCompogen()
 {
-	
 	getLangJSON().done(function(lang){
-		
 		$('.steps-validation').steps({
 		    headerTag: 'h6',
 		    bodyTag: 'fieldset',
@@ -320,25 +286,18 @@ function cfCompogen()
 		    },
 		    transitionEffect: 'none',
 		    autoFocus: true,
-
 		    onStepChanging: function (event, currentIndex, newIndex) {
-
 		        var formCoGen = $(this).show();
-		        // Allways allow previous action even if the current form is not valid!
 		        if (currentIndex > newIndex) {
 		            return true;
 		        }
-		        // Needed in some cases if the user went back (clean up)
 		        if (currentIndex < newIndex) {
-		            // To remove error styles
 		            formCoGen.find('.body:eq(' + newIndex + ') label.error').remove();
 		            formCoGen.find('.body:eq(' + newIndex + ') .error').removeClass('error');
 		        }
-
 		        formCoGen.validate().settings.ignore = ':disabled,:hidden';
 		        return formCoGen.valid();
 		    },
-
 		    onFinishing: function (event, currentIndex) {
 		        form.validate().settings.ignore = ':disabled';
 		        return form.valid();
@@ -347,7 +306,6 @@ function cfCompogen()
 		        event.preventDefault();
 		        var formCoGen = $(this);
 		        var form_data = formCoGen.serialize();
-		        
 		        $.ajax({
 		            url: admin_url + a_mod +'/submit',
 		            type: 'POST',
@@ -364,6 +322,7 @@ function cfCompogen()
 		        });
 		    }
 		});
+
 		$('.steps-validation').validate({
 		    ignore: 'input[type=hidden], .select2-search__field', // ignore hidden fields
 		    errorClass: 'validation-invalid-label',
@@ -373,25 +332,19 @@ function cfCompogen()
 		    unhighlight: function(element, errorClass) {
 		        $(element).removeClass(errorClass);
 		    },
-
-		    // Different components require proper error label placement
 		    errorPlacement: function(error, element) {
-
 		        // Unstyled checkboxes, radios
 		        if (element.parents().hasClass('form-check')) {
 		            error.appendTo( element.parents('.form-check').parent() );
 		        }
-
 		        // Input with icons and Select2
 		        else if (element.parents().hasClass('form-group-feedback') || element.hasClass('select2-hidden-accessible')) {
 		            error.appendTo( element.parent() );
 		        }
-
 		        // Input group, styled file input
 		        else if (element.parent().is('.uniform-uploader, .uniform-select') || element.parents().hasClass('input-group')) {
 		            error.appendTo( element.parent().parent() );
 		        }
-
 		        // Other elements
 		        else {
 		            error.insertAfter(element);
@@ -405,8 +358,6 @@ function cfCompogen()
 		});
 	});
 }
-
-
 
 
 
@@ -434,7 +385,9 @@ function cfTnyMCE(element){
 		toolbar2:'removeformat styleselect | fontsizeselect | hr charmap link unlink responsivefilemanager image media youtube codesample code | visualblocks preview fullscreen',
 		menubar: false,
 		branding: false,
-		visualblocks_default_state: true,
+		visualblocks_default_state: false,
+		relative_urls: false,
+		remove_script_host: false,
 		image_caption: true,
 		image_advtab: true,
 		fontsize_formats: '8px 10px 12px 14px 18px 24px 36px',
@@ -442,8 +395,6 @@ function cfTnyMCE(element){
 		autoresize_min_height: 420,
     	autoresize_top_margin:5,
     	autoresize_bottom_margin:4,
-		relative_urls: false,
-		remove_script_host: true,
 		content_css: content_url+'plugins/member/css/bootstrap.min.css,'+content_url+'plugins/font-awesome/css/font-awesome.min.css',
 		codemirror: {
 			indentOnInit: true,
@@ -458,7 +409,6 @@ function cfTnyMCE(element){
 		}
 	});
 }
-
 
 
 
@@ -482,13 +432,13 @@ function setLang(lang){
 
 
 function responsive_filemanager_callback() {
-	//var url = $('#' + field_id).val();
 	var pict = $('#picture').val();
 	var url = site_url + 'content/uploads/' + pict;
 	$('#imgprv').attr('src', url).show();
 	parent.$.fancybox.close();
 	console.log();
 }
+
 
 function str_seotitle(str) {
 	var seotitle;
