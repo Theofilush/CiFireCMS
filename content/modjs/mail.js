@@ -103,50 +103,11 @@ $(document).ready(function() {
 	});
 });
 
-$(document).ready(function() {
-	$(".modal_delete_mail").click(function() {
-		var idDel = $(this).attr("idDel");
-		$("#idDel").val(idDel);
-		$("#modal_delete").modal("show");
-	});
-});
 
 
 $(document).ready(function() {
-	tinymce.init({
-		selector: "#Content",
-		branding: true,
-		skin: "custom",
-		editor_deselector: "mceNoEditor",
-		content_css: site_url+"content/vendor/bootstrap/css/bootstrap.min.css,"+site_url+"content/vendor/font-awesome/css/font-awesome.min.css",
-		plugins: [
-			"advlist autolink link image lists charmap print preview hr anchor pagebreak",
-			"searchreplace wordcount visualblocks visualchars insertdatetime media ",
-			"table contextmenu directionality paste textcolor responsivefilemanager",
-			"code fullscreen youtube codemirror codesample autoresize"
-		],
-		autoresize_min_height: 200,
-		autoresize_max_height: 400,
-		autoresize_bottom_margin:0,
-		toolbar1: "undo redo | bold italic underline strikethrough forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent table",
-		toolbar2: "styleselect removeformat | fontsizeselect | link unlink responsivefilemanager image media youtube code codesample | visualblocks preview fullscreen",
-		menubar: false,
-		visualblocks_default_state: false,
-		image_advtab: true,
-		relative_urls: false,
-		remove_script_host: true,
-		fontsize_formats: '8px 10px 12px 14px 18px 24px 36px',
-		codemirror: {
-			indentOnInit: true,
-			path: site_url+"content/vendor/codemirror"
-		},
-		external_filemanager_path:site_url+"content/vendor/filemanager/",
-		filemanager_title: "File Manager",
-		filemanager_access_key: ses_key,
-		external_plugins: {
-			"filemanager":site_url+"content/vendor/filemanager/plugin.min.js"
-		}
-	});
+	// load TnyMCE
+	cfTnyMCE('#Content');
 });
 
 
@@ -208,13 +169,6 @@ function _mail_delete(pk,uri) {
 			},
 		}).then( (result) => {
 			if (result.value) {
-				// Swal.fire({
-				// 	position: 'top',
-				// 	type: 'success',
-				// 	title: lang.message['delete_success'],
-				// 	showConfirmButton: false,
-				// 	timer: 2100
-				// });
 			}
 			else{}
 		})
