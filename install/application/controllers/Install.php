@@ -136,7 +136,7 @@ class Install extends CI_Controller {
 			$this->install_model->insert_setting(array(
 				'groups'  => 'local',
 				'options' => 'language',
-				'value'   => '1'
+				'value'   => '2'
 			));
 			$this->install_model->insert_setting(array(
 				'groups'  => 'local',
