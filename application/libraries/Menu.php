@@ -53,6 +53,9 @@ class Menu {
 				$a_attr2 = trim($pecah[1]);
 				$a_attr2 = html_entity_decode($a_attr2);
 			}
+			$pecah_url = explode('==', $row['url']);
+			$count_url = count($pecah_url)-1;
+			$href = ( $count_url == 1 ? $pecah_url[1] : site_url($pecah_url[0]));
 
 			if ($row['parent_id'] == 0) 
 			{
@@ -60,13 +63,13 @@ class Menu {
 				{
 					$label = '<a ' . $a_class . ' ' . $a_attr . ' ' . $a_attr2 .'  href="">';
 				}
-				elseif($row['url'] == '#')
+				elseif ($row['url'] == '#')
 				{
 					$label = '<a ' . $a_class . ' ' . $a_attr . ' ' . $a_attr2 .'  href="#">';
 				}
 				else
 				{
-					$label = '<a ' . $a_class . ' ' . $a_attr . ' ' . $a_attr2 .'  href="' . site_url($row['url']) .'" >';
+					$label = '<a ' . $a_class . ' ' . $a_attr . ' ' . $a_attr2 .'  href="' . $href .'" >';
 				}
 			} 
 			else 
@@ -81,7 +84,7 @@ class Menu {
 				}
 				else 
 				{
-					$label = '<a '.$a_class.' href="' . site_url($row['url']) .'">';
+					$label = '<a '.$a_class.' href="' . $href .'">';
 				}
 			}
 
