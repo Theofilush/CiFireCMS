@@ -109,7 +109,7 @@ class Install extends CI_Controller {
 			$this->install_model->insert_setting(array(
 				'groups'  => 'general',
 				'options' => 'meta_keyword',
-				'value'   => 'CiFIre CMS, CMS Codeigniter Indonesia, CMS Codeigniter, CMS Gratis, CMS Indonesia, Website Indonesia'
+				'value'   => 'CiFire CMS, CMS Codeigniter Indonesia, CMS Codeigniter, CMS Gratis, CMS Indonesia, Website Indonesia'
 			));
 			$this->install_model->insert_setting(array(
 				'groups'  => 'general',
@@ -195,7 +195,7 @@ class Install extends CI_Controller {
 			$this->install_model->insert_setting(array(
 				'groups'  => 'config',
 				'options' => 'slug_title',
-				'value'   => 'read-post'
+				'value'   => 'detailpost'
 			));
 			$this->install_model->insert_setting(array(
 				'groups'  => 'config',
@@ -222,17 +222,17 @@ class Install extends CI_Controller {
 			$this->install_model->insert_setting(array(
 				'groups'  => 'mail',
 				'options' => 'hostname',
-				'value'   => 'localhost'
+				'value'   => ''
 			));
 			$this->install_model->insert_setting(array(
 				'groups'  => 'mail',
 				'options' => 'username',
-				'value'   => 'YOUR@EMAIL.HERE'
+				'value'   => ''
 			));
 			$this->install_model->insert_setting(array(
 				'groups'  => 'mail',
 				'options' => 'password',
-				'value'   => 'PASSWORD'
+				'value'   => ''
 			));
 			$this->install_model->insert_setting(array(
 				'groups'  => 'mail',
