@@ -71,6 +71,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	'failover' => array(),
 	'save_queries' => TRUE
 );
+
+\$db['mysqli'] = array(
+	'hostname' => '{$db_host}',
+	'username' => '{$db_user}',
+	'password' => '{$db_pass}',
+	'database' => '{$db_name}',
+	'dbdriver' => 'mysqli',
+	'dbprefix' => '',
+	'pconnect' => FALSE,
+	'db_debug' => (ENVIRONMENT !== 'production'),
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt'  => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);
 EOS;
 return $content;
 }
