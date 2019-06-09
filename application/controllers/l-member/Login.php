@@ -408,10 +408,14 @@ class Login extends MY_Controller {
 		}
 	}
 
-
+	/**
+	 * - Fungsi ini akan menghapus semua data sesi yang aktif.
+	 * - Tindakan ini juga akan menghapus seluruh sesi di bagian administrator.
+	 * @return void
+	*/
 	public function logout()
 	{
 		$this->session->sess_destroy();
-		redirect(member_url(), 'refresh');
+		redirect(member_url());
 	}
 } // End Class.

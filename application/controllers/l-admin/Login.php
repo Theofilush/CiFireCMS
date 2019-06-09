@@ -240,10 +240,15 @@ class Login extends MY_Controller {
 	}
 
 
+	/**
+	 * - Fungsi ini akan menghapus semua data sesi yang aktif.
+	 * - Tindakan ini juga akan menghapus seluruh sesi di bagian member.
+	 * @return void
+	*/
 	public function logout()
 	{
 		$this->session->sess_destroy();
-		redirect(base_url(FADMIN), 'refresh');
+		redirect(admin_url());
 	}
 
 
