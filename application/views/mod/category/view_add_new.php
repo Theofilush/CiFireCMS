@@ -3,15 +3,15 @@
 	<div class="page-header-content header-elements-inline">
 		<div class="page-title">
 			<h3>
-				<span class="font-weight-semibold"><?php echo lang_line('mod_title'); ?></span>
+				<span class="font-weight-semibold"><?=lang_line('mod_title'); ?></span>
 			</h3>
 		</div>
 	</div>
 	<div class="breadcrumb-line breadcrumb-line-light">
 		<div class="breadcrumb">
-			<a href="<?php echo admin_url('home'); ?>" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> <?php echo lang_line('admin_link_home') ?></a>
-			<span class="breadcrumb-item"><?php echo lang_line('mod_title'); ?></span>
-			<span class="breadcrumb-item"><?php echo lang_line('mod_title_add'); ?></span>
+			<a href="<?=admin_url('home'); ?>" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> <?=lang_line('admin_link_home') ?></a>
+			<span class="breadcrumb-item"><?=lang_line('mod_title'); ?></span>
+			<span class="breadcrumb-item"><?=lang_line('mod_title_add'); ?></span>
 		</div>
 	</div>
 </div>

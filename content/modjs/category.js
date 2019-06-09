@@ -23,7 +23,7 @@ $('#DataTable').DataTable({
 	],
 	'ajax': {
 		'type': 'POST',
-		'url': admin_url + a_mod + '/data-table'
+		'url': window.location.href
 	},
 	'drawCallback': function( settings ) {
 		var api_table = this.api();
@@ -32,13 +32,13 @@ $('#DataTable').DataTable({
 		$('.delete_single').on('click', function(i) {
 			var data_pk = [];
 			data_pk = [$(this).attr('data-pk')];
-			var url = admin_url + a_mod + '/delete';
+			var url = window.location.href + '/delete';
 			cfSwalDelete(data_pk, api_table, url);
 		});
 
 		$('.delete_multi').on('click', function() {
 			var data_pk = [];
-			var url = admin_url + a_mod + '/delete';
+			var url = window.location.href + '/delete';
 			$('.row_data:checked').each(function(i) {
 				data_pk[i] = $(this).val();
 			});
@@ -55,7 +55,7 @@ $('#form_add').on('submit',function(event){
 	$('.submit_add').find('i').removeClass().addClass('icon-spinner2 spinner mr-2');
 	var form = $('#form_add');
 	$.ajax({
-		url: admin_url + a_mod + '/add-new',
+		url: window.location.href + '/add-new',
 		type: 'POST',
 		data: form.serialize(),
 		dataType: 'json',
