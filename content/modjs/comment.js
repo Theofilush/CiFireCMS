@@ -24,23 +24,22 @@ $('#DataTable').DataTable({
     ],
     'ajax': {
         'type': 'POST',
-        'url': admin_url + a_mod + '/data-table',
-        // data: csrfData
+        'url': window.location.href
     },
     'drawCallback': function( settings ) {
         var api_table = this.api();
-        dataTableDrawCallback(); // standard setting
+        dataTableDrawCallback();
 
         $('.delete_single').on('click', function(i) {
             var data_pk = [];
-            var url = admin_url+a_mod+'/delete';
+            var url = window.location.href+'/delete';
             data_pk = [$(this).attr('data-pk')];
             cfSwalDelete(data_pk,api_table,url);
         });
 
         $('.delete_multi').on('click', function() {
             var data_pk = [];
-            var url = admin_url+a_mod+'/delete';
+            var url = window.location.href+'/delete';
             $('.row_data:checked').each(function(i) {
                 data_pk[i] = $(this).val();
             });
@@ -55,7 +54,7 @@ $('#DataTable').DataTable({
 			$('#cdet').html('<div><img src="'+site_url+'/content/images/loading.gif" style="display:table;margin:auto;"></div>');
 			$.ajax({
 				type: 'POST',
-				url: window.location.href+'/view_detail/'+idDet,
+				url: window.location.href+'/view-detail/'+idDet,
 				data: 'id='+idDet+'&'+csrfName+'='+csrfToken,
 				success: function(data){
 					$('#cdet').html('<div><b>'+ data.name +'</b>&nbsp;<small class="text-muted">('+ data.email +')</small></div><div style="margin-bottom:18px;font-size:14px;color:#888;"><small>'+ data.date +'</small></div><div><p>'+ data.comment +'</p></div>');
@@ -88,7 +87,7 @@ $('#submit_delete').on('click',function() {
     $('.alert').hide();
     $('#modal_delete').modal('hide');
     $.ajax({
-        url: admin_url + a_mod + '/delete',
+        url: window.location.href + '/delete',
         type: 'POST',
         data: form.serialize(),
         dataType: 'json',

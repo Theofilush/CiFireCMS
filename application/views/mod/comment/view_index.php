@@ -73,30 +73,6 @@
 	</div>
 </div>
 
-<div id="modal_delete" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<?=form_open('','id="form_delete"'); ?>
-			<input id="idDel" type="hidden" name="id">
-			<input type="hidden" name="act" value="delete">
-			<div class="modal-header">
-				<h5 class="modal-title"><i class="icon-warning22 text-danger mr-2"></i><?=lang_line('dialog_delete_title');?></h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<h4><?=lang_line('dialog_delete_content');?></h4>
-			</div>
-			<div class="modal-footer">
-				<button id="submit_delete" type="button" class="button btn-default text-danger"><i class="fa fa-trash"></i>&nbsp; <?=lang_line('button_yes');?></button>
-				<span class="button btn-default" data-dismiss="modal" aria-hidden="true"><i class="fa fa-sign-out"></i>&nbsp; <?=lang_line('button_no');?></span>
-			</div>
-			<?=form_close(); ?>
-		</div>
-	</div>
-</div>
-
 <div id="modal_block" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
