@@ -20,7 +20,6 @@ getLangJSON().done(function(jsonLang){
 			_compGenOnInit();
 		},
 		onStepChanging: function (event, currentIndex, newIndex) {
-
 			var form = $(this).show();
 			// Allways allow previous action even if the current form is not valid!
 			if (currentIndex > newIndex) {
@@ -32,11 +31,9 @@ getLangJSON().done(function(jsonLang){
 				form.find('.body:eq(' + newIndex + ') label.error').remove();
 				form.find('.body:eq(' + newIndex + ') .error').removeClass('error');
 			}
-
 			form.validate().settings.ignore = ':disabled,:hidden';
 			return form.valid();
 		},
-
 		onFinishing: function (event, currentIndex) {
 			var form = $(this);
 			form.validate().settings.ignore = ':disabled';
@@ -44,21 +41,17 @@ getLangJSON().done(function(jsonLang){
 		},
 		onFinished: function (event, currentIndex) {
 			event.preventDefault();
-			var form = $(this);
-			var form_data = form.serialize();
-
 			$('#loads').show();
-			
+			var form = $(this);
 			$.ajax({
-				url: admin_url + a_mod +'/submit',
+				url: window.location.href+'/submit',
 				type: 'POST',
-				data: form_data,
+				data: form.serialize(),
 				dataType: 'json',
 				cache: false,
 				success:function(response) {
-					
 					if (response['success']==true) {
-						window.location.href=admin_url+a_mod+'/finish/'+response['class'];
+						window.location.href=window.location.href+'/finish/'+response['class'];
 					} else {
 						$('#loads').hide();
 						cfNotif(response['alert']);
@@ -93,6 +86,7 @@ getLangJSON().done(function(jsonLang){
 	$.validator.messages.maxlength = errMsg['maxlength'];
 });
 
+
 function _compGenOnInit()
 {
 	$('.btn-add-field').on('click',function(e){
@@ -101,11 +95,11 @@ function _compGenOnInit()
 		var newid = parseInt(id) + 1;
 		var idtot = $('#totalfield').val();
 		var newidtot = parseInt(idtot) + 1;
-		var dataString = 'id=' + id + '&csrf_name=' + csrfToken;
-		$('.btn-add-field span').html("<img src='"+site_url+"content/images/loading.gif'/>");
+		var dataString = 'id=' + id;
+		$('.btn-add-field').find('i').removeClass().addClass('fa fa-spinner fa-pulse');
 		$.ajax({
 			type: 'POST',
-			url: admin_url + a_mod + '/add-field',
+			url: window.location.href + '/add-field',
 			data: dataString,
 			cache: false,
 			success: function(data){
@@ -114,7 +108,7 @@ function _compGenOnInit()
 				$('.btn-add-field').attr('id', '' + newid + '');
 				$('input[id^="field"]').on('input',function(){var b;b=(b=(b=$(this).val()).replace(/\s+/g,' ')).replace(/_/g,' '),$(this).val(b.toLowerCase()),$(this).val($(this).val().replace(/\W/g,' ')),$(this).val($(this).val().replace(/\s+/g,'_'))});
 				$('#totalfield').val(newidtot);
-				$('.btn-add-field span').html('<span><i class="fa fa-plus-circle"></i> &nbsp; Add New Field</span>');
+				$('.btn-add-field').find('i').removeClass().addClass('fa fa-plus-circle');
 			}
 		});
 		return false;
@@ -132,18 +126,18 @@ function _compGenOnInit()
 		var newid = parseInt(id) + 1;
 		var idtot = $('#totaloption').val();
 		var newidtot = parseInt(idtot) + 1;
-		var dataString = 'id=' + id + '&csrf_name=' + csrfToken;
-		$('.add-more-option span').html("<img src='"+site_url+"content/images/loading.gif'/>");
+		var dataString = 'id=' + id;
+		$('.add-more-option').find('i').removeClass().addClass('fa fa-spinner fa-pulse');
 		$.ajax({
 			type: 'POST',
-			url: admin_url + 'compogen/add-option',
+			url: window.location.href + '/add-option',
 			data: dataString,
 			cache: false,
 			success: function(html){
 				$('#append-add-options').append(html);
 				$('.add-more-option').attr('id', '' + newid + '');
 				$('#totaloption').val(newidtot);
-				$('.add-more-option span').html('<i class="fa fa-plus-circle"></i> Add Option');
+				$('.add-more-option').find('i').removeClass().addClass('fa fa-plus-circle');
 			}
 		});
 		return false;
@@ -161,18 +155,18 @@ function _compGenOnInit()
 		var newid = parseInt(id) + 1;
 		var idtot = $('#totalcol').val();
 		var newidtot = parseInt(idtot) + 1;
-		var dataString = 'id=' + id + '&csrf_name=' + csrfToken;
-		$('.btn-add-column span').html("<img src='"+site_url+"content/images/loading.gif'/>");
+		var dataString = 'id=' + id;
+		$('.btn-add-column').find('i').removeClass().addClass('fa fa-spinner fa-pulse');
 		$.ajax({
 			type: 'POST',
-			url: admin_url + 'compogen/add-column',
+			url: window.location.href + '/add-column',
 			data: dataString,
 			cache: false,
 			success: function(html){
 				$('#append-add-column').append(html);
 				$('.btn-add-column').attr('id', '' + newid + '');
 				$('#totalcol').val(newidtot);
-				$('.btn-add-column span').html('<i class="fa fa-plus-circle"></i>&nbsp; Add New Column');
+				$('.btn-add-column').find('i').removeClass().addClass('fa fa-plus-circle');
 			}
 		});
 		return false;
@@ -192,6 +186,5 @@ function _compGenOnInit()
 	$(document).on('input','#component_name',function(){var b;b=(b=(b=$(this).val()).replace(/\s+/g," ")).replace(/_/g," "),$('#classname').val(b.toLowerCase()),$('#classname').val($('#classname').val().replace(/\W/g," ")),$('#classname').val($('#classname').val().replace(/\s+/g,""))});
 	$(document).on('input','#tablename',function(){var b;b=(b=(b=$(this).val()).replace(/\s+/g," ")).replace(/_/g," "),$(this).val(b.toLowerCase()),$(this).val($(this).val().replace(/\W/g," ")),$(this).val($(this).val().replace(/\s+/g,"_"))});
 	$(document).on('input','#com_fieldname_1',function(){var b;b=(b=(b=$(this).val()).replace(/\s+/g," ")).replace(/_/g," "),$(this).val(b.toLowerCase()),$(this).val($(this).val().replace(/\W/g," ")),$(this).val($(this).val().replace(/\s+/g,"_"))});
-
 	$(document).on('input','input[id^="field"]',function(){var b;b=(b=(b=$(this).val()).replace(/\s+/g," ")).replace(/_/g," "),$(this).val(b.toLowerCase()),$(this).val($(this).val().replace(/\W/g," ")),$(this).val($(this).val().replace(/\s+/g,"_"))});
 }

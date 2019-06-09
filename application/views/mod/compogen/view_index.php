@@ -129,7 +129,7 @@
 						</tbody>
 					</table>
 					<!-- Button Add New Field -->
-					<p class="text-center"><a class="btn btn-xs btn-round btn-default btn-add-field" id="5"><span><i class="fa fa-plus-circle"></i> <?=lang_line('button_add_field')?> </span></a></p>
+					<p class="text-center"><a class="btn btn-xs btn-round btn-default btn-add-field" id="5"><i class="fa fa-plus-circle"></i> <?=lang_line('button_add_field')?></a></p>
 				</div>
 			</fieldset>
 
@@ -243,7 +243,7 @@
 														</div>
 														<div id="append-add-options"></div>
 														<div class="">
-															<a href="javascript:void(0)" id="2" class="btn btn-xs btn-default add-more-option"><span><i class="fa fa-plus-circle"></i> <?=lang_line('button_add_option');?></span></a>
+															<a href="javascript:void(0)" id="2" class="btn btn-xs btn-default add-more-option"><i class="fa fa-plus-circle"></i> <?=lang_line('button_add_option');?></a>
 														</div>
 													</div>
 												</div>
