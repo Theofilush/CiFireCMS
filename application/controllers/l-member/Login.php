@@ -294,18 +294,27 @@ class Login extends MY_Controller {
 				$data = xss_filter($this->input->post('data'), 'xss');
 				$logemail = encrypt($data);
 				$response['status'] =  $this->login_model->cek_email($logemail);
-				$response['html'] =  '<div class="form-group mt-3">
-					<label for="password">'. lang_line('login_pass') .'</label>
-					<a href="'. member_url('forgot') .'" class="pull-right"><small>'. lang_line('login_forgot') .'</small></a>
-					<input type="password" name="'. $this->vars['input_pwd'] .'" id="password" class="form-control" required autofocus>
-				</div>
-				<div class="form-group mb-0">
-					<button type="submit" class="btn btn-primary btn-block mt-3">'. lang_line('login_button_signin') .'</button>					
-				</div>';
+
+				if ($response['status']==1) 
+				{
+					$response['html'] =  '<div class="form-group mt-3">
+						<label for="password">'. lang_line('login_pass') .'</label>
+						<a href="'. member_url('forgot') .'" class="pull-right"><small>'. lang_line('login_forgot') .'</small></a>
+						<input type="password" name="'. $this->vars['input_pwd'] .'" id="password" class="form-control" required autofocus>
+					</div>
+					<div class="form-group mb-0">
+						<button type="submit" class="btn btn-primary btn-block mt-3">'. lang_line('login_button_signin') .'</button>					
+					</div>';
+				}
+				else 
+				{
+					$response['html'] = '';
+				}
 			}
 			else
 			{
-				$response = 0;
+				$response['status'] = '0';
+				$response['html'] = '';
 			}
 			$this->json_output($response);
 		}
