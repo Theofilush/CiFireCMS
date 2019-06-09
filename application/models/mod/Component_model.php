@@ -8,7 +8,6 @@ class Component_model extends CI_Model {
 	private $_column_order = array(null, 'name', 'type', 'status');
 	private $_column_search = array('id', 'name');
 
-
 	public function __construct()
 	{
 		parent::__construct();
@@ -18,7 +17,6 @@ class Component_model extends CI_Model {
 	private function _datatable_query()
 	{
 		$this->db->from($this->_table);
-		// $this->db->where("id != '1'", NULL, FALSE);
 
 		$i = 0;	
 		foreach ($this->_column_search as $item) 
@@ -89,6 +87,7 @@ class Component_model extends CI_Model {
 		return $this->db->count_all_results();
 	}
 
+
 	public function get_modul($id = 0)
 	{
 		if ( $this->cek_id($id) == 1 )
@@ -99,6 +98,7 @@ class Component_model extends CI_Model {
 		else 
 			return FALSE;
 	}
+
 
 	public function insert($data)
 	{
@@ -111,12 +111,10 @@ class Component_model extends CI_Model {
 	}
 
 
-
 	public function delete($id = 0, $table_name = '')
 	{
 		if ( !empty($table_name) && $this->cek_id($id) == 1 ) 
 		{
-
 			$this->load->dbforge();
 			if ( $this->dbforge->drop_table($table_name, TRUE) )
 			{
@@ -130,19 +128,13 @@ class Component_model extends CI_Model {
 	}
 
 
-
-
 	public function cek_id($id = 0)
 	{
 		$query = $this->db->select('id');
 		$query = $this->db->where('id', $id);
 		$query = $this->db->get($this->_table);
 		$query = $query->num_rows();
-
 		$int = (int)$query;
-
 		return $int;
 	}
-
-
 } // End Class.

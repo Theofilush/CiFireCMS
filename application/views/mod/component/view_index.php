@@ -19,7 +19,6 @@
 <div class="content">
 
 	<?=$this->alert->show($this->mod);?>
-	<div class="ajax_alert" style="display:none;"></div>
 
 	<div class="block">
 		<div class="block-header">

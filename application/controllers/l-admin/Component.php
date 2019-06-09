@@ -22,86 +22,83 @@ class Component extends Admin_controller {
 		);
 	}
 
-	
+
 	public function index()
 	{
-		if ($this->read_access == TRUE)
+		if ( $this->read_access )
 		{
-			$this->render_view('view_index', $this->vars);
-		}
-		else
-		{
-			$this->render_404();
-		}
-	}
-
-
-	public function data_table()
-	{
-		if ($this->input->is_ajax_request() == TRUE && $this->read_access == TRUE)
-		{
-			$data_mod = $this->component_model->get_datatables();
-			$data_output = array();
-
-			foreach ($data_mod as $val) 
+			if ( $this->input->is_ajax_request() )
 			{
-				$row = [];
-				$row[] = '<a href="'.admin_url(underscore($val['class'])).'">'.$val['name'].'</a>';
-				$row[] = $val['type'];
-				$row[] = ( $val['status'] == "Y" ? '<span class="badge badge-primary badge-pill">'.lang_line('installed').'</span>' : '<span class="badge badge-secondary badge-pill">'.lang_line('not-installed').'</span>' );
+				$data_mod = $this->component_model->get_datatables();
+				$data_output = array();
 
-				if ($this->delete_access == TRUE) 
+				foreach ($data_mod as $val) 
 				{
-					$row[] = '
-							<div class="text-center">
-								<div class="btn-group">
-									<button class="button btn-xs btn-default" onclick="location.href=\''. admin_url(underscore($val['class'])) .'\'" data-toggle="tooltip" data-placement="top" data-title="Go To Component"><i class="fa fa-puzzle-piece"></i></button>
-									<button type="button" class="button btn-xs btn-default delete_single" data-toggle="tooltip" data-placement="top" data-title="'.lang_line('button_delete').'" data-pk="'. encrypt($val['id']) .'"><i class="icon-bin"></i></button>
-								</div>
-							</div>';
-				}
-				else
-				{
-					$row[] = '
-							<div class="text-center">
-								<div class="btn-group">
-									<a href="'.admin_url(underscore($val['class'])).'" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" data-title="Go To Component"><i class="fa fa-puzzle-piece"></i></a>
-								</div>
-							</div>';
+					$row = [];
+					$row[] = '<a href="'.admin_url(underscore($val['class'])).'">'.$val['name'].'</a>';
+					$row[] = $val['type'];
+					$row[] = ( $val['status'] == "Y" ? '<span class="badge badge-primary badge-pill">'.lang_line('installed').'</span>' : '<span class="badge badge-secondary badge-pill">'.lang_line('not-installed').'</span>' );
+
+					if ($this->delete_access == TRUE) 
+					{
+						$row[] = '
+								<div class="text-center">
+									<div class="btn-group">
+										<button class="button btn-xs btn-default" onclick="location.href=\''. admin_url(underscore($val['class'])) .'\'" data-toggle="tooltip" data-placement="top" data-title="Go To Component"><i class="fa fa-puzzle-piece"></i></button>
+										<button type="button" class="button btn-xs btn-default delete_single" data-toggle="tooltip" data-placement="top" data-title="'.lang_line('button_delete').'" data-pk="'. encrypt($val['id']) .'"><i class="icon-bin"></i></button>
+									</div>
+								</div>';
+					}
+					else
+					{
+						$row[] = '
+								<div class="text-center">
+									<div class="btn-group">
+										<a href="'.admin_url(underscore($val['class'])).'" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" data-title="Go To Component"><i class="fa fa-puzzle-piece"></i></a>
+									</div>
+								</div>';
+					}
+
+					$data_output[] = $row;
 				}
 
-				$data_output[] = $row;
+				$output = array(
+								"data" => $data_output,
+								"draw" => $this->input->post('draw'),
+								"recordsTotal" => $this->component_model->count_all(),
+								"recordsFiltered" => $this->component_model->count_filtered()
+								);
+
+				$this->json_output($output);
 			}
-
-			$output = array(
-							"data" => $data_output,
-							"draw" => $this->input->post('draw'),
-							"recordsTotal" => $this->component_model->count_all(),
-							"recordsFiltered" => $this->component_model->count_filtered()
-							);
-
-			$this->json_output($output);
+			else
+			{
+				$this->render_view('view_index', $this->vars);
+			}
 		}
 		else
 		{
-			return $this->render_404();
+			$this->render_403();
 		}
 	}
 
 
 	public function add_new()
 	{
-		if ( $this->read_access == FALSE || $this->write_access == FALSE )
+		if ( $this->read_access && $this->write_access )
 		{
-			return $this->render_403();
-		}
-		elseif ( $_SERVER['REQUEST_METHOD'] == 'POST' )
-		{
-			return $this->_submit_add();
+			if ( $_SERVER['REQUEST_METHOD'] == 'POST' )
+			{
+				return $this->_submit_add();
+			}
+			else
+			{
+				$this->render_view('view_add_new', $this->vars);
+			}
 		}
 		else
 		{
-			return $this->render_view('view_add_new', $this->vars);
+			$this->render_403();
 		}
 	}
 
@@ -132,13 +129,13 @@ class Component extends Admin_controller {
 
 			// cek component
 			$cek_controllers_file = file_exists(APPPATH."controllers/".FADMIN."/".$class_file);
-			$cek_model_file = file_exists(APPPATH."models/mod/".$model_file);
-			$cek_views = file_exists(APPPATH."views/mod/".$views_dir);
-			$cek_modjs = file_exists(CONTENTPATH."modjs/".$modjs);
+			$cek_model_file       = file_exists(APPPATH."models/mod/".$model_file);
+			$cek_views            = file_exists(APPPATH."views/mod/".$views_dir);
+			$cek_modjs            = file_exists(CONTENTPATH."modjs/".$modjs);
 
 			// cek component db
 			$cek_db_table = $this->db->table_exists($table_name);
-			$cek_mod_db = $this->db->where('class', $class_name)->get('t_component')->num_rows();
+			$cek_mod_db   = $this->db->where('class', $class_name)->get('t_component')->num_rows();
 
 			// component not eksist (OK)
 			if ($cek_mod_db == 0 && 
@@ -149,18 +146,17 @@ class Component extends Admin_controller {
 				$cek_db_table == FALSE
 				)
 			{
-				// upload config.
-				$max_file_size =  1024 * 5;
+				// upload.
 				$this->load->library('upload', array(
 					'upload_path' => $upload_path,
 					'allowed_types' => "zip",
 					'file_name' => $zip_name,
 					'overwrite' => FALSE,
-					'max_size' => $max_file_size,
+					'max_size' => 1024 * 5
 				));
 
 				// run upload.
-				if ($this->upload->do_upload('file'))
+				if ( $this->upload->do_upload('file') )
 				{
 					// extract package at temp folder.
 					$this->load->library('unzip', array($zip_path));
@@ -177,27 +173,28 @@ class Component extends Admin_controller {
 						{
 							// Scan folder.
 							$u_controllers = array_diff(scandir($src_dir."/controllers"), array('.', '..'));
-							$u_models = array_diff(scandir($src_dir."/models"), array('.', '..'));
-							$u_modjs = array_diff(scandir($src_dir."/modjs"), array('.', '..'));
+							$u_models      = array_diff(scandir($src_dir."/models"), array('.', '..'));
+							$u_modjs       = array_diff(scandir($src_dir."/modjs"), array('.', '..'));
 
-							// rename file controllers to same as class.
+							// rename file controllers to same as class name.
 							@rename($src_dir."/controllers/".$u_controllers[2], 
 									$src_dir."/controllers/".ucfirst($class_name).".php");
 
-							// rename file models to same as class.
+							// rename file models to same as class name.
 							@rename($src_dir."/models/".$u_models[2],
 									$src_dir."/models/".ucfirst($class_name)."_model.php");
 
-							// rename file modjs to same as class.
+							// rename file modjs to same as class name.
 							@rename($src_dir."/modjs/".$u_modjs[2],
 									$src_dir."/modjs/$modjs");
+
 							// Copy module from temp to system.
 							copy_folder($src_dir."/controllers", $this->_path['controllers']);
 							copy_folder($src_dir."/models", $this->_path['models']);
 							copy_folder($src_dir."/views", $this->_path['views'].$class_name);
 							copy_folder($src_dir."/modjs", $this->_path['modjs']);
 							
-							// insert db
+							// insert to database table t_component.
 							$this->component_model->insert(array(
 								'name' => $component_name,
 								'type' => $component_type,
@@ -215,7 +212,7 @@ class Component extends Admin_controller {
 							$this->dbforge->add_key('id', TRUE);
 							// Array $config['table'] from insinde file table.php
 							$this->dbforge->add_field($config['table']); 
-							$this->dbforge->create_table($table_name,TRUE,array('ENGINE' => 'InnoDB'));
+							$this->dbforge->create_table($table_name, TRUE, ['ENGINE' => 'InnoDB']);
 
 							// Delete source folder from temp.
 							@delete_folder($src_dir);
@@ -230,7 +227,6 @@ class Component extends Admin_controller {
 						{
 							delete_folder($src_dir);
 							$this->alert->set($this->mod."add", 'danger', "error table_config");
-							// redirect to add new page
 							redirect(uri_string());
 						}
 					}
@@ -254,12 +250,12 @@ class Component extends Admin_controller {
 			// component is exist (ERROR)
 			else 
 			{
-				$r_cek_mod_db = ($cek_mod_db == 1 ? "* Component row is exist <br>" : "");
 				$r_cek_controllers_file = ($cek_controllers_file == TRUE ? "* Controllers $class_file file is exist <br>" : "");
-				$r_cek_model_file = ($cek_model_file == TRUE ? "* Model $model_file file is exist <br>": "");
-				$r_cek_views = ($cek_views == TRUE ? "* Views $views_dir folder is exist <br>" : "");
-				$r_cek_modjs = ($cek_modjs == TRUE ? "* Modjs $modjs file is exist <br>" : "");
-				$r_cek_db_table = ($cek_db_table == TRUE ? "* Table $table_name is exist <br>" : "");
+				$r_cek_model_file       = ($cek_model_file == TRUE ? "* Model $model_file file is exist <br>": "");
+				$r_cek_views            = ($cek_views == TRUE ? "* Views $views_dir folder is exist <br>" : "");
+				$r_cek_modjs            = ($cek_modjs == TRUE ? "* Modjs $modjs file is exist <br>" : "");
+				$r_cek_db_table         = ($cek_db_table == TRUE ? "* Table $table_name is exist <br>" : "");
+				$r_cek_mod_db           = ($cek_mod_db == 1 ? "* Component row is exist <br>" : "");
 
 				$this->alert->set($this->mod."add", "danger", "<i class='fa fa-exclamation-triangle'></i> &nbsp; ERROR <br>$r_cek_mod_db $r_cek_controllers_file $r_cek_model_file $r_cek_views $r_cek_db_table");
 
@@ -283,7 +279,6 @@ class Component extends Admin_controller {
 	{
 		$sql_contents = file_get_contents($path);
 		$sql_contents = explode(";", $sql_contents);
-
 		foreach ($sql_contents as $query)
 		{
 			$this->db->query($query);
@@ -291,21 +286,13 @@ class Component extends Admin_controller {
 	}
 
 
-
-	/**
-	 * - Function Delete.
-	 *
-	 * @var string $id_data
-	 * @return void, string, json
-	 * @access public
-	*/
 	public function delete()
 	{
-		if ($this->input->is_ajax_request() == TRUE && $this->delete_access == TRUE)
+		if ( $this->input->is_ajax_request() && $this->delete_access )
 		{
 			$data = $this->input->post('data');
 			$id_component = decrypt($data[0]);
-			$component = $this->component_model->get_modul($id_component);
+			$component    = $this->component_model->get_modul($id_component);
 			
 			if ( $component != FALSE )
 			{
@@ -351,9 +338,7 @@ class Component extends Admin_controller {
 		}
 		else
 		{
-			return show_404();
+			show_404();
 		}
-	} // End Function.
-
-
+	}
 } // End Class.

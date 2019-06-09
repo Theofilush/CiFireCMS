@@ -58,8 +58,8 @@
 			<br>
 			<hr>
 			<div class="block-actions">
-                <button type="submit" class="button btn-primary text-b"><i class="fa fa-check"></i> &nbsp; <?=lang_line('button_submit');?></button>
-				<a href="<?=admin_url($this->mod);?>" class="pull-right button btn-md btn-default text-b"><i class="fa fa-times"></i> &nbsp; <?=lang_line('button_cancel');?></a>
+                <button type="submit" class="button btn-primary text-b"><i class="fa fa-check"></i> <?=lang_line('button_submit');?></button>
+				<a href="<?=admin_url($this->mod);?>" class="pull-right button btn-md btn-default text-b"><i class="fa fa-times"></i> <?=lang_line('button_cancel');?></a>
 			</div>
 			<?=form_close();?>
 			</div>
