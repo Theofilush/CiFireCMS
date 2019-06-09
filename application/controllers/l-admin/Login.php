@@ -9,13 +9,11 @@ class Login extends MY_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-
 		$this->CI =& get_instance();
 
 		$this->_language = strtolower($this->set_language());
 		$this->lang->load('main', $this->_language);
 		$this->lang->load('adminlogin_lang', $this->_language);
-		
 		$this->load->model('admin_login_model', 'login_model');
 
 		$this->form_validation->set_error_delimiters('<div><small>*) ', '</small></div>');
@@ -75,6 +73,10 @@ class Login extends MY_Controller {
 			}
 			$this->json_output($response);
 		}
+		else
+		{
+			show_404();
+		}
 	}
 
 
@@ -89,13 +91,11 @@ class Login extends MY_Controller {
 		$input_name = explode(',', $name);
 		$input_value = explode(',', $value);
 
-
 		if (
 		    decrypt($input_name[0]) == decrypt($this->vars['input_uname']) && 
 		    decrypt($input_name[1]) == decrypt($this->vars['input_pwd'])
 		    )
 		{
-
 			$this->form_validation->set_rules(array(array(
 					'field' => $input_name[0],
 					'label' => 'Username',
@@ -146,7 +146,7 @@ class Login extends MY_Controller {
 		
 		else
 		{
-			return show_400();
+			show_400();
 		}
 	}
 
