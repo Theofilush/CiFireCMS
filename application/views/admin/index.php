@@ -9,37 +9,23 @@
 	<!-- favicon -->
 	<link rel="shortcut icon" href="<?=favicon()?>" >
 
-	<!-- font-awesome -->
 	<link rel="stylesheet" href="<?=content_url('plugins/font-awesome/font-awesome.min.css')?>" type="text/css">
 	<link rel="stylesheet" href="<?=content_url('plugins/icomoon/styles.css')?>" type="text/css">
-
-	<!-- dashboard/css -->
 	<link rel="stylesheet" href="<?=content_url('plugins/dashboard/css/bootstrap_limitless.css')?>"  type="text/css">
 	<link rel="stylesheet" href="<?=content_url('plugins/dashboard/css/bootstrap.css')?>" type="text/css">
 	<link rel="stylesheet" href="<?=content_url('plugins/dashboard/css/layout.css')?>" type="text/css">
 	<link rel="stylesheet" href="<?=content_url('plugins/dashboard/css/components.css')?>" type="text/css">
 	<link rel="stylesheet" href="<?=content_url('plugins/dashboard/css/colors.css')?>" type="text/css">
-
-	<!-- x-editable -->
 	<link rel="stylesheet" href="<?=content_url('plugins/x-editable/x-editable.css');?>" type="text/css">
-	<!-- uniform -->
 	<link rel="stylesheet" href="<?=content_url('plugins/uniform/uniform.css')?>" type="text/css">
-	<!-- tagsinput/typeahead -->
 	<link rel="stylesheet" href="<?=content_url('plugins/tagsinput/typeahead.css')?>" type="text/css">
-	<!-- select2 -->
 	<link rel="stylesheet" href="<?=content_url('plugins/select2/select2.css')?>" type="text/css">
-	<!-- uploaders/fileinput -->
 	<link rel="stylesheet" href="<?=content_url('plugins/uploaders/fileinput.css')?>" type="text/css">
-	<!-- jqueri-ui-interactions -->
 	<link rel="stylesheet" href="<?=content_url('plugins/jqueri-ui-interactions/interactions.css')?>" type="text/css">
-	<!-- notifications/noty -->
 	<link rel="stylesheet" href="<?=content_url('plugins/notifications/noty.css')?>" type="text/css">
-	<!-- sweetalert2 css -->
 	<link rel="stylesheet" href="<?=content_url('plugins/sweetalert2/sweetalert2.css')?>">
-	<!-- datetimepicker -->
 	<link rel="stylesheet" href="<?=content_url('plugins/datetime/bootstrap-datetimepicker.min.css');?>" type="text/css">
-	<!-- fancybox-2.1.7 -->
-	<link rel="stylesheet" href="<?=content_url('plugins/fancybox-2.1.7/jquery.fancybox.css');?>" type="text/css" media="screen" />
+	<link rel="stylesheet" href="<?=content_url('plugins/fancybox-2.1.7/jquery.fancybox.css');?>" type="text/css" media="screen">
 
 	<?php if ($this->mod === 'setting' || $this->mod == 'theme'): ?>
 	<!-- codemirror -->
