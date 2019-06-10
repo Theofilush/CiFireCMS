@@ -115,14 +115,6 @@ CREATE TABLE `t_component` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `t_component`
---
-
-INSERT INTO `t_component` (`id`, `name`, `type`, `class`, `table_name`, `status`) VALUES
-(1, 'Mail', 'module', 'mail', 't_mail', 'Y'),
-(2, 'Gallery', 'module', 'gallery', 't_gallery', 'Y');
-
 -- --------------------------------------------------------
 
 --
