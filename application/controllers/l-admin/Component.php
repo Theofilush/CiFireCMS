@@ -460,19 +460,3 @@ class Component extends Admin_controller {
 		}
 	} 
 } // End Class.
-
-
-
-
-			// $this->db = $this->load->database('mysqli', TRUE);
-			// $this->load->dbutil();
-			// $backup = $this->dbutil->backup(array(
-			// 		// 'tables'  => array('xxxxxx'), // Array of tables to backup.
-			// 		// 'ignore'  => array(),    // List of tables to omit from the backup
-			// 		'format'     => 'txt',      // gzip, zip, txt
-			// 		// 'filename'   => $table,     // File name - NEEDED ONLY WITH ZIP FILES
-			// 		'add_drop'   => TRUE,       // Whether to add DROP TABLE statements to backup file
-			// 		'add_insert' => TRUE,       // Whether to add INSERT data to backup file
-			// 		'newline'    => "\n"        // Newline character used in backup file
-			// ));
-			// write_file(CONTENTPATH."temp/$table", $backup);
