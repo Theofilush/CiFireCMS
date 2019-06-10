@@ -282,7 +282,7 @@ function tabactive($tabactive, $tab = '') {
 												<select name="cache" class="form-control" style="max-width:70px;">
 													<option value="<?=$this->settings->website('cache');?>" style="display:none;"><?=$this->settings->website('cache');?></option>
 													<option value="Y">Y</option>
-													<option value="Y">N</option>
+													<option value="N">N</option>
 												</select>
 												<div class="input-group-prepend">
 													<span class="input-group-text">Expire time</span>
