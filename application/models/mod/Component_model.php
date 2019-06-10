@@ -5,7 +5,7 @@ class Component_model extends CI_Model {
 
 	public $vars;
 	private $_table = 't_component';
-	private $_column_order = array(null, 'name', 'type', 'status');
+	private $_column_order = array('name', 'type', 'status');
 	private $_column_search = array('id', 'name');
 
 	public function __construct()
