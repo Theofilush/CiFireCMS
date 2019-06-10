@@ -40,3 +40,7 @@ $(document).ready(function() {
     $('#classname').on('input',function(){var b;b=(b=(b=$(this).val()).replace(/\s+/g,' ')).replace(/_/g,' '),$('#classname').val(b.toLowerCase()),$('#classname').val($('#classname').val().replace(/\W/g,' ')),$('#classname').val($('#classname').val().replace(/\s+/g,'_'))});
     $('#tablename').on('input',function(){var a;a=(a=(a=$(this).val()).replace(/\s+/g,' ')).replace(/_/g,' '),$('#tablename').val(a.toLowerCase()),$('#tablename').val($('#tablename').val().replace(/\W/g,' ')),$('#tablename').val($('#tablename').val().replace(/\s+/g,'_'))});
 });
+
+$('.c_structure').on('click',function() {
+    $('#c_structure').modal('show');
+});
