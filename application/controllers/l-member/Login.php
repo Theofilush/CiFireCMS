@@ -259,6 +259,9 @@ class Login extends MY_Controller {
 					$this->email->subject('Forgot Password');
 					$this->email->message('<p>Your Password is : '. $password .'<p>');
 					$this->email->send();
+
+					$this->alert->set('forgot', 'success', lang_line('forgot_send'));
+					redirect(uri_string());
 				} 
 				else
 				{
