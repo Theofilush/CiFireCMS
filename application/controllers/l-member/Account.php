@@ -137,6 +137,7 @@ class Account extends Member_controller {
 		}
 	}
 
+	
 	private function _upload()
 	{
 		if ( !empty($_FILES['fupload']['tmp_name']) ) // if isset image file.
@@ -174,7 +175,6 @@ class Account extends Member_controller {
 		}
 		redirect(uri_string());
 	}
-
 
 
 
@@ -230,15 +230,14 @@ class Account extends Member_controller {
 	{
 		if ( $_SERVER['REQUEST_METHOD'] == 'POST')
 		{
-			$rules = [
+			$this->form_validation->set_rules([
 				[
 					'field' => 'confirm',
 					'label' => lang_line('your_password'),
 					'rules' => 'required|trim|min_length[4]|max_length[18]|callback__cek_pass',
 				]
-			]; 
-
-			$this->form_validation->set_rules($rules);
+			]);
+			
 			if ( $this->form_validation->run() == TRUE )
 			{
 				@unlink(CONTENTPATH.'uploads/user/'.data_login('member','photo'));
@@ -252,8 +251,8 @@ class Account extends Member_controller {
 				redirect(uri_string());
 			}
 		}
-		else {
-			# code...
+		else 
+		{
 			$this->render_view('account_delete', $this->vars);
 		}
 	}
