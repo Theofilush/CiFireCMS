@@ -90,7 +90,7 @@ class Component extends Admin_controller {
 		{
 			if ( $_SERVER['REQUEST_METHOD'] == 'POST' )
 			{
-				return $this->_submit_add();
+				return $this->_install();
 			}
 			else
 			{
@@ -104,191 +104,163 @@ class Component extends Admin_controller {
 	}
 
 
-	private function _submit_add()
+	private function _install()
 	{
-		$component_name = xss_filter($_POST['name'],'xss');
-		$component_type = 'module';
-		$class_name     = $_POST['class_name'];
-		$table_name     = $_POST['table_name'];
+		$sp = DIRECTORY_SEPARATOR;
+		$rand = md5(date('YmdHis'));
+		$package_zip = $rand.'.zip';
 
-		$class_file = ucfirst($class_name).".php";
-		$model_file = ucfirst($class_name)."_model.php";
-		$views_dir  = $class_name;
-		$modjs      = $class_name.".js";
+		// panggil library upload dan konfigurasi paket komponen (extensi *.zip).
+		$this->load->library('upload', array(
+			'upload_path'   => $this->_path['temp'],
+			'allowed_types' => 'zip',
+			'file_name'     => $package_zip,
+			'overwrite'     => FALSE,
+			'max_size'      => 1024 * 5 // 5Mb
+		));
 
-		$rand = random_string('numeric', 15);
-		$zip_name = $rand.'.zip';
-		$zip_path = CONTENTPATH."temp/".$zip_name;
-		$upload_path = CONTENTPATH."temp";
-		$dest_dir = CONTENTPATH."temp/".$rand;	
-		
-		
-		switch ($component_type)
+		// jalankan upload.
+		if ( $this->upload->do_upload('file') )
 		{
-			/* Start Module */
-			case 'module':
+			$destinationdir_unzip = $this->_path['temp'].$rand;
 
-			// cek component
-			$cek_controllers_file = file_exists(APPPATH."controllers/".FADMIN."/".$class_file);
-			$cek_model_file       = file_exists(APPPATH."models/mod/".$model_file);
-			$cek_views            = file_exists(APPPATH."views/mod/".$views_dir);
-			$cek_modjs            = file_exists(CONTENTPATH."modjs/".$modjs);
+			// panggil library unzip.
+			$this->load->library('unzip', array($this->_path['temp'].$package_zip));
+			$this->unzip->extract($destinationdir_unzip);
+			
+			// hapus file *.zip dari foder temp.
+			@unlink($this->_path['temp'].$package_zip);
 
-			// cek component db
-			$cek_db_table = $this->db->table_exists($table_name);
-			$cek_mod_db   = $this->db->where('class', $class_name)->get('t_component')->num_rows();
-
-			// component not eksist (OK)
-			if ($cek_mod_db == 0 && 
-				$cek_controllers_file == FALSE && 
-				$cek_model_file == FALSE && 
-				$cek_views == FALSE &&
-				$cek_modjs == FALSE &&
-				$cek_db_table == FALSE
-				)
+			// cek folder hasil unzip dan file config.php
+			if ( 
+			     file_exists($destinationdir_unzip) && 
+			     file_exists($destinationdir_unzip.$sp.'config.php')
+			    )
 			{
-				// upload.
-				$this->load->library('upload', array(
-					'upload_path' => $upload_path,
-					'allowed_types' => "zip",
-					'file_name' => $zip_name,
-					'overwrite' => FALSE,
-					'max_size' => 1024 * 5
-				));
+				$src_dir = $destinationdir_unzip;
 
-				// run upload.
-				if ( $this->upload->do_upload('file') )
+				// include-kan file config.php
+				include_once($destinationdir_unzip.$sp.'config.php');
+
+				// cek file dan folder komponen.
+				$cek_controllers = file_exists($this->_path['controllers'].$_config['file_controller']);
+				$cek_models      = file_exists($this->_path['models'].$_config['file_model']);
+				$cek_views       = file_exists($this->_path['views'].$_config['class_name']);
+				$cek_modjs       = file_exists($this->_path['modjs'].$_config['file_modjs']);
+
+				// cek tabel & data t_component.
+				$cek_table   = $this->db->table_exists($_config['table_name']);
+				$cek_mod_db  = $this->db->where('class', $_config['class_name'])->get('t_component')->num_rows();
+
+				// cek source di folder temp.
+				$cek_src_controllers = file_exists($src_dir.$sp.'controllers'.$sp.$_config['file_controller']);
+				$cek_src_models      = file_exists($src_dir.$sp.'models'.$sp.$_config['file_model']);
+				$cek_src_views       = file_exists($src_dir.$sp.'views');
+				$cek_src_modjs       = file_exists($src_dir.$sp.'modjs'.$sp.$_config['file_modjs']);
+				$cek_src_sql         = file_exists($src_dir.$sp.'sql'.$sp.$_config['file_sql']);
+				
+				// jalankan cek.
+				if (
+				     // cek apakah komponen sudah ada di sistem.
+					 $cek_controllers == FALSE && 
+					 $cek_models == FALSE && 
+					 $cek_views == FALSE && 
+					 $cek_modjs == FALSE && 
+					 $cek_table == FALSE && 
+				     $cek_mod_db == 0 &&
+
+				     // cek apakah ada file komponen di folder temp.
+				     $cek_src_controllers == TRUE && 
+				     $cek_src_models == TRUE  && 
+				     $cek_src_views == TRUE && 
+				     $cek_src_modjs == TRUE && 
+				     $cek_src_sql == TRUE
+					)
 				{
-					// extract package at temp folder.
-					$this->load->library('unzip', array($zip_path));
-					$this->unzip->extract($dest_dir);
+					// Copy komopnen dari folder temp ke sistem.
+					@copy_folder($src_dir.$sp."controllers", $this->_path['controllers']);
+					@copy_folder($src_dir.$sp."models", $this->_path['models']);
+					@copy_folder($src_dir.$sp."views", $this->_path['views'].$_config['class_name']);
+					@copy_folder($src_dir.$sp."modjs", $this->_path['modjs']);
 
-					// delete zip file from temp.
-					@unlink($zip_path);
+					// insert data t_component.
+					$this->component_model->insert(array(
+						'type'       => $_config['component_type'],
+						'name'       => $_config['component_name'],
+						'class'      => $_config['class_name'],
+						'table_name' => $_config['table_name'],
+						'status'     => 'Y'
+					));
 
-					if ( file_exists($dest_dir) == TRUE )
+					if ( $this->_import_sql($src_dir.$sp.'sql'.$sp.$_config['file_sql']) ) // import data sql.
 					{
-						$src_dir = CONTENTPATH."temp/".$rand;
-						
-						if ( file_exists($src_dir."/table/table.php") ) 
-						{
-							// Scan folder.
-							$u_controllers = array_diff(scandir($src_dir."/controllers"), array('.', '..'));
-							$u_models      = array_diff(scandir($src_dir."/models"), array('.', '..'));
-							$u_modjs       = array_diff(scandir($src_dir."/modjs"), array('.', '..'));
-
-							// rename file controllers to same as class name.
-							@rename($src_dir."/controllers/".$u_controllers[2], 
-									$src_dir."/controllers/".ucfirst($class_name).".php");
-
-							// rename file models to same as class name.
-							@rename($src_dir."/models/".$u_models[2],
-									$src_dir."/models/".ucfirst($class_name)."_model.php");
-
-							// rename file modjs to same as class name.
-							@rename($src_dir."/modjs/".$u_modjs[2],
-									$src_dir."/modjs/$modjs");
-
-							// Copy module from temp to system.
-							copy_folder($src_dir."/controllers", $this->_path['controllers']);
-							copy_folder($src_dir."/models", $this->_path['models']);
-							copy_folder($src_dir."/views", $this->_path['views'].$class_name);
-							copy_folder($src_dir."/modjs", $this->_path['modjs']);
-							
-							// insert to database table t_component.
-							$this->component_model->insert(array(
-								'name' => $component_name,
-								'type' => $component_type,
-								'class' => $class_name,
-								'table_name' => $table_name,
-								'status' => 'Y'
-							));
-							
-							// include table configuration from temp.
-							include_once($src_dir."/table/table.php");
-							
-							// load dbforge
-							$this->load->dbforge();
-							// set id to primary key
-							$this->dbforge->add_key('id', TRUE);
-							// Array $config['table'] from insinde file table.php
-							$this->dbforge->add_field($config['table']); 
-							$this->dbforge->create_table($table_name, TRUE, ['ENGINE' => 'InnoDB']);
-
-							// Delete source folder from temp.
-							@delete_folder($src_dir);
-
-							// set alert status.
-							$this->alert->set($this->mod, 'success', lang_line('form_message_add_success'));
-							// redirect to all component
-							redirect(admin_url($this->mod));
-						}
-
-						else
-						{
-							delete_folder($src_dir);
-							$this->alert->set($this->mod.'add', 'danger', 'ERROR. Table config not found.');
-							redirect(uri_string());
-						}
-					}
-
-					// error extrak zip no folder.
-					else
+						@delete_folder($destinationdir_unzip); // delete folder temp.
+						$this->alert->set($this->mod, 'success', lang_line('form_message_add_success'));
+						redirect(admin_url($this->mod));
+					} 
+					else 
 					{
-						$this->alert->set($this->mod, 'danger', 'error upload');
-						redirect(uri_string());
+						@delete_folder($destinationdir_unzip); // delete folder temp.
+						$this->alert->set($this->mod, 'danger', 'SQL Error..!');
+						redirect(admin_url($this->mod));
 					}
 				}
-				// error upload
+
+				// Jika pengecekan gagal.
+				// controllers, model, views dir, modjs, table, data t_component.
 				else
 				{
-					$error_content = $this->upload->display_errors();
-					$this->alert->set($this->mod.'add', 'danger', $error_content);
+					@delete_folder($destinationdir_unzip); // delete folder temp.
+					$this->alert->set($this->mod, 'danger', 'ERROR..! Component package is corrupt or some files have been installed before. Please check the structure of your component package.');
 					redirect(uri_string());
 				}
 			}
-
-			// component is exist (ERROR)
-			else 
+			else
 			{
-				$r_cek_controllers_file = ($cek_controllers_file == TRUE ? "* Controllers $class_file file is exist <br>" : "");
-				$r_cek_model_file       = ($cek_model_file == TRUE ? "* Model $model_file file is exist <br>": "");
-				$r_cek_views            = ($cek_views == TRUE ? "* Views $views_dir folder is exist <br>" : "");
-				$r_cek_modjs            = ($cek_modjs == TRUE ? "* Modjs $modjs file is exist <br>" : "");
-				$r_cek_db_table         = ($cek_db_table == TRUE ? "* Table $table_name is exist <br>" : "");
-				$r_cek_mod_db           = ($cek_mod_db == 1 ? "* Component row is exist <br>" : "");
-
-				$this->alert->set($this->mod.'add', 'danger', "<i class='fa fa-exclamation-triangle'></i> &nbsp; ERROR <br>$r_cek_mod_db $r_cek_controllers_file $r_cek_model_file $r_cek_views $r_cek_db_table");
-
+				@delete_folder($destinationdir_unzip); // delete folder temp.
+				$this->alert->set($this->mod, 'danger', 'ERROR.! Installation config not found.');
 				redirect(uri_string());
 			}
-
-			break;
-			/* End Module */
-
-			/* Start Widget*/
-			case 'widget':
-				echo "Type Widget";
-				$this->alert->set($this->mod."add", 'warning', "Component type is not suported");
-				redirect(uri_string());
-			break;
-			/* End Widget */
 		}
-	}
 
-
-	public function db_import_table($path) 
-	{
-		$sql_contents = file_get_contents($path);
-		$sql_contents = explode(";", $sql_contents);
-		foreach ($sql_contents as $query)
+		// Jika error upload paket komponen.
+		else
 		{
-			$this->db->query($query);
+			$error_content = $this->upload->display_errors();
+			$this->alert->set($this->mod.'add', 'danger', $error_content);
+			redirect(uri_string());
 		}
 	}
 
 
-	public function delete()
+	/**
+	 * - Fungsi untuk mengimport data tabel sql ke dalam database.
+	 * 
+	 * @param 	string|path to sql 	
+	 * @return 	bol
+	 * @access 	private
+	*/
+	private function _import_sql($file) 
+    {
+        $this->db->trans_off();
+        $this->db->trans_start(TRUE);
+        $this->db->trans_begin();
+        $sql = file_get_contents($file) ;
+        $this->db->query($sql);
+        if ($this->db->trans_status() == TRUE) 
+        {
+            $this->db->trans_commit();
+            return true;
+        }
+        else 
+        {
+            $this->db->trans_rollback();
+            return false;
+        }
+    }
+
+
+    public function delete()
 	{
 		if ( $this->input->is_ajax_request() && $this->delete_access )
 		{
@@ -344,31 +316,47 @@ class Component extends Admin_controller {
 		}
 	}
 
+
 	public function backup($id = 0)
 	{
-		$id_component = xss_filter($id, 'sql');
-		$query = $this->db->where('id', $id_component)->get('t_component');
-		$cek = $query->num_rows();
-		
-		if ( $query->num_rows() == 1 )
+		if ( $this->write_access )
 		{
-			$component = $query->row_array();
-			$this->_runBackup($component);
+			$id_component = xss_filter($id, 'sql');
+			$query = $this->db->where('id', $id_component)->get('t_component');
+			$cek = $query->num_rows();
+			
+			if ( $query->num_rows() == 1 )
+			{
+				$component = $query->row_array();
+				$this->_runBackup($component);
+			}
+			else
+			{
+				$this->alert->set($this->mod, 'danger', 'ERROR..! Component not found.');
+				redirect(admin_url($this->mod));
+			}
 		}
 		else
 		{
-			$this->alert->set($this->mod, 'danger', 'ERROR..! Component not found.');
-			redirect(admin_url($this->mod));
+			$this->render_403();
 		}
 	}
 
+
 	private function _runBackup($component)
 	{
-		$c_table = $component['table_name'];
-		$c_class = $component['class'];
-		$c_type  = $component['type'];
-		$c_name  = $component['name'];
-		$c_status = $component['status'];
+		$c_date       = date('Y-m-d, h:i A');
+		$c_type       = $component['type'];
+		$c_name       = $component['name'];
+		$c_class      = $component['class'];
+		$c_table      = $component['table_name'];
+		$c_sql        = $component['table_name'].'.sql';
+		$c_controller = ucfirst($component['class']).'.php';
+		$c_model      = ucfirst($component['class']).'_model.php';
+		$c_views      = $component['class'];
+		$c_modjs      = $component['class'].'.js';
+
+		$c_status = 'Y';
 
 		$dir_name = 'backup-'.seotitle($c_class);
 		$path_temp_component = $this->_path['temp'].$dir_name.'/';
@@ -383,7 +371,8 @@ class Component extends Admin_controller {
 			@mkdir($path_temp_component . 'sql');
 
 			// create file config.
-			$config_content = "<?php\n\$config['component_name'] = '{$c_name}';\n\$config['class_name'] = '{$c_class}';\n\$config['table_name'] = '{$c_table}';";
+			$config_content = "<?php\n/**\n * - Ini adalah file konfigurasi instalasi komponen CiFireCMS.\n * - Komponen   : {$c_name}\n * - Tipe       : {$c_type}\n * - Tanggal    : {$c_date}\n*/\n\n\$_config['component_type']  = '{$c_type}';\n\$_config['component_name']  = '{$c_name}';\n\$_config['class_name']      = '{$c_class}';\n\$_config['table_name']      = '{$c_table}';\n\$_config['file_sql']        = '{$c_sql}';\n\$_config['file_controller'] = '{$c_controller}';\n\$_config['file_model']      = '{$c_model}';\n\$_config['dir_views']       = '{$c_views}';\n\$_config['file_modjs']      = '{$c_modjs}';";
+
 			write_file($path_temp_component . 'config.php', $config_content);
 
 			// Copy controllers.

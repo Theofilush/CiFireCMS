@@ -18,7 +18,7 @@
 
 <div class="content">
 
-	<?=$this->alert->show($this->mod.'add');?>
+	<?=$this->alert->show($this->mod);?>
 
 	<div class="block">
 		<div class="row">
@@ -34,20 +34,10 @@
 				echo form_open_multipart();
 				echo form_hidden('act', 1);
 			?>
-			<div class="form-group">
-				<label><?=lang_line('form_label_name');?></label>
-				<input type="text" name="name" class="form-control" value="<?=set_value('title');?>" required>
-				<div class="form-input-error"><?=form_error('name');?></div>
-			</div>
-			<div class="form-group">
-				<label>Class</label>
-				<input id="classname" type="text" name="class_name" class="form-control" required>
-				<div class="form-input-error"><?=form_error('class_name');?></div>
-			</div>
-			<div class="form-group">
-				<label><?=lang_line('form_label_table');?></label>
-				<input id="tablename" type="text" name="table_name" class="form-control" required>
-				<div class="form-input-error"><?=form_error('table_name');?></div>
+			<div class="mb-5">
+				<p>Sebelum melanjutkan proses instalasi harap backup dahulu seluruh file web dan database.</p><p>Pastikan file package komponen berekstensi *.zip dan struktur filenya sesuai standar package CiFireCMS.</p>
+				<p><a href="javascript:void(0)" class="c_structure"><i class="fa fa-dropbox mr-2"></i>Lihat struktur paket.</a></p>
+				
 			</div>
 			<div class="form-group">
 				<label><?=lang_line('form_label_file');?> (.zip)</label>
@@ -57,10 +47,39 @@
 			<br>
 			<hr>
 			<div class="block-actions">
-                <button type="submit" class="button btn-primary text-b"><i class="fa fa-check"></i> <?=lang_line('button_submit');?></button>
-				<a href="<?=admin_url($this->mod);?>" class="pull-right button btn-md btn-default text-b"><i class="fa fa-times"></i> <?=lang_line('button_cancel');?></a>
+                <button type="submit" class="button btn-primary text-b"><i class="fa fa-check mr-2"></i><?=lang_line('button_install');?></button>
+				<a href="<?=admin_url($this->mod);?>" class="pull-right button btn-md btn-default text-b"><i class="fa fa-times mr-2"></i><?=lang_line('button_cancel');?></a>
 			</div>
 			<?=form_close();?>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="c_structure" class="modal fade" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Component Package Structure</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			</div>
+			<div class="modal-body">
+<pre><code><b>component-video.zip</b>/
+ ├── <b>controllers</b>/
+ │   └── Video.php
+ ├── <b>models</b>/
+ │   └── Video_model.php
+ ├── <b>modjs</b>/
+ │   └── video.js
+ ├── <b>sql</b>/
+ │   └── t_video.sql
+ ├── <b>views</b>/
+ │   ├── view_add_new.php
+ │   ├── view_edit.php
+ │   ├── view_index.php
+ │   └── index.html
+ └── config.php
+</code></pre>
 			</div>
 		</div>
 	</div>
