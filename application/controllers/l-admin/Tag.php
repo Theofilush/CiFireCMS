@@ -12,11 +12,7 @@ class Tag extends Admin_controller {
 		$this->lang->load('mod/'.$this->mod, $this->_language);
 		$this->meta_title(lang_line('mod_title'));
 		$this->load->model('mod/tag_model', 'mod_model');
-
-
-
 	}
-
 
 
 	public function index()
@@ -54,10 +50,9 @@ class Tag extends Admin_controller {
 	}
 
 
-
 	public function data_table()
 	{
-		if ($this->input->is_ajax_request() == TRUE)
+		if ($this->input->is_ajax_request())
 		{
 			$data_list = $this->mod_model->get_datatables();
 			$data_output = array();
@@ -85,12 +80,16 @@ class Tag extends Admin_controller {
 
 			$this->json_output($output);
 		}
+		else
+		{
+			show_404();
+		}
 	}
 
 
 	public function delete()
 	{
-		if ($this->input->is_ajax_request() == TRUE)
+		if ($this->input->is_ajax_request())
 		{
 			$data_pk = $this->input->post('data');
 			foreach ($data_pk as $key)
@@ -105,7 +104,7 @@ class Tag extends Admin_controller {
 		}
 		else
 		{
-			return show_404();
+			show_404();
 		}
 	}
 

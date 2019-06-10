@@ -9,10 +9,8 @@ class Post extends Web_controller {
 	{
 		parent::__construct();
 		$this->load->model('web/post_model');
-		
 		$this->us = xss_filter($this->uri->segment(count($this->uri->segments)), 'xss');
-		$this->es = url_encode($this->us);
-		$this->seotitle = url_decode($this->es);
+		$this->seotitle = seotitle($this->us);
 	}
 	
 
@@ -31,11 +29,10 @@ class Post extends Web_controller {
 			else
 			{
 				$data_post = $this->post_model->get_post($this->seotitle);
-				
 				$this->vars['result_post']  = $data_post;
+
 				$this->vars['related_post'] = $this->post_model->related_post($data_post['tag'], $data_post['post_id'], 3);
 
-				
 				// link prev post & next post
 				$this->vars['prev_post'] = $this->_prev_post($id_post); 
 				$this->vars['next_post'] = $this->_next_post($id_post); 
