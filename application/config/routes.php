@@ -32,7 +32,6 @@ $route['search/([^/]*)'] = 'search/index/$1';
 $route['search/([^/]*)/([0-9]+)'] = 'search/index/$1/$2';
 $route['gallery'] = 'gallery/index';
 $route['gallery/([a-z0-9-]+)'] = 'gallery/album/$1';
-// $route['video/play/([a-z0-9-]+)'] = 'video/play/$1';
 
 // Custom route post.
 require_once APPPATH . 'cache/routes.php';
