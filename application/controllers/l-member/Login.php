@@ -135,6 +135,9 @@ class Login extends MY_Controller {
 				$this->email->subject('Konfirmasi Pendaftaran');
 				$this->email->message('link aktivasi : <a href="'. $activationlink .'" target="_blank">'. $activationlink .'</a> <br> Untuk mengaktifkan akun anda, silahkan klik link diatas.');
 				$this->email->send();
+
+				$this->session->set_flashdata('reg_success','1');
+				redirect(uri_string());
 			}
 			else
 			{
