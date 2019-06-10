@@ -151,6 +151,16 @@ class Mail_model extends CI_Model {
 	}
 
 
+	public function get_mail($id=0)
+	{
+		if ($this->cek_id($id) == 1 )
+		{
+			return $this->db->where('id',$id)->get($this->table)->row_array();
+		}
+		else return NULL;
+	}
+
+
 	public function cek_id($id = 0)
 	{
 		if ( empty($id) || $id==0 )

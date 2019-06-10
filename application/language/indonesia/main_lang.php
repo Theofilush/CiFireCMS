@@ -20,42 +20,34 @@ $lang['login_to_admin'] = 'Masuk ke Administrator';
 // Button
 $lang['button_login'] = 'Masuk';
 $lang['button_forgot_pasword'] = 'Lupa kata sandi';
-
 $lang['button_yes'] = 'Ya';
 $lang['button_no'] = 'Tidak';
-
 $lang['button_open'] = 'Buka';
 $lang['button_close'] = 'Tutup';
-
-
 $lang['button_save'] = 'Simpan';
 $lang['button_submit'] = 'Submit';
 $lang['button_publish'] = 'Terbitkan';
 $lang['button_update'] = 'Simpan perubahan';
 $lang['button_cancel'] = 'Batal';
-
 $lang['button_enable'] = 'Aktifkan';
 $lang['button_disable'] = 'Nonaktifkan';
 $lang['button_active'] = 'Aktif';
 $lang['button_activated'] = 'Aktifkan';
-
 $lang['button_detail'] = 'Detail';
 $lang['button_view'] = 'Lihat';
-
 $lang['button_send'] = 'Kirim';
 $lang['button_reply'] = 'Balas';
 $lang['button_back'] = 'Kembali';
 $lang['button_print'] = 'Cetak';
-
 $lang['button_add_new'] = 'Tambah Baru';
 $lang['button_edit'] = 'Ubah';
 $lang['button_delete'] = 'Hapus';
 $lang['button_delete_selected_item'] = 'Hapus Item Terpilih';
-
 $lang['button_select_file'] = 'Pilih Berkas';
 $lang['button_browse'] = 'Browse';
 $lang['button_upload'] = 'Unggah';
 $lang['button_downoad'] = 'Unduh';
+$lang['button_install'] = 'Install';
 
 // input
 $lang['input_username'] = 'Nama User';
