@@ -220,6 +220,7 @@ class Post extends Member_controller {
 					     ->toFile(CONTENTPATH.'thumbs/'.$post_picture);
 				}
 			}
+			
 			// Set data post.
 			$data_post = array(
 				'title'         => xss_filter($this->input->post('title')),
@@ -235,10 +236,13 @@ class Post extends Member_controller {
 				'headline'      => 'N',
 				'active'        => 'N',
 			);
+			
 			// Insert data post to database.
 			$this->post_model->insert_post($data_post);
+			
 			// set bootstrap alert message.
 			$this->alert->set($this->mod, 'success', lang_line('form_message_add_success'));
+			
 			// set json response status.
 			$response['success'] = true;
 		}
@@ -262,6 +266,7 @@ class Post extends Member_controller {
 
 		$getid = $this->input->get('id');
 		$id_post = xss_filter(urldecode(decrypt($getid)),'sql');
+		
 		// Check id_post
 		if ( $id_post != 0 || $this->post_model->cek_id($id_post) == 1 ) 
 		{
@@ -273,7 +278,7 @@ class Post extends Member_controller {
 		}
 		else
 		{
-			return $this->render_404();
+			$this->render_404();
 		}
 	}
 
@@ -316,6 +321,7 @@ class Post extends Member_controller {
 				$tags = rtrim($tags, ',');
 				$data_post='';
 				$data_picture = []; // Set default picutre name.
+				
 				if ( !empty($_FILES['fupload']['tmp_name']) ) // if isset image file.
 				{
 					$temp = current($_FILES);
@@ -356,8 +362,10 @@ class Post extends Member_controller {
 					{
 						$post_picture = '';
 					}
+					
 					$data_picture = ['picture' => $post_picture];
 				}
+				
 				// Set data post.
 				$data_post = array(
 					'title'         => xss_filter($this->input->post('title')),
@@ -367,8 +375,10 @@ class Post extends Member_controller {
 					'image_caption' => xss_filter($this->input->post('image_caption')),
 					'tag'           => $tags,
 				);
+				
 				// merge array $data_post & $data_picture
 				$data = array_merge_recursive($data_post,$data_picture);
+				
 				// Insert data post to database.
 				$this->post_model->update_post($id_post, $data);
 
@@ -403,15 +413,16 @@ class Post extends Member_controller {
 			$upload_path = "content/uploads/post/";
 
 			reset($_FILES);
+			
 			$temp = current($_FILES);
 			$img_name = date('YmdHis').'_'.md5(date('YmdHis'));
 			$extension = pathinfo($temp['name'], PATHINFO_EXTENSION);
 
 			$this->load->library('upload', array(
-				'upload_path' => CONTENTPATH."uploads/post/",
+				'upload_path'   => CONTENTPATH."uploads/post/",
 				'allowed_types' => 'gif|jpg|png|jpeg',
-				'file_name' => $img_name,
-				'max_size' => 1024 * 10
+				'file_name'     => $img_name,
+				'max_size'      => 1024 * 10
 			));
 
 			if ($this->upload->do_upload('fupload'))
@@ -430,14 +441,14 @@ class Post extends Member_controller {
 		}
 		else
 		{
-			return $this->render_404();
+			show_404();
 		}
 	}
 
 
 	public function ajax_get_category()
 	{
-		if ( $this->input->is_ajax_request() == TRUE )
+		if ( $this->input->is_ajax_request() )
 		{
 			$data_output = null;
 			$kata = trim($this->input->post('search',TRUE));
@@ -482,14 +493,14 @@ class Post extends Member_controller {
 		}
 		else
 		{
-			return $this->render_404();
+			show_404();
 		}
 	}
 
 
 	public function ajax_tags()
 	{
-		if ( $this->input->is_ajax_request() == TRUE )
+		if ( $this->input->is_ajax_request() )
 		{
 			$input = seotitle($this->input->post('q'));
 			$output = $this->post_model->ajax_tags($input);
@@ -497,7 +508,7 @@ class Post extends Member_controller {
 		}
 		else
 		{
-			return $this->render_404();
+			show_404();
 		}
 	}
 
