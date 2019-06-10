@@ -62,38 +62,7 @@ class Search extends Web_controller {
 			{
 				$this->render_view('search', $this->vars);
 			}
-
 		}
-
-/*	
-		$_page   = xss_filter($this->uri->segment(3) ,'sql');
-		$_batas  = 9;
-		$_posisi = $this->paging->posisi($_batas, $_page);
-
-		$this->vars['search_post'] = $this->search_model->Search($kata, 'hits DESC', $_batas, $_posisi);
-		$jml_data = $this->search_model->jml_data($kata);
-
-		$jml_halaman  = $this->paging->jml_halaman($jml_data, $_batas);
-
-		$this->vars['page_link'] = $this->paging->link($_page, $jml_halaman, site_url("search/".urlencode($kata)));
-
-		$this->vars['num_post'] = $jml_data;
-		$this->vars['keywords'] = $kata;
-
-		$this->set_meta(array(
-			'title' => 'Search - '.$this->settings->website('web_name'),
-			'keywords' => pecah_kata($pemisah = '-', $kata, 'N', $url = '', $separator = ',').', '.$this->settings->website('meta_keyword'),
-			'description' => ''
-		));
-
-		if ($_page > $jml_halaman) 
-		{
-			$this->render_404();
-		}
-		else
-		{
-			$this->render_view('search', $this->vars);
-		}*/
 	}
 
 
