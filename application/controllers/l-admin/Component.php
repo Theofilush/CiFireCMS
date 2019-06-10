@@ -18,7 +18,8 @@ class Component extends Admin_controller {
 			'controllers' => APPPATH."controllers/".FADMIN."/",
 			'models'      => APPPATH."models/mod/",
 			'views'       => APPPATH."views/mod/",
-			'modjs'       => CONTENTPATH."modjs/"
+			'modjs'       => CONTENTPATH."modjs/",
+			'temp'        => CONTENTPATH."temp/",
 		);
 	}
 
@@ -44,7 +45,7 @@ class Component extends Admin_controller {
 						$row[] = '
 								<div class="text-center">
 									<div class="btn-group">
-										<button class="button btn-xs btn-default" onclick="location.href=\''. admin_url(underscore($val['class'])) .'\'" data-toggle="tooltip" data-placement="top" data-title="Go To Component"><i class="fa fa-puzzle-piece"></i></button>
+										<button class="button btn-xs btn-default" onclick="location.href=\''. admin_url($this->mod.'/backup/'.$val['id']) .'\'" data-toggle="tooltip" data-placement="top" data-title="Buckup"><i class="fa fa-download"></i></button>
 										<button type="button" class="button btn-xs btn-default delete_single" data-toggle="tooltip" data-placement="top" data-title="'.lang_line('button_delete').'" data-pk="'. encrypt($val['id']) .'"><i class="icon-bin"></i></button>
 									</div>
 								</div>';
@@ -226,7 +227,7 @@ class Component extends Admin_controller {
 						else
 						{
 							delete_folder($src_dir);
-							$this->alert->set($this->mod."add", 'danger', "error table_config");
+							$this->alert->set($this->mod.'add', 'danger', 'ERROR. Table config not found.');
 							redirect(uri_string());
 						}
 					}
@@ -234,7 +235,7 @@ class Component extends Admin_controller {
 					// error extrak zip no folder.
 					else
 					{
-						$this->alert->set($this->mod,'danger', "error upload");
+						$this->alert->set($this->mod, 'danger', 'error upload');
 						redirect(uri_string());
 					}
 				}
@@ -242,7 +243,7 @@ class Component extends Admin_controller {
 				else
 				{
 					$error_content = $this->upload->display_errors();
-					$this->alert->set($this->mod."add", "danger", $error_content);
+					$this->alert->set($this->mod.'add', 'danger', $error_content);
 					redirect(uri_string());
 				}
 			}
@@ -257,10 +258,11 @@ class Component extends Admin_controller {
 				$r_cek_db_table         = ($cek_db_table == TRUE ? "* Table $table_name is exist <br>" : "");
 				$r_cek_mod_db           = ($cek_mod_db == 1 ? "* Component row is exist <br>" : "");
 
-				$this->alert->set($this->mod."add", "danger", "<i class='fa fa-exclamation-triangle'></i> &nbsp; ERROR <br>$r_cek_mod_db $r_cek_controllers_file $r_cek_model_file $r_cek_views $r_cek_db_table");
+				$this->alert->set($this->mod.'add', 'danger', "<i class='fa fa-exclamation-triangle'></i> &nbsp; ERROR <br>$r_cek_mod_db $r_cek_controllers_file $r_cek_model_file $r_cek_views $r_cek_db_table");
 
 				redirect(uri_string());
 			}
+
 			break;
 			/* End Module */
 
@@ -341,4 +343,136 @@ class Component extends Admin_controller {
 			show_404();
 		}
 	}
+
+	public function backup($id = 0)
+	{
+		$id_component = xss_filter($id, 'sql');
+		$query = $this->db->where('id', $id_component)->get('t_component');
+		$cek = $query->num_rows();
+		
+		if ( $query->num_rows() == 1 )
+		{
+			$component = $query->row_array();
+			$this->_runBackup($component);
+		}
+		else
+		{
+			$this->alert->set($this->mod, 'danger', 'ERROR..! Component not found.');
+			redirect(admin_url($this->mod));
+		}
+	}
+
+	private function _runBackup($component)
+	{
+		$c_table = $component['table_name'];
+		$c_class = $component['class'];
+		$c_type  = $component['type'];
+		$c_name  = $component['name'];
+		$c_status = $component['status'];
+
+		$dir_name = 'backup-'.seotitle($c_class);
+		$path_temp_component = $this->_path['temp'].$dir_name.'/';
+
+		// create temp folder and config file.
+		if ( @mkdir($path_temp_component) ) 
+		{
+			@mkdir($path_temp_component . 'controllers');
+			@mkdir($path_temp_component . 'models');
+			@mkdir($path_temp_component . 'modjs');
+			@mkdir($path_temp_component . 'views');
+			@mkdir($path_temp_component . 'sql');
+
+			// create file config.
+			$config_content = "<?php\n\$config['component_name'] = '{$c_name}';\n\$config['class_name'] = '{$c_class}';\n\$config['table_name'] = '{$c_table}';";
+			write_file($path_temp_component . 'config.php', $config_content);
+
+			// Copy controllers.
+			$file_controller      = ucfirst($c_class).'.php';
+			$path_app_controllers = $this->_path['controllers'].$file_controller;
+			$path_temp_controllers = $path_temp_component . "controllers/$file_controller";
+			if ( file_exists($path_app_controllers) )
+				r_copy($path_app_controllers, $path_temp_controllers);
+
+			// Copy models.
+			$file_model       = ucfirst($c_class).'_model.php';
+			$path_app_models  = $this->_path['models'].$file_model;
+			$path_temp_models = $path_temp_component . "models/$file_model";
+			if ( file_exists($path_app_models) )
+				r_copy($path_app_models, $path_temp_models);
+
+			// Copy views.
+			$path_app_views  = $this->_path['views'].$c_class;
+			$path_temp_views = $path_temp_component.'views';
+			if ( file_exists($path_app_views) )
+				copy_folder($path_app_views, $path_temp_views);
+
+
+			// Copy modjs.
+			$file_modjs       = strtolower($c_class).'.js';
+			$path_app_modjs   = $this->_path['modjs'].$file_modjs;
+			$path_temp_modjs  = $path_temp_component."modjs/$file_modjs";
+			if ( file_exists($path_app_modjs) )
+				r_copy($path_app_modjs, $path_temp_modjs);
+
+
+			// backup table database.
+			$sql_name      = $c_table.'.sql';
+			$path_temp_sql = $path_temp_component.'sql/'.$sql_name;
+
+			$this->db = $this->load->database('mysqli', TRUE);
+			$this->load->dbutil();
+			$backup_database = $this->dbutil->backup(array(
+					'tables'     => array($c_table), // Array of tables to backup.
+					'ignore'     => array(),         // List of tables to omit from the backup
+					'format'     => 'txt',           // gzip, zip, txt
+					'add_drop'   => TRUE,            // Whether to add DROP TABLE statements to backup file
+					'add_insert' => TRUE,            // Whether to add INSERT data to backup file
+					'newline'    => "\n"             // Newline character used in backup file
+			));
+			write_file($path_temp_sql, $backup_database);
+		}
+		// archives component.
+		$this->load->library('zip');
+		$zip_name = 'component-'.$dir_name.'.zip';
+
+		$this->zip->read_dir($path_temp_component . 'controllers', FALSE);
+		$this->zip->read_dir($path_temp_component . 'models', FALSE);
+		$this->zip->read_dir($path_temp_component . 'views', FALSE);
+		$this->zip->read_dir($path_temp_component . 'modjs', FALSE);
+		$this->zip->read_dir($path_temp_component . 'sql', FALSE);
+		$this->zip->read_file($path_temp_component . 'config.php');
+		$this->zip->compression_level = 2;
+		$this->zip->archive($path_temp_component.$zip_name);
+		$this->zip->clear_data();
+
+		// copy backup zip to content/uploads/file/.
+		r_copy($path_temp_component.$zip_name, CONTENTPATH.'uploads/file/'.$zip_name);
+
+		// delete temp.
+		@delete_folder($path_temp_component);
+
+		// Download backup zip from content/uploads/file/.
+		$this->load->helper('download');
+		if ( force_download(CONTENTPATH.'uploads/file/'.$zip_name, NULL) ) 
+		{
+			redirect(admin_url($this->mod));
+			// return TRUE;
+		}
+	} 
 } // End Class.
+
+
+
+
+			// $this->db = $this->load->database('mysqli', TRUE);
+			// $this->load->dbutil();
+			// $backup = $this->dbutil->backup(array(
+			// 		// 'tables'  => array('xxxxxx'), // Array of tables to backup.
+			// 		// 'ignore'  => array(),    // List of tables to omit from the backup
+			// 		'format'     => 'txt',      // gzip, zip, txt
+			// 		// 'filename'   => $table,     // File name - NEEDED ONLY WITH ZIP FILES
+			// 		'add_drop'   => TRUE,       // Whether to add DROP TABLE statements to backup file
+			// 		'add_insert' => TRUE,       // Whether to add INSERT data to backup file
+			// 		'newline'    => "\n"        // Newline character used in backup file
+			// ));
+			// write_file(CONTENTPATH."temp/$table", $backup);
