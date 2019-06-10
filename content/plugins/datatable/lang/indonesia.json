@@ -1,0 +1,20 @@
+{
+    "sEmptyTable":     "Tidak ada data yang tersedia pada tabel ini",
+    "sInfo":           "Menampilkan _START_ sampai _END_ dari _TOTAL_ entri",
+    "sInfoEmpty":      "Menampilkan 0 sampai 0 dari 0 entri",
+    "sInfoFiltered":   "",
+    "sInfoPostFix":    "",
+    "sInfoThousands":  ",",
+    "sLengthMenu":     "Tampil _MENU_ entri",
+    "sLoadingRecords": "Sedang memproses...",
+    "sProcessing":     "Sedang memproses...",
+    "sSearch":         "Cari:",
+    "sZeroRecords":    "Tidak ditemukan data yang sesuai",
+    "sUrl":            "",
+    "oPaginate": {
+        "sFirst":      "Pertama",
+        "sPrevious":   "Sebelumnya",
+        "sNext":       "Selanjutnya",
+        "sLast":       "Terakhir"
+    }
+}
