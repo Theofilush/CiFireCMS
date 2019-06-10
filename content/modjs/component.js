@@ -8,6 +8,9 @@ $(document).ready(function() {
         'responsive': true,
         'processing': true,
         'serverSide': true,
+        'order': [
+            //[1, 'desc']
+        ],
         'columnDefs': [
             {'targets': 'no-sort', 'width': '90px', 'orderable': false, 'searchable': false}
         ],
