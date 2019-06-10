@@ -63,6 +63,7 @@ class Login extends MY_Controller {
 		}
 	}
 
+	
 	public function register()
 	{
 		$this->meta_title(lang_line('login2'));
@@ -243,7 +244,7 @@ class Login extends MY_Controller {
 					$data = $query->row_array();
 					$password = decrypt($data['password']);
 
-					// Send actifation key to email.
+					// Send key to email.
 					$this->load->library('email');
 					$this->email->initialize($this->settings->email_config());
 					$this->email->set_newline("\r\n");
@@ -268,8 +269,7 @@ class Login extends MY_Controller {
 				$this->alert->set('forgot', 'danger', $error_content);
 				redirect(uri_string());
 			}
-		} 
-		
+		}
 		else
 		{
 			$this->load->view('member/log_header', $this->vars);
@@ -385,7 +385,6 @@ class Login extends MY_Controller {
 				redirect(uri_string());
 			}
 		}
-		
 		else
 		{
 			return show_400();
