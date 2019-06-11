@@ -25,3 +25,4 @@ $lang['form_label_table'] = 'Table Name';
 $lang['form_label_file'] = 'Component Package';
 
 $lang['form_message_add_success'] = 'Component has been successfully installed';
+$lang['err_package'] = 'ERROR..! Component package is corrupt or some files have been installed before. Please check the structure of your component package';
