@@ -25,3 +25,4 @@ $lang['form_label_table'] = 'Tabel Database';
 $lang['form_label_file'] = 'Paket Komponen';
 
 $lang['form_message_add_success'] = 'Komponen baru telah berhasil dipasang';
+$lang['err_package'] = 'ERROR..! Paket komponen rusak atau beberapa file telah terinstall. Silakan periksa struktur paket komponen Anda.';
