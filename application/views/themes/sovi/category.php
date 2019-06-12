@@ -6,7 +6,7 @@ $this->CI->render_view('header');
 	<div class="colleft">
 		<div class="box">
 			<div class="box-caption">
-				<h2><a href="#"><i class="fa fa-folder"></i> Category</a></h2>
+				<h2><a href="#"><i class="fa fa-folder"></i> <?=$result_category['title']?></a></h2>
 			</div>
 			<?php
 				if ( count($data_post) > 0 ): 
