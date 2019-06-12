@@ -8,6 +8,10 @@ class Gallery extends Web_controller {
 		parent::__construct();
 		
 		$this->load->model('web/gallery_model');
+		
+		$this->set_meta(array(
+			'title' => "Gallery"
+		));
 	}
 	
 	

@@ -8,15 +8,15 @@ class Contact extends Web_controller {
 		parent::__construct();
 		
 		$this->load->model('web/contact_model');
+
+		$this->set_meta(array(
+			'title' => "Contact"
+		));
 	}
 	
 	
 	public function index()
 	{
-		$this->set_meta(array(
-			'title' => "Contact"
-		));
-
 		if ($_SERVER['REQUEST_METHOD'] === 'POST')
 		{			
 			if (googleCaptcha()->success == TRUE)

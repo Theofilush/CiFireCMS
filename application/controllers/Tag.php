@@ -31,8 +31,8 @@ class Tag extends Web_controller {
 
 			$this->set_meta(array(
 				'title' => $data_tag['title'],
-				'keywords' => $data_tag['title'].', '.$this->settings->website('keyword'),
-				'description' => $this->settings->website('description')
+				'keywords' => $data_tag['title'].', '.$this->settings->website('meta_keyword'),
+				'description' => $this->settings->website('meta_description')
 			));
 			
 			$this->render_view('tag', $this->vars);

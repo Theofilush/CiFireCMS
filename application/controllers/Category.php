@@ -46,7 +46,7 @@ class Category extends Web_controller {
 			{
 				$this->set_meta(array(
 					'title' => $data['title'],
-					'keywords' => $data['title'].', '.$this->settings->website('keyword'),
+					'keywords' => $data['title'].', '.$this->settings->website('meta_keyword'),
 					'description' => $data['description']
 				));
 				$this->render_view('category', $this->vars);

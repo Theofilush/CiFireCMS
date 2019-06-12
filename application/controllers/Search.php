@@ -51,7 +51,7 @@ class Search extends Web_controller {
 			$this->set_meta(array(
 				'title' => 'Search - '.$this->settings->website('web_name'),
 				'keywords' => $cari_kata,
-				'description' => $this->settings->website('description')
+				'description' => $this->settings->website('meta_description')
 			));
 
 			if ($_page > $jml_halaman) 
