@@ -872,9 +872,9 @@ class {$class_name} extends Admin_controller {
 
 
 	/**
-	 * - index
+	 * - Function Index
 	 *
-	 * @return void string HTML
+	 * @return void|string
 	 * @access public
 	*/
 	public function index()
@@ -887,13 +887,13 @@ class {$class_name} extends Admin_controller {
 		{
 			return \$this->render_404();
 		}
-	} // End Function.
+	}
 
 
 	/**
-	 * - Data Table.
+	 * - Function DataTable.
 	 *
-	 * @return void json
+	 * @return void|string|json
 	 * @access public
 	*/
 	public function data_table()
@@ -965,7 +965,7 @@ $write .= <<< EOS
 		{
 			return show_404();
 		}
-	} // End Function.
+	}
 
 
 
@@ -1072,16 +1072,16 @@ $write .= <<<EOS
 
 		// render view.
 		\$this->render_view('view_add_new', \$this->vars);
-	} // End Function.
+	}
 
 
 
 	/**
-	 * - Function Edit.
+	 * - Function Edit
 	 *
-	 * @var string \$id_data
-	 * @return void
-	 * @access public
+	 * @param 	int|string \$id_data
+	 * @return 	void
+	 * @access 	public
 	*/
 	public function edit(\$id_data = '')
 	{
@@ -1186,7 +1186,6 @@ $write .= <<< EOS
 				}
 				\$data_edit = \$this->{$model_name}->get_data_edit(\$id_edit);
 				\$this->vars['data_row'] = \$data_edit;
-				// render view.
 				\$this->render_view('view_edit', \$this->vars);
 			}
 			else
@@ -1198,16 +1197,15 @@ $write .= <<< EOS
 		{
 			\$this->render_404();
 		}
-	} // End Function.
+	}
 
 
 
 	/**
-	 * - Function Delete.
+	 * - Function Delete
 	 *
-	 * @var string \$id_data
-	 * @return void, string, json
-	 * @access public
+	 * @return 	void|string|json
+	 * @access 	public
 	*/
 	public function delete()
 	{
@@ -1230,8 +1228,7 @@ $write .= <<< EOS
 		{
 			show_404();
 		}
-	} // End Function.
-
+	}
 } // End Class.
 EOS;
 return $write;
