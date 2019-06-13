@@ -8,6 +8,46 @@ class Index_model extends CI_Model {
 		parent::__construct();
 	}
 
+	public function index_post($batas, $posisi)
+	{
+		$query = $this->db
+			->select('
+					 t_post.id       as post_id,
+					 t_post.title    as post_title,
+					 t_post.seotitle as post_seotitle,
+					 t_post.active   as post_active,
+					 t_post.content,
+					 t_post.picture,
+			         t_post.datepost,
+			         t_post.timepost,
+			         t_post.tag,
+			         t_post.hits,
+
+					 t_category.id       as category_id,
+					 t_category.title    as category_title,
+					 t_category.seotitle as category_seotitle,
+					 t_user.id as user_id,
+					 t_user.name as user_name,
+					')
+			->join('t_category', 't_category.id = t_post.id_category', 'left')
+			->join('t_user', 't_user.id = t_post.id_user', 'left')
+			->where('t_post.active', 'Y')
+			->order_by('t_post.id', 'DESC')
+			->limit($batas, $posisi)
+			->get('t_post');
+
+		return $query->result_array();
+	}
+
+	public function total_post()
+	{
+		$query = $this->db->select('id');
+		$query = $this->db->where('active', 'Y');
+		$query = $this->db->get('t_post');
+
+		return $query->num_rows();
+	}
+
 
 	public function get_post_lmit_by_category($id_category = '', array $limit)
 	{

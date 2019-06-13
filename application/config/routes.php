@@ -19,6 +19,7 @@ $route['l-member/register'] = 'l-member/login/register';
 $route['l-member/activation'] = 'l-member/login/activation';
 
 // WEB.
+$route['index/([0-9-]+)'] = 'index/index/$1';
 $route['home'] = 'home/index';
 $route['home/([0-9]+)'] = 'home/index/$1';
 $route['pages/([a-z0-9-]+)'] = 'pages/index/$1';
