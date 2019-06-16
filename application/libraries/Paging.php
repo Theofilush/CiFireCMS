@@ -27,43 +27,43 @@ class Paging {
 		if ($halaman_aktif > 1) 
 		{
 			$prev = $halaman_aktif-1;
-			$result_page.= '<li><a href="'.$url.'/'.$title.$prev.'">Previous</a></li>';
+			$result_page.= '<li class="page-item"><a class="page-link" href="'.$url.'/'.$title.$prev.'">Previous</a></li>';
 		} 
 		else 
 		{
-			$result_page.= '<li class="disabled"><a>Previous</a></li>';
+			$result_page.= '<li class="page-item disabled"><a class="page-link">Previous</a></li>';
 		}
 		
-		$number = ($halaman_aktif > 3 ? '<li><a href="'.$url.'/'.$title.'1">1</a><li class="disabled"><a>...</a></li>' : " ");
+		$number = ($halaman_aktif > 3 ? '<li class="page-item"><a class="page-link" href="'.$url.'/'.$title.'1">1</a><li class="page-item disabled"><a class="page-link">...</a></li>' : " ");
 		
 		for ($i=$halaman_aktif-2; $i<$halaman_aktif; $i++) 
 		{
 			if ($i < 1) continue;
-			$number .= '<li><a href="'.$url.'/'.$title.$i.'">'.$i.'</a></li>';
+			$number .= '<li class="page-item"><a class="page-link" href="'.$url.'/'.$title.$i.'">'.$i.'</a></li>';
 		}
 
-		$number .= "<li class='active'><a>$halaman_aktif</a></li>";
+		$number .= "<li class='page-item active'><a class='page-link'>$halaman_aktif</a></li>";
 		
 		//$UL.= '<li class="active"><a>'.$halaman_aktif.'</a></li>';
 
 		for ($i = $halaman_aktif + 1; $i < ($halaman_aktif + 3); $i++)  
 		{
 			if ($i > $jml_halaman) break;
-			$number .= '<li><a href="'.$url.'/'.$title.$i.'">'.$i.'</a></li>';
+			$number .= '<li class="page-item"><a class="page-link" href="'.$url.'/'.$title.$i.'">'.$i.'</a></li>';
 		}
 
-		$number .= ($halaman_aktif + 2 < $jml_halaman ? '<li class="disabled"><a>...</a></li><li><a href="'.$url.'/'.$title.$jml_halaman.'">'.$jml_halaman.'</a></li>' : " ");
+		$number .= ($halaman_aktif + 2 < $jml_halaman ? '<li class="page-item disabled"><a class="page-link">...</a></li><li class="page-item"><a class="page-link" href="'.$url.'/'.$title.$jml_halaman.'">'.$jml_halaman.'</a></li>' : " ");
 
 		$result_page .= $number;
 		
 		if ($halaman_aktif < $jml_halaman) 
 		{
 			$next = $halaman_aktif + 1;
-			$result_page .= '<li><a href="'.$url.'/'.$title.$next.'">Next</a></li>';
+			$result_page .= '<li class="page-item"><a class="page-link" href="'.$url.'/'.$title.$next.'">Next</a></li>';
 		} 
 		else 
 		{
-			$result_page .= '<li class="disabled"><a>Next</a></li>';
+			$result_page .= '<li class="page-item disabled"><a class="page-link">Next</a></li>';
 		}
 
 		return $result_page;
@@ -79,29 +79,27 @@ class Paging {
 		if ($halaman_aktif > 1) 
 		{
 			$prev = $halaman_aktif-1;
-			$result_page.= '<li><a href="'.$url.$title.'&page='.$prev.'">Previous</a></li>';
+			$result_page.= '<li class="page-item"><a class="page-link" href="'.$url.$title.'&page='.$prev.'">Previous</a></li>';
 		} 
 		else 
 		{
-			$result_page.= '<li class="disabled"><a>Previous</a></li>';
+			$result_page.= '<li class="page-item disabled"><a class="page-link">Previous</a></li>';
 		}
 		
-		$number = ($halaman_aktif > 3 ? '<li><a href="'.$url.$title.'&page=1">1</a><li class="disabled"><a>...</a></li>' : " ");
+		$number = ($halaman_aktif > 3 ? '<li class="page-item"><a class="page-link" href="'.$url.$title.'&page=1">1</a><li class="page-item disabled"><a class="page-link">...</a></li>' : " ");
 		
 		for ($i=$halaman_aktif-2; $i<$halaman_aktif; $i++) 
 		{
 			if ($i < 1) continue;
-			$number .= '<li><a href="'.$url.$title.'&page='.$i.'">'.$i.'</a></li>';
+			$number .= '<li class="page-item"><a class="page-link" href="'.$url.$title.'&page='.$i.'">'.$i.'</a></li>';
 		}
 
-		$number .= "<li class='active'><a>$halaman_aktif</a></li>";
-		
-		//$UL.= '<li class="active"><a>'.$halaman_aktif.'</a></li>';
+		$number .= "<li class='page-item active'><a class='page-link'>$halaman_aktif</a></li>";
 
 		for ($i = $halaman_aktif + 1; $i < ($halaman_aktif + 3); $i++)  
 		{
 			if ($i > $jml_halaman) break;
-			$number .= '<li><a href="'.$url.$title.'&page='.$i.'">'.$i.'</a></li>';
+			$number .= '<li class="page-item"><a class="page-link" href="'.$url.$title.'&page='.$i.'">'.$i.'</a></li>';
 		}
 
 		$number .= ($halaman_aktif + 2 < $jml_halaman ? '<li class="disabled"><a>...</a></li><li><a href="'.$url.$title.'&page='.$jml_halaman.'">'.$jml_halaman.'</a></li>' : " ");
