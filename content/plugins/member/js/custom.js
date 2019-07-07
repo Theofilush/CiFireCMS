@@ -1,6 +1,6 @@
 /*---------------------------------------
  * Custom JavaScript for member area.
- * Author : Adimancifi.
+ * Author : Adiman.
  * Site   : https://www.alweak.com
  *---------------------------------------
 */
@@ -35,8 +35,8 @@ $('#DataTable').DataTable({
 	],
 	'ajax': {
 		'type': 'POST',
-		'url': _MEMBER_URL + _MOD,
-		// data: csrfData
+		// 'url': _MEMBER_URL + _MOD,
+		'url': window.location.href,
 	},
 	'drawCallback': function( settings ) {
 		var api_table = this.api();
@@ -63,7 +63,6 @@ $('#DataTable').DataTable({
 		$('.delete_single').on('click', function(i) {
 			var data_pk = [];
 			data_pk = [$(this).attr('data-pk')];
-			// $('.noty_layout').remove(); // close jsnotif
 			cfSwalDelete(data_pk,api_table,_MEMBER_URL+_MOD+'/delete');
 		});
 
@@ -73,14 +72,12 @@ $('#DataTable').DataTable({
 				data_pk[i] = $(this).val();
 			});
 			if (data_pk != '' && data_pk != 'on') {
-				// $('.noty_layout').remove(); // close jsnotif
 				cfSwalDelete(data_pk,api_table,_MEMBER_URL+_MOD+'/delete');
 			}
 		});
 
 		$('.headline_toggle').on('click', function() {
 			$(this).find('i').removeClass().addClass('fa fa-spinner fa-pulse');
-			// $('.noty_layout').remove();
 			var data_pk = $(this).attr('data-id');
 			$.ajax({
 				url: _MEMBER_URL + _MOD + '/headline',
@@ -168,6 +165,7 @@ $('#form_post_update').on('submit',function(e){
 	return false;
 });
 
+
 /*---------------------------------------
  * Submit Update Profile.
  *---------------------------------------
@@ -210,6 +208,25 @@ $('.delete_account').on('click', function(e){
 	alert('hui');
 });
 
+$('.delete_photo').on('click', function(e){
+	e.preventDefault;
+	$.ajax({
+		type: 'POST',
+		url: _MEMBER_URL + _MOD + '/delete-photo',
+		dataType: 'json',
+		data: '',
+		cache: false,
+		success:function(response) {
+			if (response['status']==true) {
+				window.location.href = response['url'];
+			}
+			else {
+				alert('Photo not found');
+			};
+		}
+	});
+});
+
 
 
 /*---------------------------------------
@@ -229,25 +246,26 @@ $('input:not(textarea)').keydown(function(event){
  * Select 2 for category.
  *---------------------------------------
 */
-$('.select-category').select2({
-	minimumInputLength: 0,
-	// allowClear: true,
-	ajax: {
-		dataType: 'json',
-		type: 'POST',
-		url: _MEMBER_URL + _MOD + '/ajax-get-category',
-		data: function(params) {
-			return {
-				search: params.term
-			}
-		},
-		processResults: function (data, page) {
-			return {
-				results: data
-			}
-		},
-	}
-});
+// $('.select-category').select2({
+// 	minimumInputLength: 0,
+// 	ajax: {
+// 		dataType: 'json',
+// 		type: 'POST',
+// 		url: _MEMBER_URL + _MOD + '/ajax-get-category',
+// 		data: function(params) {
+// 			return {
+// 				search: params.term
+// 			}
+// 		},
+// 		processResults: function (data, page) {
+// 			return {
+// 				results: data
+// 			}
+// 		},
+// 	}
+// });
+
+$('.select-2').select2();
 
 
 /*---------------------------------------
@@ -258,7 +276,7 @@ var tagName = new Bloodhound({
 	datumTokenizer: Bloodhound.tokenizers.obj.whitespace('title'),
 	queryTokenizer: Bloodhound.tokenizers.whitespace,
 	remote: {
-		url: _MEMBER_URL + 'post/ajax-tags',
+		url: _MEMBER_URL + _MOD + '/ajax-tags',
 		prepare: function (query, settings) {
 			$('.tt-hint').show();
 			settings.type = 'POST';
@@ -333,19 +351,14 @@ function readImgURL(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
         reader.onload = function (e) {
-            // Show image.
             $('#image-preview').attr('src', e.target.result);
-    }
-    reader.readAsDataURL(input.files[0]);
+    	}
+    	reader.readAsDataURL(input.files[0]);
   }
 }
 $("#picture").change(function(){
     readImgURL(this);
 });
-
-
-
-
 
 
 /*---------------------------------------
@@ -365,7 +378,6 @@ tinymce.init({
 		"table contextmenu directionality emoticons paste textcolor",
 		"code fullscreen youtube autoresize codemirror codesample"
 	],
-	// undo redo |  responsivefilemanager codesample strikethrough
 	toolbar1:'undo redo | bold italic underline | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent table',
 	toolbar2:'removeformat styleselect | fontsizeselect | link unlink image media youtube codesample code | visualblocks fullscreen',
 	menubar: false,
@@ -377,18 +389,16 @@ tinymce.init({
 	autoresize_min_height: 420,
     autoresize_top_margin:5,
     autoresize_bottom_margin:1,
-
     codemirror: {
         indentOnInit: true,
         path: _CONTENT_URL+'plugins/codemirror'
     },
-
 	image_title: true,
 	image_caption: true,
 	image_advtab: true,
-	// without images_upload_url set, Upload tab won't show up
+	// without images_upload_url set, Upload tab won't show up.
     images_upload_url: _MEMBER_URL + _MOD + '/tinymce-upload',
-    // override default upload handler to simulate successful upload
+    // override default upload handler to simulate successful upload.
     images_upload_handler: function (blobInfo, success, failure) {
         var xhr, formData;
         xhr = new XMLHttpRequest();
@@ -528,11 +538,7 @@ function cfSwalDelete(pk,api_table,uri){
 }
 
 
-
 /* Auto close bootstrap alert */
-$(".alert").delay(6000).slideUp(300, function() {
+$('.alert').delay(6000).slideUp(300, function() {
 	$(this).alert('close');
 });
-
-
-

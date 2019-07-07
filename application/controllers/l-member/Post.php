@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Post extends Member_controller {
 
 	public $mod = 'post';
-	public $mod_add = 'add-new';
+	public $mod_add  = 'add-new';
 	public $mod_edit = 'edit';
 
 	public function __construct()
@@ -49,10 +49,10 @@ class Post extends Member_controller {
 			}
 
 			$output = array(
-							"data" => $data_output,
-							"draw" => $this->input->post('draw'),
-							"recordsTotal" => $this->post_model->count_all(),
-							"recordsFiltered" => $this->post_model->count_filtered()
+							 'data' => $data_output,
+							 'draw' => $this->input->post('draw'),
+							 'recordsTotal' => $this->post_model->count_all(),
+							 'recordsFiltered' => $this->post_model->count_filtered()
 							);
 
 			$this->json_output($output);
@@ -81,14 +81,14 @@ class Post extends Member_controller {
 				$post = $query_headline->row_array();
 				$headline = ( $post['headline'] == 'Y' ? 'N' : 'Y');
 
-				$data = [
+				$data = array(
 					'headline' => $headline
-				];
+				);
 				$this->post_model->update_post($pk, $data);
 
 				$response['status'] = true;
-				$response['index'] = 'h-'.$pk;
-				$response['html'] = ( $headline == 'Y' ? '<i class="fa fa-star text-warning"></i> Headline' : '' );
+				$response['index']  = 'h-'.$pk;
+				$response['html']   = ( $headline == 'Y' ? '<i class="fa fa-star text-warning"></i> Headline' : '' );
 				$response['alert']['type'] = 'alert';
 				$response['alert']['content'] = ( $headline == 'Y' ? '<i class="fa fa-exclamation-circle mr-2"></i> Headline ON' : '<i class="fa fa-exclamation-circle mr-2"></i> Headline OFF' );
 			}
@@ -103,14 +103,14 @@ class Post extends Member_controller {
 		}
 		else
 		{
-			return $this->render_404();
+			show_404();
 		}
 	}
 
 
 	public function delete()
 	{
-		if ( $this->input->is_ajax_request() == TRUE )
+		if ( $this->input->is_ajax_request() )
 		{
 			$data_pk = $this->input->post('data');
 			foreach ($data_pk as $key)
@@ -125,7 +125,7 @@ class Post extends Member_controller {
 		}
 		else
 		{
-			return $this->render_404();
+			show_404();
 		}
 	}
 
@@ -134,15 +134,15 @@ class Post extends Member_controller {
 	{
 		$this->meta_title(lang_line('post_title_add_post'));
 		
-		if ( $this->input->is_ajax_request() == TRUE ) 
+		if ( $this->input->is_ajax_request() ) 
 		{
 			return $this->_submit_add();
 		}
 		else
 		{		
 			$this->vars['all_category'] = $this->post_model->get_all_category();
-			$this->vars['all_tag'] = $this->post_model->get_all_tag();
-			$this->vars['all_user'] = $this->post_model->get_all_user();
+			$this->vars['all_tag']      = $this->post_model->get_all_tag();
+			$this->vars['all_user']     = $this->post_model->get_all_user();
 
 			$this->render_view('post_add', $this->vars);
 		}
@@ -151,23 +151,23 @@ class Post extends Member_controller {
 
 	private function _submit_add()
 	{
-		$this->form_validation->set_rules([
-			[
+		$this->form_validation->set_rules(array(
+			array(
 				'field' => 'title',
 				'label' => lang_line('post_label_title'),
-				'rules' => 'required|trim|min_length[6]|max_length[150]|callback__cek_add_seotitle',
-			],
-			[
+				'rules' => 'required|trim|min_length[6]|max_length[150]|callback__cek_add_seotitle'
+			),
+			array(
 				'field' => 'category',
 				'label' => lang_line('post_label_category'),
-				'rules' => 'required|trim',
-			],
-			[
+				'rules' => 'required|trim'
+			),
+			array(
 				'field' => 'content',
 				'label' => lang_line('post_label_content'),
-				'rules' => 'required',
-			]
-		]);
+				'rules' => 'required'
+			)
+		));
 
 		if ( $this->form_validation->run() )
 		{
@@ -182,11 +182,13 @@ class Post extends Member_controller {
 			$tags = rtrim($tags, ',');
 
 			$post_picture = ''; // Set default picutre name.
+
 			if ( !empty($_FILES['fupload']['tmp_name']) ) // if isset image file.
 			{
 				$temp = current($_FILES);
 				$img_name = date('YmdHis').'_'.md5(date('YmdHis'));
 				$extension = pathinfo($temp['name'], PATHINFO_EXTENSION);
+
 				$this->load->library('upload', array(
 					'upload_path'   => CONTENTPATH.'uploads/post/',
 					'allowed_types' => "jpg|jpeg|png|gif",
@@ -234,7 +236,7 @@ class Post extends Member_controller {
 				'timepost'      => date('H:i:s'),
 				'id_user'       => login_key('member'),
 				'headline'      => 'N',
-				'active'        => 'N',
+				'active'        => 'N'
 			);
 			
 			// Insert data post to database.
@@ -285,28 +287,28 @@ class Post extends Member_controller {
 
 	public function submit_update()
 	{
-		if ($this->input->is_ajax_request() == TRUE)
+		if ( $this->input->is_ajax_request() )
 		{
 			$pk = $this->input->post('pk');
-			$id_post = xss_filter(decrypt($pk),'sql');
+			$id_post = xss_filter(decrypt($pk), 'sql');
 
-			$this->form_validation->set_rules([
-				[
+			$this->form_validation->set_rules(array(
+				array(
 					'field' => 'title',
 					'label' => lang_line('post_label_title'),
-					'rules' => 'required|trim|min_length[6]|max_length[150]|callback__cek_edit_seotitle['. $id_post .']',
-				],
-				[
+					'rules' => 'required|trim|min_length[6]|max_length[150]|callback__cek_edit_seotitle['. $id_post .']'
+				),
+				array(
 					'field' => 'category',
 					'label' => lang_line('post_label_category'),
-					'rules' => 'required|trim',
-				],
-				[
+					'rules' => 'required|trim'
+				),
+				array(
 					'field' => 'content',
 					'label' => lang_line('post_label_content'),
-					'rules' => 'required',
-				]
-			]);
+					'rules' => 'required'
+				)
+			));
 
 			if ( $this->form_validation->run() )
 			{
@@ -327,6 +329,7 @@ class Post extends Member_controller {
 					$temp = current($_FILES);
 					$img_name = date('YmdHis').'_'.md5(date('YmdHis'));
 					$extension = pathinfo($temp['name'], PATHINFO_EXTENSION);
+
 					$this->load->library('upload', array(
 						'upload_path'   => CONTENTPATH.'uploads/post/',
 						'allowed_types' => "jpg|jpeg|png",
@@ -346,6 +349,7 @@ class Post extends Member_controller {
 						     ->fromFile(CONTENTPATH.'uploads/'.$post_picture)
 						     ->thumbnail(900, 600, 'center')
 						     ->toFile(CONTENTPATH.'uploads/'.$post_picture);
+
 						// Medium
 						$this->simple_image
 						     ->fromFile(CONTENTPATH.'uploads/'.$post_picture)
@@ -373,10 +377,10 @@ class Post extends Member_controller {
 					'content'       => xss_filter($this->input->post('content')),
 					'id_category'   => xss_filter(decrypt($this->input->post('category')),'sql'),
 					'image_caption' => xss_filter($this->input->post('image_caption')),
-					'tag'           => $tags,
+					'tag'           => $tags
 				);
 				
-				// merge array $data_post & $data_picture
+				// Merge array $data_post & $data_picture.
 				$data = array_merge_recursive($data_post,$data_picture);
 				
 				// Insert data post to database.
@@ -397,7 +401,7 @@ class Post extends Member_controller {
 		}
 		else
 		{
-			return $this->render_404();
+			$this->render_404();
 		}
 	}
 
@@ -406,103 +410,53 @@ class Post extends Member_controller {
 	{
 		if ( $_SERVER['REQUEST_METHOD'] == 'POST' )
 		{
-			// Allowed origins to upload images
+			// Allowed origins to upload images.
 			$accepted_origins = array(site_url());
 
-			// Images upload path
+			// Images upload path.
 			$upload_path = "content/uploads/post/";
 
 			reset($_FILES);
 			
 			$temp = current($_FILES);
-			$img_name = date('YmdHis').'_'.md5(date('YmdHis'));
+			$img_name  = date('YmdHis') .'_'. md5(date('YmdHis'));
 			$extension = pathinfo($temp['name'], PATHINFO_EXTENSION);
 
 			$this->load->library('upload', array(
-				'upload_path'   => CONTENTPATH."uploads/post/",
+				'upload_path'   => CONTENTPATH . "uploads/post/",
 				'allowed_types' => 'gif|jpg|png|jpeg',
 				'file_name'     => $img_name,
 				'max_size'      => 1024 * 10
 			));
 
-			if ($this->upload->do_upload('fupload'))
+			if ( $this->upload->do_upload('fupload') )
 			{
-				$response = [
-					'location' =>content_url("uploads/post/$img_name.$extension?".strtotime(date('YmdHis')))
-				];
+				$response = array(
+					'location' => content_url("uploads/post/$img_name.$extension?" . strtotime(date('YmdHis')))
+				);
 				echo json_encode($response);
 			}
+
 			else
 			{
 				header("HTTP/1.1 400 Invalid extension.");
-				echo json_encode($response='ERROR');
+				echo json_encode($response = 'ERROR');
 					return;
 			}
 		}
+
 		else
 		{
 			show_404();
 		}
 	}
-
-
-	public function ajax_get_category()
-	{
-		if ( $this->input->is_ajax_request() )
-		{
-			$data_output = null;
-			$kata = trim($this->input->post('search',TRUE));
-			$search_key = xss_filter($kata,'xss');
-
-			$query = $this->db
-				   ->where('active', 'Y')
-				   ->like('title', $search_key)
-				   ->get('t_category');
-
-			if ( $query->num_rows() > 0 )
-			{
-				foreach ( $query->result_array() as $res ) 
-				{
-					$row = [];
-					$row['id'] = encrypt($res['id']);
-					$row['text'] = $res['title'];
-					$rowOutput[] = $row;
-				}
-
-				$data_output = $rowOutput;
-			}
-			else
-			{
-				$getAll = $this->db
-						->where('active', 'Y')
-						->get('t_category')
-						->result_array();
-
-				foreach ( $getAll as $res ) 
-				{
-					$row = [];
-					$row['id'] = encrypt($res['id']);
-					$row['text'] = $res['title'];
-					$rowOutput[] = $row;
-				}
-
-				$data_output = $rowOutput;
-			}
-
-			$this->json_output($data_output);
-		}
-		else
-		{
-			show_404();
-		}
-	}
-
+	
 
 	public function ajax_tags()
 	{
 		if ( $this->input->is_ajax_request() )
 		{
-			$input = seotitle($this->input->post('q'));
+			$input  = seotitle($this->input->post('q'));
 			$output = $this->post_model->ajax_tags($input);
 			$this->json_output($output);
 		}
@@ -516,7 +470,7 @@ class Post extends Member_controller {
 	public function _cek_add_seotitle($seotitle = '') 
 	{
 		$cek = $this->post_model->cek_seotitle(seotitle($seotitle));
-		if ( $cek == FALSE ) 
+		if ( $cek === FALSE ) 
 		{
 			$this->form_validation->set_message('_cek_add_seotitle', lang_line('form_message_already_exists'));
 		}
@@ -524,15 +478,14 @@ class Post extends Member_controller {
 	}
 
 
-	public function _cek_edit_seotitle($id,$seotitle = '') 
+	public function _cek_edit_seotitle($id, $seotitle = '') 
 	{
-		$cek = $this->post_model->cek_seotitle2($id,seotitle($seotitle));
+		$cek = $this->post_model->cek_seotitle2($id, seotitle($seotitle));
 		
 		if ( $cek === FALSE ) 
 		{
 			$this->form_validation->set_message('_cek_edit_seotitle', lang_line('form_message_already_exists'));
-		} 
-
+		}
 		return $cek;
 	}
 } // End class.

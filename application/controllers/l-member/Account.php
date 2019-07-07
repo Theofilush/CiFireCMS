@@ -35,49 +35,50 @@ class Account extends Member_controller {
 		}
 	}
 
+
 	private function _update_account()
 	{
 		if ( $this->input->is_ajax_request() )
 		{
-			$this->form_validation->set_rules([
-				[
+			$this->form_validation->set_rules(array(
+				array(
 					'field' => 'email',
 					'label' => lang_line('account_label_email'),
-					'rules' => 'required|trim|min_length[4]|max_length[50]|valid_email',
-				],
-				[
+					'rules' => 'required|trim|min_length[4]|max_length[50]|valid_email'
+				),
+				array(
 					'field' => 'name',
 					'label' => lang_line('account_label_name'),
-					'rules' => 'required|trim|min_length[4]|max_length[20]|alpha_numeric_spaces',
-				],
-				[
+					'rules' => 'required|trim|min_length[4]|max_length[20]|alpha_numeric_spaces'
+				),
+				array(
 					'field' => 'gender',
 					'label' => lang_line('account_label_gender'),
-					'rules' => 'required|trim|max_length[1]|alpha',
-				],
-				[
+					'rules' => 'required|trim|max_length[1]|alpha'
+				),
+				array(
 					'field' => 'birthday',
 					'label' => lang_line('account_label_birthday'),
-					'rules' => 'required|trim',
-				],
-				[
+					'rules' => 'required|trim'
+				),
+				array(
 					'field' => 'tlpn',
 					'label' => lang_line('account_label_tlpn'),
-					'rules' => 'required|trim|numeric|max_length[20]',
-				],
-				[
+					'rules' => 'required|trim|numeric|max_length[20]'
+				),
+				array(
 					'field' => 'about',
 					'label' => lang_line('account_label_about'),
-					'rules' => 'trim',
-				],
-				[
+					'rules' => 'trim'
+				),
+				array(
 					'field' => 'address',
 					'label' => lang_line('account_label_address'),
-					'rules' => 'trim',
-				],
-			]);
+					'rules' => 'trim'
+				)
+			));
 
-			if ( $this->form_validation->run() == TRUE ) 
+			if ( $this->form_validation->run() ) 
 			{
 				$email = xss_filter($this->input->post('email', TRUE), 'xss');
 
@@ -85,6 +86,7 @@ class Account extends Member_controller {
 					->select('email')
 					->where("BINARY email='$email'", NULL, FALSE)
 					->get('t_user');
+
 				$contMail = $cek_email->num_rows();
 				$currentMail = $cek_email->row_array()['email'];
 
@@ -94,16 +96,16 @@ class Account extends Member_controller {
 				      $contMail != 1
 				    )
 				{
-					$gender = ($this->input->post('gender', TRUE) == 'M' ? 'M':'F');
-					$data = [
+					$gender = ( $this->input->post('gender', TRUE) == 'M' ? 'M':'F' );
+					$data   = array(
 						'email'    => xss_filter($this->input->post('email', TRUE), 'xss'),
 						'name'     => xss_filter($this->input->post('name', TRUE), 'xss'),
 						'gender'   => $gender,
 						'birthday' => xss_filter($this->input->post('birthday', TRUE), 'xss'),
 						'tlpn'     => xss_filter($this->input->post('tlpn', TRUE), 'sql'),
 						'about'    => xss_filter(cut($this->input->post('about', TRUE), 500), 'xss'),
-						'address'  => xss_filter(cut($this->input->post('address', TRUE), 500), 'xss'),
-					];
+						'address'  => xss_filter(cut($this->input->post('address', TRUE), 500), 'xss')
+					);
 
 					$this->account_model->update_profile($data);
 
@@ -122,6 +124,7 @@ class Account extends Member_controller {
 					$this->json_output($response);
 				}
 			}
+			
 			else
 			{
 				$error_content = validation_errors();
@@ -142,9 +145,10 @@ class Account extends Member_controller {
 	{
 		if ( !empty($_FILES['fupload']['tmp_name']) ) // if isset image file.
 		{
-			$temp = current($_FILES);
-			$img_name = data_login('member','photo');
+			$temp      = current($_FILES);
+			$img_name  = data_login('member','photo');
 			$extension = pathinfo($temp['name'], PATHINFO_EXTENSION);
+
 			$this->load->library('upload', array(
 				'upload_path'   => CONTENTPATH.'uploads/user/',
 				'allowed_types' => "jpg|jpeg|png",
@@ -166,34 +170,33 @@ class Account extends Member_controller {
 			else
 			{
 				$error_content = $this->upload->display_errors();
-				$this->alert->set($this->mod,'danger', $error_content);
+				$this->alert->set($this->mod, 'danger', $error_content);
 			}
 		}
 		else
 		{
-			$this->alert->set($this->mod,'danger', 'File not found');
+			$this->alert->set($this->mod, 'danger', 'File not found');
 		}
 		redirect(uri_string());
 	}
-
 
 
 	public function password()
 	{
 		if ( $_SERVER['REQUEST_METHOD'] == 'POST' )
 		{
-			$this->form_validation->set_rules([
-				[
+			$this->form_validation->set_rules(array(
+				array(
 					'field' => 'old-pass',
 					'label' => lang_line('old_password'),
-					'rules' => 'required|trim|min_length[4]|max_length[18]|callback__cek_pass',
-				],
-				[
+					'rules' => 'required|trim|min_length[4]|max_length[18]|callback__cek_pass'
+				),
+				array(
 					'field' => 'new-pass1',
 					'label' => lang_line('new_password1'),
-					'rules' => 'required|trim|min_length[4]|max_length[18]',
-				],
-				[
+					'rules' => 'required|trim|min_length[4]|max_length[18]'
+				),
+				array(
 					'field' => 'new-pass2',
 					'label' => lang_line('new_password2'),
 					'rules' => 'required|trim|min_length[4]|max_length[18]|matches[new-pass1]',
@@ -201,13 +204,15 @@ class Account extends Member_controller {
 						// 'matches' => '%s '
 						'matches' => lang_line('err_match')
 					)
-				],
-			]);
-			if ( $this->form_validation->run() == TRUE ) 
+				)
+			));
+
+			if ( $this->form_validation->run() ) 
 			{
-				$data = [
+				$data = array(
 					'password' => encrypt($this->input->post('new-pass2'))
-				];
+				);
+
 				$this->account_model->update_profile($data);
 				$this->alert->set($this->mod, 'success', lang_line('pass_success'));
 				redirect(uri_string());
@@ -215,7 +220,7 @@ class Account extends Member_controller {
 			else
 			{
 				$error_content = validation_errors();
-				$this->alert->set($this->mod,'danger',$error_content);
+				$this->alert->set($this->mod, 'danger', $error_content);
 				redirect(uri_string());
 			}
 		}
@@ -226,19 +231,43 @@ class Account extends Member_controller {
 	}
 
 
+	public function _cek_pass($pass='')
+	{
+		$in_pass = encrypt($pass);
+		$current_pass = data_login('member', 'password');
+		
+		if ( empty($pass) ) 
+		{
+			$this->form_validation->set_message('_cek_pass', '%s '.lang_line('err_required'));
+			return FALSE;
+		} 
+
+		elseif ( decrypt($in_pass) == decrypt($current_pass) )
+		{
+			return TRUE;
+		}
+
+		else 
+		{
+			$this->form_validation->set_message('_cek_pass', '%s '.lang_line('err_wrong'));
+			return FALSE;
+		}
+	}
+
+
 	public function delete()
 	{
 		if ( $_SERVER['REQUEST_METHOD'] == 'POST')
 		{
-			$this->form_validation->set_rules([
-				[
+			$this->form_validation->set_rules(array(
+				array(
 					'field' => 'confirm',
 					'label' => lang_line('your_password'),
-					'rules' => 'required|trim|min_length[4]|max_length[18]|callback__cek_pass',
-				]
-			]);
+					'rules' => 'required|trim|min_length[4]|max_length[18]|callback__cek_pass'
+				)
+			));
 			
-			if ( $this->form_validation->run() == TRUE )
+			if ( $this->form_validation->run() )
 			{
 				@unlink(CONTENTPATH.'uploads/user/'.data_login('member','photo'));
 				$this->account_model->delete();
@@ -258,24 +287,27 @@ class Account extends Member_controller {
 	}
 
 
-	public function _cek_pass($pass='')
+	public function delete_photo()
 	{
-		$in_pass = encrypt($pass);
-		$current_pass = data_login('member','password');
-		
-		if ( empty($pass) ) 
+		if ( $this->input->is_ajax_request() )
 		{
-			$this->form_validation->set_message('_cek_pass', '%s '.lang_line('err_required'));
-			return FALSE;
-		} 
-		elseif ( decrypt($in_pass) == decrypt($current_pass) )
-		{
-			return TRUE;
-		} 
-		else 
-		{
-			$this->form_validation->set_message('_cek_pass', '%s '.lang_line('err_wrong'));
-			return FALSE;
+			$photo = data_login('member','photo');
+			
+			if ( file_exists(CONTENTPATH."uploads/user/$photo") )
+			{
+				@unlink(CONTENTPATH."uploads/user/$photo");
+				$response['status'] = true;
+				$response['url'] = member_url($this->mod);
+			}
+			else
+			{
+				$response['status'] = false;
+			}
+
+			$this->json_output($response);
 		}
+
+		else
+			show_404();
 	}
 } // End class.

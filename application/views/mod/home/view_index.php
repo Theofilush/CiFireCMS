@@ -39,6 +39,130 @@
 	<?php endif ?>
 
 	<div class="row">
+		<div class="col-lg-3 home-widget primary">
+			<div class="card card-body">
+				<div class="media">
+					<div class="mr-3">
+						<a href="<?=admin_url('post');?>" class="home-widget-icon">
+							<i class="fa fa-newspaper-o"></i>
+						</a>
+					</div>
+					<div class="media-body">
+						<h6 class="mb-0">Post</h6>
+						<span class="text-muted"><?=$h_post;?></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-3 home-widget info">
+			<div class="card card-body">
+				<div class="media">
+					<div class="mr-3">
+						<a href="<?=admin_url('category');?>" class="home-widget-icon">
+							<i class="fa fa-folder-open"></i>
+						</a>
+					</div>
+					<div class="media-body">
+						<h6 class="mb-0">Category</h6>
+						<span class="text-muted"><?=$h_category;?></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-3 home-widget success">
+			<div class="card card-body">
+				<div class="media">
+					<div class="mr-3">
+						<a href="<?=admin_url('tag');?>" class="home-widget-icon">
+							<i class="fa fa-tags"></i>
+						</a>
+					</div>
+					<div class="media-body">
+						<h6 class="mb-0">Tags</h6>
+						<span class="text-muted"><?=$h_tags;?></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-3 home-widget warning">
+			<div class="card card-body">
+				<div class="media">
+					<div class="mr-3">
+						<a href="<?=admin_url('pages');?>" class="home-widget-icon">
+							<i class="fa fa-file-text"></i>
+						</a>
+					</div>
+					<div class="media-body">
+						<h6 class="mb-0">Pages</h6>
+						<span class="text-muted"><?=$h_pages;?></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-3 home-widget danger">
+			<div class="card card-body">
+				<div class="media">
+					<div class="mr-3">
+						<a href="<?=admin_url('component');?>" class="home-widget-icon">
+							<i class="fa fa-puzzle-piece"></i>
+						</a>
+					</div>
+					<div class="media-body">
+						<h6 class="mb-0">Component</h6>
+						<span class="text-muted"><?=$h_component;?></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-3 home-widget secondary">
+			<div class="card card-body">
+				<div class="media">
+					<div class="mr-3">
+						<a href="<?=admin_url('theme');?>" class="home-widget-icon">
+							<i class="fa fa-paint-brush"></i>
+						</a>
+					</div>
+					<div class="media-body">
+						<h6 class="mb-0">Theme</h6>
+						<span class="text-muted"><?=$h_theme;?></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-3 home-widget purple">
+			<div class="card card-body">
+				<div class="media">
+					<div class="mr-3">
+						<a href="<?=admin_url('mail');?>" class="home-widget-icon">
+							<i class="fa fa-envelope"></i>
+						</a>
+					</div>
+					<div class="media-body">
+						<h6 class="mb-0">Mail</h6>
+						<span class="text-muted"><?=$h_mail;?></span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-3 home-widget brown">
+			<div class="card card-body">
+				<div class="media">
+					<div class="mr-3">
+						<a href="<?=admin_url('user');?>" class="home-widget-icon">
+							<i class="fa fa-users"></i>
+						</a>
+					</div>
+					<div class="media-body">
+						<h6 class="mb-0">Users</h6>
+						<span class="text-muted"><?=$h_users;?></span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="row">
 		<div class="col-md-5">
 			<div class="card">
 				<div class="card-header bg-white header-elements-inline">

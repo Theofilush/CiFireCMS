@@ -23,7 +23,7 @@ $lang['menu_post'] = 'Post';
 $lang['menu_account'] = 'Akun';
 $lang['menu_setting'] = 'Pengaturan';
 $lang['menu_logout'] = 'Keluar';
-$lang['menu_write_post'] = 'Buat Post';
+$lang['menu_write_post'] = 'Buat Post Baru';
 $lang['menu_view_site'] = 'Lihat Situs';
 
 $lang['home_title'] = 'Dasbor';

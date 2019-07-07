@@ -55,12 +55,12 @@ class Compogen extends Admin_controller {
 			$file_model = $class_name."_model.php";
 
 			// views
-			$view_dirname   = $cname;
-			$file_index = "view_index.php";
-			$file_add   = "view_add_new.php";
-			$file_edit  = "view_edit.php";
-			$file_html  = "index.html";
-			$file_modjs = "$cname.js";
+			$view_dirname = $cname;
+			$file_index   = "view_index.php";
+			$file_add     = "view_add_new.php";
+			$file_edit    = "view_edit.php";
+			$file_html    = "index.html";
+			$file_modjs   = "$cname.js";
 
 			// Temp path
 			$path_temp = $this->_path['temp'].$class_name.'/';
@@ -102,12 +102,12 @@ class Compogen extends Admin_controller {
 
 			// component not exists (OK)
 			elseif (
-			        $cek_mod_db == 0 && 
-			    	$cek_controller_file == FALSE && 
-			    	$cek_model_file == FALSE && 
-			    	$cek_views_dir == FALSE &&
-			    	$cek_modjs_file == FALSE &&
-			    	$cek_db_table == FALSE
+			         $cek_mod_db == 0 && 
+			    	 $cek_controller_file == FALSE && 
+			    	 $cek_model_file == FALSE && 
+			    	 $cek_views_dir == FALSE &&
+			    	 $cek_modjs_file == FALSE &&
+			    	 $cek_db_table == FALSE
 			       )
 			{
 				// Load dbforge.
@@ -124,9 +124,9 @@ class Compogen extends Admin_controller {
 				// add field primary key.
 				$this->dbforge->add_field(array(
 					$field_1_name => array(
-						'type' => 'INT',
-						'constraint' => $field_1_lenght,
-						'unsigned' => TRUE,
+						'type'           => 'INT',
+						'constraint'     => $field_1_lenght,
+						'unsigned'       => TRUE,
 						'auto_increment' => TRUE
 					)
 				));
@@ -153,7 +153,7 @@ class Compogen extends Admin_controller {
 
 							$this->dbforge->add_field(array(
 								$value['com_filed_name'] => array(
-									'type' => $type_val,
+									'type'    => $type_val,
 									'default' => $value['com_filed_default'],
 									// 'null' => TRUE,
 							)));
@@ -161,47 +161,51 @@ class Compogen extends Admin_controller {
 
 						// DATETIME, DATE, TIME
 						elseif (
-						        $value['com_filed_type'] == "DATETIME" ||
-						        $value['com_filed_type'] == "DATE" || 
-						        $value['com_filed_type'] == "TIME"
+						         $value['com_filed_type'] == "DATETIME" ||
+						         $value['com_filed_type'] == "DATE" || 
+						         $value['com_filed_type'] == "TIME"
 						        )
 						{
 							$this->dbforge->add_field(array(
 								$value['com_filed_name'] => array(
 									'type' => $value['com_filed_type']
-							)));
+								)
+							));
 						}
 
 						// TEXT
-						elseif ($value['com_filed_type'] == "TEXT")
+						elseif ( $value['com_filed_type'] == "TEXT" )
 						{
 
 							$this->dbforge->add_field(array(
 								$value['com_filed_name'] => array(
 									'type' => $value['com_filed_type']
-							)));
+								)
+							));
 						}
 
-						elseif ($value['com_filed_type'] == "INT")
+						elseif ( $value['com_filed_type'] == "INT" )
 						{
-							if (!empty($value['com_filed_default'])) 
+							if ( !empty($value['com_filed_default']) ) 
 							{
 								$this->dbforge->add_field(array(
 									$value['com_filed_name'] => array(
-										'type' => 'INT',
+										'type'       => 'INT',
 										'constraint' => $value['com_filed_lenght'],
-										'default' => $value['com_filed_default'],
-										'null' => true,
-								)));
+										'default'    => $value['com_filed_default'],
+										'null'       => TRUE
+									)
+								));
 							}
 							else
 							{
 								$this->dbforge->add_field(array(
 									$value['com_filed_name'] => array(
-										'type' => 'INT',
+										'type'       => 'INT',
 										'constraint' => $value['com_filed_lenght'],
-										'null' => true
-								)));
+										'null'       => TRUE
+									)
+								));
 							}
 						}
 
@@ -210,11 +214,12 @@ class Compogen extends Admin_controller {
 						{	
 							$this->dbforge->add_field(array(
 								$value['com_filed_name'] => array(
-									'type' => $value['com_filed_type'],
+									'type'       => $value['com_filed_type'],
 									'constraint' => $value['com_filed_lenght'],
-									'default' => $value['com_filed_default'],
-									'null' => true
-							)));			
+									'default'    => $value['com_filed_default'],
+									'null'       => TRUE
+								)
+							));			
 						}
 					} // end foreach.
 				} // end if.
@@ -230,11 +235,11 @@ class Compogen extends Admin_controller {
 				{
 					// insert new data to table t_component.
 					$this->db->insert("t_component", array(
-						'name' => $component_name,
-						'type' => $component_type,
-						'class' => seotitle($class_name.'_'),
+						'name'       => $component_name,
+						'type'       => $component_type,
+						'class'      => seotitle($class_name.'_'),
 						'table_name' => $table_name,
-						'status' => 'Y'
+						'status'     => 'Y'
 					));
 
 					// create file_controller.
@@ -288,17 +293,17 @@ class Compogen extends Admin_controller {
 
 					// finish.
 					$response['success'] = true;
-					$response['class'] = seotitle($class_name);
+					$response['class']   = seotitle($class_name);
 					$this->json_output($response);
 				} // end if create_table.
 
 				// if error create_table.
 				else
 				{
-					$errMsg = 'Database Error .! <br>'. $this->db->error()["message"];
+					$errMsg = 'Database Error .! <br>'. $this->db->error()['message'];
+
 					$response['success'] = false;
-					$response['alert']['type']    = 'error';
-					// $response['alert']['content'] = lang_line('mod_db_error2');
+					$response['alert']['type'] = 'error';
 					$response['alert']['content'] = $errMsg;
 					$this->json_output($response);
 				}
@@ -308,8 +313,8 @@ class Compogen extends Admin_controller {
 			else
 			{
 				$response['success'] = false;
-				$response['alert']['type']    = 'error';
-				$response['alert']['content'] = "Component Already exists";
+				$response['alert']['type'] = 'error';
+				$response['alert']['content'] = 'Component Already exists';
 				$this->json_output($response);
 			}
 		}
@@ -335,26 +340,27 @@ class Compogen extends Admin_controller {
 		}
 	}
 
+
 	public function add_field()
 	{
 		if ( $this->input->is_ajax_request() && $this->read_access && $this->write_access ) 
 		{
 			$id = $_POST['id'];
-			echo '<tr id="def-field-'.$id.'">
+			echo '<tr id="def-field-'. $id .'">
 					<td>
-						<span id="'.$id.'" class="text-danger cursor-hand rmfield pull-right btn btn-xs"><i class="fa fa-times"></i> '. lang_line('button_delete') .'</span>
-						<p class="text-success"><i class="fa fa-caret-right"></i> &nbsp; <b><small>'. lang_line('label_field') .' '.$id.'</small></b></p>
+						<span id="'. $id .'" class="text-danger cursor-hand rmfield pull-right btn btn-xs"><i class="fa fa-times"></i> '. lang_line('button_delete') .'</span>
+						<p class="text-success"><i class="fa fa-caret-right"></i> &nbsp; <b><small>'. lang_line('label_field') .' '. $id .'</small></b></p>
 						<div class="row">
 							<div class="col-md-3">
 								<div class="form-group">
 									<label>'. lang_line('label_field_name') .' <span class="text-danger">*</span></label>
-									<input type="text" name="field['.$id.'][com_filed_name]" id="field['.$id.']" class="form-control" minlength="3" maxlength="20" required/>
+									<input type="text" name="field['. $id .'][com_filed_name]" id="field['. $id .']" class="form-control" minlength="3" maxlength="20" required/>
 								</div>
 							</div>
 							<div class="col-md-3">
 								<div class="form-group">
 									<label>'. lang_line('label_field_type') .'</label>
-									<select name="field['.$id.'][com_filed_type]" class="form-control">
+									<select name="field['. $id .'][com_filed_type]" class="form-control">
 										<option value="INT">INTEGER</option>
 										<option value="VARCHAR">VARCHAR</option>
 										<option value="TEXT">TEXT</option>
@@ -368,19 +374,18 @@ class Compogen extends Admin_controller {
 							<div class="col-md-3">
 								<div class="form-group">
 									<label>'. lang_line('label_field_Length_values') .'</label>
-									<input type="text" name="field['.$id.'][com_filed_lenght]" value="100" class="form-control"  required/>
+									<input type="text" name="field['. $id .'][com_filed_lenght]" value="100" class="form-control"  required/>
 								</div>
 							</div>
 							<div class="col-md-3">
 								<div class="form-group">
 									<label>'. lang_line('label_field_default_values') .'</label>
-									<input type="text" name="field['.$id.'][com_filed_default]" class="form-control">
+									<input type="text" name="field['. $id .'][com_filed_default]" class="form-control">
 								</div>
 							</div>
 						</div>
 					</td>
 				</tr>';
-			// require(FCPATH."views/mod/compogen/field.php");
 		}
 		else
 		{
@@ -394,14 +399,14 @@ class Compogen extends Admin_controller {
 		if ( $this->input->is_ajax_request()  && $this->read_access && $this->write_access ) 
 		{
 			$id = $_POST['id'];
-			echo '<div id="def-option'.$id.'">
+			echo '<div id="def-option'. $id .'">
 					<div class="input-group mb-2">
 						<div class="input-group-prepend">
 							<span class="input-group-text">'. lang_line('label_conf_option') .'</span>
 						</div>
-						<input type="text" name="conf[field_select_option]['.$id.']" class="form-control" placeholder="Option '.$id.'">
+						<input type="text" name="conf[field_select_option]['. $id .']" class="form-control" placeholder="Option '. $id .'">
 						<div class="input-group-append">
-							<span id="'.$id.'" class="btn btn-default rmoption"><i class="icon-cross3"></i></span>
+							<span id="'. $id .'" class="btn btn-default rmoption"><i class="icon-cross3"></i></span>
 						</div>
 					</div>
 				</div>';
@@ -419,21 +424,21 @@ class Compogen extends Admin_controller {
 		if ( $this->input->is_ajax_request() && $this->read_access && $this->write_access ) 
 		{
 			$id = $_POST['id'];
-			echo '<div id="def-column-'.$id.'">
-					<span id="'.$id.'" class="text-danger cursor-hand pull-right btn btn-xs rmcol"><i class="fa fa-times"></i> '. lang_line('button_delete') .'</span>
+			echo '<div id="def-column-'. $id .'">
+					<span id="'. $id .'" class="text-danger cursor-hand pull-right btn btn-xs rmcol"><i class="fa fa-times"></i> '. lang_line('button_delete') .'</span>
 					<p class="text-success"><i class="fa fa-caret-right"></i> &nbsp; <span class="text-b text-sm">'. lang_line('label_conf_column') .' '. $id .'</span></p>
 					<div class="bordered">
 						<div class="row">
 							<div class="col-md-6">
 								<div class="form-group">
 									<label>'. lang_line('label_conf_column_name') .'</label>
-									<input type="text" name="col['.$id.'][col_name]" class="form-control" minlength="4" required />
+									<input type="text" name="col['. $id .'][col_name]" class="form-control" minlength="4" required />
 								</div>
 							</div>
 							<div class="col-md-6">
 								<div class="form-group">
 									<label>'. lang_line('label_conf_field_data') .'</label>
-									<input type="text" name="col['.$id.'][col_field]" class="form-control" minlength="4" required />
+									<input type="text" name="col['. $id .'][col_field]" class="form-control" minlength="4" required />
 								</div>
 							</div>
 						</div>
@@ -446,5 +451,4 @@ class Compogen extends Admin_controller {
 			show_404();
 		}
 	}
-
 } // End Class.

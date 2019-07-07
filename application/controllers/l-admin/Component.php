@@ -35,29 +35,29 @@ class Component extends Admin_controller {
 
 				foreach ($data_mod as $val) 
 				{
-					$row = [];
+					$row   = [];
 					$row[] = '<a href="'.admin_url(underscore($val['class'])).'">'.$val['name'].'</a>';
 					$row[] = $val['type'];
-					$row[] = ( $val['status'] == "Y" ? '<span class="badge badge-primary badge-pill">'.lang_line('installed').'</span>' : '<span class="badge badge-secondary badge-pill">'.lang_line('not-installed').'</span>' );
+					$row[] = ( $val['status'] == "Y" ? '<span class="badge badge-primary badge-pill">'. lang_line('installed') .'</span>' : '<span class="badge badge-secondary badge-pill">'. lang_line('not-installed') .'</span>' );
 
-					if ($this->delete_access == TRUE) 
+					if ( $this->delete_access ) 
 					{
 						$row[] = '
-								<div class="text-center">
-									<div class="btn-group">
-										<button class="button btn-xs btn-default" onclick="location.href=\''. admin_url($this->mod.'/backup/'.$val['id']) .'\'" data-toggle="tooltip" data-placement="top" data-title="Buckup"><i class="fa fa-download"></i></button>
-										<button type="button" class="button btn-xs btn-default delete_single" data-toggle="tooltip" data-placement="top" data-title="'.lang_line('button_delete').'" data-pk="'. encrypt($val['id']) .'"><i class="icon-bin"></i></button>
-									</div>
-								</div>';
+							<div class="text-center">
+								<div class="btn-group">
+									<button class="button btn-xs btn-default" onclick="location.href=\''.  admin_url($this->mod.'/backup/'.$val['id']) .'\'" data-toggle="tooltip" data-placement="top" data-title="Buckup"><i class="fa fa-download"></i></button>
+									<button type="button" class="button btn-xs btn-default delete_single" data-toggle="tooltip" data-placement="top" data-title="'. lang_line('button_delete') .'" data-pk="'. encrypt($val['id']) .'"><i class="icon-bin"></i></button>
+								</div>
+							</div>';
 					}
 					else
 					{
 						$row[] = '
-								<div class="text-center">
-									<div class="btn-group">
-										<a href="'.admin_url(underscore($val['class'])).'" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" data-title="Go To Component"><i class="fa fa-puzzle-piece"></i></a>
-									</div>
-								</div>';
+							<div class="text-center">
+								<div class="btn-group">
+									<a href="'. admin_url(underscore($val['class'])) .'" class="btn btn-xs btn-default" data-toggle="tooltip" data-placement="top" data-title="Go To Component"><i class="fa fa-puzzle-piece"></i></a>
+								</div>
+							</div>';
 					}
 
 					$data_output[] = $row;
@@ -218,7 +218,7 @@ class Component extends Admin_controller {
 			else
 			{
 				@delete_folder($destinationdir_unzip); // delete folder temp.
-				$this->alert->set($this->mod, 'danger', 'ERROR.! Installation config not found.');
+				$this->alert->set($this->mod, 'danger', 'ERROR..! Installation config not found.');
 				redirect(uri_string());
 			}
 		}
@@ -233,21 +233,15 @@ class Component extends Admin_controller {
 	}
 
 
-	/**
-	 * - Fungsi untuk mengimport data tabel sql ke dalam database.
-	 * 
-	 * @param 	string|path to sql 	
-	 * @return 	bol
-	 * @access 	private
-	*/
 	private function _import_sql($file) 
     {
         $this->db->trans_off();
         $this->db->trans_start(TRUE);
         $this->db->trans_begin();
-        $sql = file_get_contents($file) ;
+        $sql = file_get_contents($file);
         $this->db->query($sql);
-        if ($this->db->trans_status() == TRUE) 
+
+        if ( $this->db->trans_status() == TRUE ) 
         {
             $this->db->trans_commit();
             return true;
@@ -275,7 +269,7 @@ class Component extends Admin_controller {
 				$views_dir        = $this->_path['views'].$component['class'];
 				$modjs            = $this->_path['modjs'].$component['class'].".js";
 
-				if ( $this->component_model->delete($id_component, $component['table_name']) == TRUE )
+				if ( $this->component_model->delete($id_component, $component['table_name']) )
 				{
 					// delete views views_dir
 					if ( is_dir($views_dir) ) delete_folder($views_dir);
@@ -297,16 +291,16 @@ class Component extends Admin_controller {
 				else
 				{
 					$response['success']        = false;
-					$response['alert_type']     = "danger";
-					$response['alert_messages'] = "Unknown error";
+					$response['alert_type']     = 'danger';
+					$response['alert_messages'] = 'Unknown error';
 					$this->json_output($response);
 				}
 			}
 			else
 			{
 				$response['success']          = false;
-				$response['alert']['type']    = "danger";
-				$response['alert']['content'] = "Component not found";
+				$response['alert']['type']    = 'danger';
+				$response['alert']['content'] = 'Component not found';
 				$this->json_output($response);
 			}
 		}
@@ -376,9 +370,10 @@ class Component extends Admin_controller {
 			write_file($path_temp_component . 'config.php', $config_content);
 
 			// Copy controllers.
-			$file_controller      = ucfirst($c_class).'.php';
-			$path_app_controllers = $this->_path['controllers'].$file_controller;
+			$file_controller       = ucfirst($c_class).'.php';
+			$path_app_controllers  = $this->_path['controllers'].$file_controller;
 			$path_temp_controllers = $path_temp_component . "controllers/$file_controller";
+
 			if ( file_exists($path_app_controllers) )
 				r_copy($path_app_controllers, $path_temp_controllers);
 
@@ -386,12 +381,14 @@ class Component extends Admin_controller {
 			$file_model       = ucfirst($c_class).'_model.php';
 			$path_app_models  = $this->_path['models'].$file_model;
 			$path_temp_models = $path_temp_component . "models/$file_model";
+
 			if ( file_exists($path_app_models) )
 				r_copy($path_app_models, $path_temp_models);
 
 			// Copy views.
 			$path_app_views  = $this->_path['views'].$c_class;
 			$path_temp_views = $path_temp_component.'views';
+
 			if ( file_exists($path_app_views) )
 				copy_folder($path_app_views, $path_temp_views);
 
@@ -400,6 +397,7 @@ class Component extends Admin_controller {
 			$file_modjs       = strtolower($c_class).'.js';
 			$path_app_modjs   = $this->_path['modjs'].$file_modjs;
 			$path_temp_modjs  = $path_temp_component."modjs/$file_modjs";
+
 			if ( file_exists($path_app_modjs) )
 				r_copy($path_app_modjs, $path_temp_modjs);
 
@@ -410,16 +408,19 @@ class Component extends Admin_controller {
 
 			$this->db = $this->load->database('mysqli', TRUE);
 			$this->load->dbutil();
+
 			$backup_database = $this->dbutil->backup(array(
-					'tables'     => array($c_table), // Array of tables to backup.
-					'ignore'     => array(),         // List of tables to omit from the backup
-					'format'     => 'txt',           // gzip, zip, txt
-					'add_drop'   => TRUE,            // Whether to add DROP TABLE statements to backup file
-					'add_insert' => TRUE,            // Whether to add INSERT data to backup file
-					'newline'    => "\n"             // Newline character used in backup file
+				'tables'     => array($c_table), // Array of tables to backup.
+				'ignore'     => array(),         // List of tables to omit from the backup
+				'format'     => 'txt',           // gzip, zip, txt
+				'add_drop'   => TRUE,            // Whether to add DROP TABLE statements to backup file
+				'add_insert' => TRUE,            // Whether to add INSERT data to backup file
+				'newline'    => "\n"             // Newline character used in backup file
 			));
+
 			write_file($path_temp_sql, $backup_database);
 		}
+
 		// archives component.
 		$this->load->library('zip');
 		$zip_name = 'component-'.$dir_name.'.zip';
@@ -442,10 +443,10 @@ class Component extends Admin_controller {
 
 		// Download backup zip from content/uploads/file/.
 		$this->load->helper('download');
+
 		if ( force_download(CONTENTPATH.'uploads/file/'.$zip_name, NULL) ) 
 		{
 			redirect(admin_url($this->mod));
-			// return TRUE;
 		}
 	} 
 } // End Class.

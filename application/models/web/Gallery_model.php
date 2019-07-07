@@ -51,4 +51,4 @@ class Gallery_model extends CI_Model {
 		}
 		return $result;
 	}
-} // End Class
+} // End class.

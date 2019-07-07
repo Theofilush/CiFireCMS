@@ -40,11 +40,6 @@ class Comment_model extends CI_Model {
 			}
 			$i++;
 		}
-
-		/*if ($this->input->post('search')['value'])
-		{
-			$this->db->or_like('name', $this->input->post('search')['value']);
-		}*/
 		
 		if (!empty($this->input->post('order'))) 
 		{
@@ -60,7 +55,7 @@ class Comment_model extends CI_Model {
 	}
 
 
-	function get_datatables()
+	public function get_datatables()
 	{
 		$this->_datatable_query();
 
@@ -78,7 +73,7 @@ class Comment_model extends CI_Model {
 	}
 
 
-	function count_filtered()
+	public function count_filtered()
 	{
 		$this->_datatable_query();
 		$query = $this->db->get();
@@ -110,7 +105,7 @@ class Comment_model extends CI_Model {
 	{
 		$cek_id = $this->cek_id($id);
 
-		if ($cek_id == 1) 
+		if ( $cek_id == 1 ) 
 		{
 			$this->db->where('id', $id)->delete($this->_table);
 			$respon = TRUE;
@@ -128,7 +123,7 @@ class Comment_model extends CI_Model {
 	{
 		$cek_id = $this->cek_id($id);
 
-		if ($cek_id == 1) 
+		if ( $cek_id == 1 ) 
 		{
 			$this->update($id, array("active"=>"X"));
 			$respon = TRUE;
@@ -146,7 +141,7 @@ class Comment_model extends CI_Model {
 	{
 		$cek_id = $this->cek_id($id);
 
-		if ($cek_id == 1) 
+		if ( $cek_id == 1 ) 
 		{
 			$this->update($id, array("active"=>"Y"));
 			$respon = TRUE;
@@ -163,7 +158,7 @@ class Comment_model extends CI_Model {
 
 	public function get_comment($id) 
 	{
-		if ($this->cek_id($id) == 1 )
+		if ( $this->cek_id($id) == 1 )
 		{
 			$result = $this->db->where('id',$id)->get($this->_table)->row_array();
 			return $result;
@@ -178,10 +173,9 @@ class Comment_model extends CI_Model {
 	public function get_post($id_post)
 	{
 		$table = 't_post';
-
 		$cek_post = $this->db->where('id',$id_post)->get($table)->num_rows();
 
-		if ($cek_post == 1)
+		if ( $cek_post == 1 )
 		{
 			$result_post = $this->db
 				->select('id,title,seotitle')
@@ -194,7 +188,7 @@ class Comment_model extends CI_Model {
 	}
 
 
-	public function cek_id($id=0)
+	public function cek_id($id = 0)
 	{
 		$query = $this->db
 			->select('id')

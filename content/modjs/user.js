@@ -23,8 +23,7 @@ var DataTableIndex = $('#DataTable').DataTable({
     ],
     'ajax': {
         'type': 'POST',
-        'url': admin_url + a_mod + '/data-table-user',
-        data: csrfData
+        'url': window.location.href
     },
     'drawCallback': function( settings ) {
         var api_table = this.api();
@@ -102,10 +101,6 @@ $('#form_update_user').on('submit',function(e){
 
 
 
-
-
-
-
 // data-table level
 var DataTableLevel = $("#DataTableLevel").DataTable({
 	"language": {
@@ -156,13 +151,13 @@ var DataTableLevel = $("#DataTableLevel").DataTable({
 		$(".view_level").on('click', function(e){
             e.preventDefault();
 			$('#modal_preview_level').modal('show');
+            $('#data-detail').html('<p class="text-center">Please wait...</p>')
 		    var id_level=$(this).attr("id-level");
 		    var title_level=$(this).attr("title-level");
 		    $.ajax({
 		        type:'POST',
-		        // data:'id_level='+id_level+'&title='+title_level+'&act=ajax_preview_level&'+csrfName+'='+csrfToken,
-                dataType:'html',
-                data:{
+                dataType: 'html',
+                data: {
                     act: 'ajax_preview_level',
                     id_level: id_level,
                     title: title_level,
@@ -176,7 +171,6 @@ var DataTableLevel = $("#DataTableLevel").DataTable({
 		});
 	},
 });
-
 
 
 $(".add_level").click(function() {
@@ -228,12 +222,6 @@ $(".moda_delete_module").click(function() {
 });
 
 
-
-
-
-
-
-
 $(".close-preview2").click(function(){
 	$(this).hide();
 	var resimg = $('#resset-image').val();
@@ -251,8 +239,6 @@ $(".close-preview").click(function(){
 });
 
 
-
-
 $('#input-datepicker').datetimepicker({
     format: 'YYYY-MM-DD',
     showTodayButton: true,
@@ -266,9 +252,7 @@ $('#input-datepicker').datetimepicker({
 });
 
 
-
-
- $('.form-check-input-styled').uniform();
+$('.form-check-input-styled').uniform();
 
 
 $('input:not(textarea)').keydown(function(event){
@@ -284,7 +268,6 @@ function readImgURL(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
         reader.onload = function (e) {
-            // Show image.
             $('#image-preview').attr('src', e.target.result);
             $(".close-preview").show();
             $(".close-preview2").show();
@@ -292,6 +275,7 @@ function readImgURL(input) {
     reader.readAsDataURL(input.files[0]);
   }
 }
+
 $("#upload-image").change(function(){
     readImgURL(this);
 });

@@ -11,46 +11,43 @@ class Category extends Web_controller {
 		$this->load->model('web/category_model');
 	}
 	
-
-	public function index($param = NULL)
+	
+	public function index($get_seotitle = NULL)
 	{
-		$seotitle = xss_filter($param ,'xss');
+		$seotitle = xss_filter($get_seotitle ,'xss');
 		$check_seotitle = $this->category_model->check_seotitle($seotitle);
 
-		if ( empty($seotitle) || $check_seotitle == FALSE ) 
+		if ( !empty($seotitle) && $check_seotitle == TRUE ) 
 		{
-			return $this->render_404();
-		}
-		else
-		{
-			$data = $this->category_model->get_data($seotitle);
-			$this->vars['result_category'] = $data;
+			$data_category = $this->category_model->get_data($seotitle);
+			$this->vars['result_category'] = $data_category;
 
-			$page = $this->uri->segment(3);
-			$page = xss_filter($page,'sql');
-			$_batas  = $this->settings->website('page_item');
-			$_posisi = $this->paging->posisi($_batas, $page);
+			$url         = site_url('category/'.$seotitle);
+			$page        = xss_filter($this->uri->segment(3), 'sql');
+			$batas       = $this->settings->website('page_item');
+			$posisi      = $this->paging->posisi($batas, $page);
+			$jml_data    = $this->category_model->jml_data($data_category['id']);
+			$jml_halaman = $this->paging->jml_halaman($jml_data, $batas);
 			
-			$this->vars['data_post'] = $this->category_model->get_post($data['id'], $_batas, $_posisi);
+			$this->vars['data_post'] = $this->category_model->get_post($data_category['id'], $batas, $posisi);
+			$this->vars['page_link'] = $this->paging->link($page, $jml_halaman, $url);
 
-			$jml_data = $this->category_model->jml_data($data['id']);
-			$jml_halaman = $this->paging->jml_halaman($jml_data, $_batas);
-			
-			$this->vars['page_link'] = $this->paging->link($page, $jml_halaman, site_url("category/$seotitle"));
-
-			if ($page > $jml_halaman) 
+			if ( $page > $jml_halaman ) 
 			{
-				return $this->render_404();
+				$this->render_404();
 			}
 			else
 			{
-				$this->set_meta(array(
-					'title' => $data['title'],
-					'keywords' => $data['title'].', '.$this->settings->website('meta_keyword'),
-					'description' => $data['description']
-				));
+				$this->meta_title($data_category['title']);
+				$this->meta_keywords($data_category['title'].', '.$this->settings->website('meta_keyword'));
+				$this->meta_description($data_category['description']);
+
 				$this->render_view('category', $this->vars);
 			}
 		}
+		else
+		{
+			$this->render_404();
+		}
 	}
-} // End class
+} // End class.

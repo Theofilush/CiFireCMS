@@ -106,11 +106,19 @@ class Setting extends Admin_controller {
 				$this->setting_model->update('address', array('value' => $value));
 			}
 
+
+			elseif ($act == 'visitors')
+			{
+				$value = trim($this->input->post('value'));
+				$this->setting_model->update('visitors', array('value' => $value));
+			}
+			
 			elseif ($act == 'maintenance')
 			{
 				$value = trim($this->input->post('value'));
 				$this->setting_model->update('maintenance', array('value' => $value));
 			}
+
 
 			elseif ($act == 'member_registration')
 			{

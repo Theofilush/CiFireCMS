@@ -10,7 +10,6 @@ class Post_model extends CI_Model {
 	private $_column_order = array(null, 't_post.title', 't_category.seotitle', 't_post.active');
 	private $_column_search = array('t_post.title', 't_category.seotitle');
 
-
 	public function __construct()
 	{
 		parent::__construct();
@@ -103,7 +102,7 @@ class Post_model extends CI_Model {
 	{
 		$this->_datatable_query();
 
-		if ($this->input->post('length') != -1) 
+		if ( $this->input->post('length') != -1 ) 
 		{
 			$this->db->limit($this->input->post('length'), $this->input->post('start'));
 			$query = $this->db->get();
@@ -130,13 +129,13 @@ class Post_model extends CI_Model {
 	{
 		$this->db->from($this->_table);
 	
-		if ($this->session_level != 0 && $this->session_level <= 2) 
+		if ( $this->session_level != 0 && $this->session_level <= 2 ) 
 		{
 			$this->db->join('t_category', 't_category.id = t_post.id_category', 'left');
 			$this->db->join('t_user', 't_user.id = t_post.id_user', 'left');
 		}
 
-		if ($this->session_level != 0 && $this->session_level > 2)
+		if ( $this->session_level != 0 && $this->session_level > 2 )
 		{
 			$this->db->join('t_category', 't_category.id = t_post.id_category', 'left');
 			$this->db->join('t_user', 't_user.id = t_post.id_user', 'left');
@@ -164,10 +163,9 @@ class Post_model extends CI_Model {
 	{
 		$tagtitle = $data;
 		$tagseo = seotitle($data);
-		
 		$cek_tag = $this->db->where("BINARY seotitle='$tagseo'", NULL, FALSE)->get('t_tag')->num_rows();
 
-		if ($cek_tag === 0 && !empty($tagtitle))
+		if ( $cek_tag == 0 && !empty($tagtitle) )
 		{
 			$data_tag = array(
 				'title' => $tagtitle,
@@ -192,7 +190,7 @@ class Post_model extends CI_Model {
 
 	public function delete($id)
 	{
-		if ($this->cek_id($id) == 1) 
+		if ( $this->cek_id($id) == 1 ) 
 		{
 			$this->db->where('id', $id)->delete($this->_table);
 			$respon = TRUE;
@@ -211,9 +209,9 @@ class Post_model extends CI_Model {
 		$session_level = login_level('admin');
 		$session_key = login_key('admin');
 
-		$result = "";
+		$result = NULL;
 
-		if ($session_level != 0 && $session_level <= 2) 
+		if ( $session_level != 0 && $session_level <= 2 ) 
 		{
 			$query = $this->db->select('
 			         *,
@@ -240,7 +238,7 @@ class Post_model extends CI_Model {
 			$result = $query->row_array();
 		}
 		
-		elseif ($session_level > 2) 
+		elseif ( $session_level > 2 ) 
 		{
 			$query = $this->db
 				->select('
@@ -276,36 +274,40 @@ class Post_model extends CI_Model {
 
 	public function num_comment($id)
 	{
-		$query = $this->db->where('id_post', $id)->get('t_comment')->num_rows();
-		
-		return $query;
+		$query = $this->db->where('id_post', $id);
+		$query = $this->db->get('t_comment');
+		$result = $query->num_rows();
+		return $result;
 	}
 
 
 	public function get_all_category() 
 	{
-		$query = $this->db
-			->select('id,title')
-			->order_by('title', 'ASC')
-			->get('t_category')
-			->result_array();
-
-		return $query;
+		$query = $this->db->select('id,title');
+		$query = $this->db->order_by('title', 'ASC');
+		$query = $this->db->get('t_category');
+		$result = $query->result_array();
+		return $result;
 	}
 
 
 	public function val_cat($id)
 	{
-		$query = $this->db->where('id', $id)->get('t_category')->row_array();
-		return $query;
+		$query = $this->db->where('id', $id);
+		$query = $this->db->get('t_category');
+		$result = $query->row_array();
+		return $result;
 	}
 
 
 	public function get_all_tag() 
 	{
-		$query = $this->db->order_by('title', 'ASC')->get('t_tag')->result_array();
-		return $query;
+		$query = $this->db->order_by('title', 'ASC');
+		$query = $this->db->get('t_tag');
+		$result = $query->result_array();
+		return $result;
 	}
+
 
 	public function valtag($tags = '')
 	{
@@ -313,12 +315,14 @@ class Post_model extends CI_Model {
 		if ( !empty($tags) )
 		{
 			$arrtags = explode(',', $tags);
-			foreach ($arrtags as $key) {
-				$query = $this->db->select('title')->where('seotitle', $key)->get('t_tag');
+			foreach ($arrtags as $key) 
+			{
+				$query = $this->db->select('title');
+				$query = $this->db->where('seotitle', $key);
+				$query = $this->db->get('t_tag');
 				
-				if ( $query->num_rows() > 0 ) {
+				if ( $query->num_rows() > 0 ) 
 					$tag .= $query->row_array()['title'].',';
-				}
 			}
 		}
 		return rtrim($tag,',');
@@ -327,20 +331,18 @@ class Post_model extends CI_Model {
 
 	public function get_all_user() 
 	{
-		$query = $this->db
-			->select('
-			         t_user.id    as user_id,
-				     t_user.level as user_level,
-				     t_user.name  as user_name,
-
-				     t_user_level.id    as level_id,
-				     t_user_level.title as level_title
-				    ')
-			->where('t_user.active', 'Y')
-			->join('t_user_level', 't_user_level.id = t_user.level', 'left')
-			->get('t_user')
-			->result_array();
-		return $query;
+		$query = $this->db->select('
+					t_user.id           AS  user_id,
+					t_user.level        AS  user_level,
+					t_user.name         AS  user_name,
+					t_user_level.id     AS  level_id,
+					t_user_level.title  AS  level_title
+				');
+		$query = $this->db->where('t_user.active', 'Y');
+		$query = $this->db->join('t_user_level', 't_user_level.id = t_user.level', 'left');
+		$query = $this->db->get('t_user');
+		$result = $query->result_array();
+		return $result;
 	}
 
 
@@ -351,30 +353,27 @@ class Post_model extends CI_Model {
 		$session_key = login_key('admin');
 		$num_rows = 0;
 
-		if ($session_id_level == 1 || $session_level == 'super-admin')
+		if ( $session_id_level == 1 || $session_level == 'super-admin' )
 		{
-			$num_rows = $this->db
-				->select('id')
-				->where('id', $id)
-				->get($this->_table)
-				->num_rows();
+			$num_rows = $this->db->select('id');
+			$num_rows = $this->db->where('id', $id);
+			$num_rows = $this->db->get($this->_table);
+			$num_rows = $num_rows->num_rows();
 		}
-		elseif ($session_id_level == 2 || $session_level == 'admin')
+		elseif ( $session_id_level == 2 || $session_level == 'admin' )
 		{
-			$num_rows = $this->db
-				->select('id')
-				->where('id', $id)
-				->get($this->_table)
-				->num_rows();
+			$num_rows = $this->db->select('id');
+			$num_rows = $this->db->where('id', $id);
+			$num_rows = $this->db->get($this->_table);
+			$num_rows = $num_rows->num_rows();
 		}
 		else
 		{
-			$num_rows = $this->db
-				->select('id')
-				->where('id_user', $session_key)
-				->where('id', $id)
-				->get($this->_table)
-				->num_rows();
+			$num_rows = $this->db->select('id');
+			$num_rows = $this->db->where('id_user', $session_key);
+			$num_rows = $this->db->where('id', $id);
+			$num_rows = $this->db->get($this->_table);
+			$num_rows = $num_rows->num_rows();
 		}
 
 		return $num_rows;
@@ -383,17 +382,14 @@ class Post_model extends CI_Model {
 
 	public function cek_seotitle($seotitle)
 	{
-		$query = $this->db->where("BINARY seotitle = '$seotitle'", NULL, FALSE)->get($this->_table);
+		$query = $this->db->where("BINARY seotitle = '$seotitle'", NULL, FALSE);
+		$query = $this->db->get($this->_table);
 		$result = $query->num_rows();
 
-		if ($result == 0) 
-		{
+		if ( $result == 0 )
 			return TRUE;
-		}
 		else 
-		{
 			return FALSE;
-		}
 	}
 
 

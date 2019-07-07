@@ -30,6 +30,8 @@ $lang['table_address'] = 'Address';
 $lang['table_country'] = 'Country';
 $lang['table_timezone'] = 'Timezone';
 $lang['table_language'] = 'Language';
+
+$lang['table_visitors'] = 'Visitors';
 $lang['table_maintenance'] = 'Mode Maintenance';
 $lang['table_member_reg'] = 'Member Registration';
 $lang['table_sitemap'] = 'Sitemap';

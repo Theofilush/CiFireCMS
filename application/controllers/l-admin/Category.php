@@ -98,26 +98,25 @@ class Category extends Admin_controller {
 	{
 		if ( $this->write_access )
 		{
-			// sumbit add.
-			if ($this->input->is_ajax_request())
+			if ( $this->input->is_ajax_request() )
 			{
-				$this->form_validation->set_rules([
-					[
+				$this->form_validation->set_rules(array(
+					array(
 						'field' => 'title',
 						'label' => lang_line('form_label_title'),
 						'rules' => 'required|trim|min_length[2]|max_length[50]|callback__cek_add_seotitle'
-					],
-					[
+					),
+					array(
 						'field' => 'parent',
 						'label' => lang_line('form_label_parent'),
 						'rules' => 'trim|required'
-					],
-					[
+					),
+					array(
 						'field' => 'active',
 						'label' => lang_line('form_label_active'),
 						'rules' => 'trim'
-					]
-				]);
+					)
+				));
 
 				if ( $this->form_validation->run() ) 
 				{
@@ -153,7 +152,7 @@ class Category extends Admin_controller {
 		}
 		else
 		{
-			return $this->render_403();
+			$this->render_403();
 		}
 	}
 
@@ -194,7 +193,8 @@ class Category extends Admin_controller {
 		if ( !is_null($param) && $this->modify_access ) 
 		{
 			$id = xss_filter(decrypt($param),'sql');
-			$rules = array(
+
+			$this->form_validation->set_rules(array(
 				array(
 					'field' => 'title',
 					'label' => lang_line('form_label_title'),
@@ -210,11 +210,9 @@ class Category extends Admin_controller {
 					'label' => lang_line('form_label_active'),
 					'rules' => 'trim'
 				)
-			);
+			));
 
-			$this->form_validation->set_rules($rules);
-
-			if ($this->form_validation->run() == TRUE) 
+			if ( $this->form_validation->run() ) 
 			{
 				$in_parent = $this->input->post('parent');
 				$id_parent = ( $in_parent == '0' ? '0' : decrypt($in_parent) );
@@ -253,9 +251,9 @@ class Category extends Admin_controller {
 	public function _cek_add_seotitle($seotitle = '') 
 	{
 		$seotitle = seotitle($seotitle);
-		$cek = $this->mod_model->cek_seotitle($seotitle);
+		$cek      = $this->mod_model->cek_seotitle($seotitle);
 
-		if ($cek === FALSE) 
+		if ( $cek === FALSE ) 
 		{
 			$this->form_validation->set_message('_cek_add_seotitle', lang_line('form_message_already_exists'));
 		}
@@ -267,10 +265,10 @@ class Category extends Admin_controller {
 	public function _cek_edit_seotitle($seotitle = '') 
 	{
 		$seotitle = seotitle($seotitle);
-		$idEdit = $this->uri->segment(4);
-		$cek = $this->mod_model->cek_seotitle2($idEdit, $seotitle);
+		$idEdit   = $this->uri->segment(4);
+		$cek      = $this->mod_model->cek_seotitle2($idEdit, $seotitle);
 		
-		if ($cek === FALSE) 
+		if ( $cek === FALSE ) 
 		{
 			$this->form_validation->set_message('_cek_edit_seotitle', lang_line('form_message_already_exists'));
 		} 

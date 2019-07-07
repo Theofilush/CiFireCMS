@@ -10,7 +10,6 @@ class Setting_model extends CI_Model {
 		parent::__construct();
 	}
 
-	
 	public function update($options = '',$data)
 	{
 		return $this->db->where('options', $options)->update($this->table, $data);

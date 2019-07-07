@@ -17,19 +17,17 @@ class Tag extends Admin_controller {
 
 	public function index()
 	{
-		if ($this->read_access == TRUE)
+		if ( $this->read_access )
 		{
-			if ($this->write_access == TRUE && $this->_act == 'input')
+			if ( $this->write_access && $this->_act == 'input' )
 			{
-				$tags = xss_filter($this->input->post('tags'),'xss');
-
-				$tags = explode(',',$tags);
-				
+				$tags = xss_filter($this->input->post('tags'), 'xss');
+				$tags = explode(',', $tags);
 				foreach ($tags as $key)
 				{
 					$title = clean_tag($key);
 					$seotitle = seotitle($key,'');
-					if ($this->mod_model->cek_seotitle($seotitle) == TRUE)
+					if ( $this->mod_model->cek_seotitle($seotitle) == TRUE )
 					{
 						$this->mod_model->insert(array(
 							'title' => $title,
@@ -41,55 +39,47 @@ class Tag extends Admin_controller {
 				redirect(uri_string());
 			}
 
+			if ( $this->input->is_ajax_request() )
+			{
+				$data_list = $this->mod_model->get_datatables();
+				$data_output = array();
+
+				foreach ($data_list as $val) 
+				{
+					$row = [];
+					$row[] = '<div class="text-center"><input type="checkbox" class="row_data" value="'. encrypt($val['id']) .'"></div>';
+
+					$row[] = $val['title'];
+
+					$row[] = $val['tag_count'];
+
+					$row[] = '<div class="text-center"><button type="button" class="button btn-xs btn-default delete_single" data-toggle="tooltip" data-placement="top" data-title="'. lang_line('button_delete') .'" data-pk="'. encrypt($val['id']) .'"><i class="icon-bin"></i></button></div>';
+
+					$data_output[] = $row;
+				}
+
+				$output = array(
+								"draw" => $this->input->post('draw'),
+								"recordsTotal" => $this->mod_model->count_all(),
+								"recordsFiltered" => $this->mod_model->count_filtered(),
+								"data" => $data_output,
+								);
+
+				$this->json_output($output);
+			}
+
 			$this->render_view('view_index', $this->vars);
 		}
 		else
 		{
-			return $this->render_404();
-		}
-	}
-
-
-	public function data_table()
-	{
-		if ($this->input->is_ajax_request())
-		{
-			$data_list = $this->mod_model->get_datatables();
-			$data_output = array();
-
-			foreach ($data_list as $val) 
-			{
-				$row = [];
-				$row[] = '<div class="text-center"><input type="checkbox" class="row_data" value="'. encrypt($val['id']) .'"></div>';
-
-				$row[] = $val['title'];
-
-				$row[] = $val['tag_count'];
-
-				$row[] = '<div class="text-center"><button type="button" class="button btn-xs btn-default delete_single" data-toggle="tooltip" data-placement="top" data-title="'. lang_line('button_delete') .'" data-pk="'. encrypt($val['id']) .'"><i class="icon-bin"></i></button></div>';
-
-				$data_output[] = $row;
-			}
-
-			$output = array(
-							"draw" => $this->input->post('draw'),
-							"recordsTotal" => $this->mod_model->count_all(),
-							"recordsFiltered" => $this->mod_model->count_filtered(),
-							"data" => $data_output,
-							);
-
-			$this->json_output($output);
-		}
-		else
-		{
-			show_404();
+			$this->render_403();
 		}
 	}
 
 
 	public function delete()
 	{
-		if ($this->input->is_ajax_request())
+		if ( $this->input->is_ajax_request() && $this->delete_access )
 		{
 			$data_pk = $this->input->post('data');
 			foreach ($data_pk as $key)
@@ -107,5 +97,4 @@ class Tag extends Admin_controller {
 			show_404();
 		}
 	}
-
-} // End Class.
+} // End class.

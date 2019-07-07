@@ -17,14 +17,14 @@
 </div>
 
 <div class="content">
-	<?=$this->alert->show($this->mod); ?>
-	<div class="ajax_alert" style="display:none;"></div>
+
+	<?=$this->alert->show($this->mod);?>
 
 	<div class="block">
 		<div class="block-header">
 			<h3><?=lang_line('mod_title_reply');?></h3>
 		</div>
-			<?=form_open();?>
+		<?=form_open();?>
 		<div class="row">
 			<div class="col-md-12">
 				<div class="row">
@@ -54,11 +54,11 @@
 				</div>
 				<hr>
 				<div class="block-actions">
-					<button type="submit" class="button btn-primary mr-2"><i class="fa fa-check mr-2"></i><?=lang_line('button_submit');?></button>
+					<button type="submit" class="button btn-primary mr-2"><i class="fa fa-paper-plane mr-2"></i><?=lang_line('button_send');?></button>
 					<a href="<?=admin_url($this->mod);?>" class="button btn-default pull-right"><i class="fa fa-times mr-2"></i><?=lang_line('button_cancel');?></a>
 				</div>
 			</div>
 		</div>
-			<?=form_close();?>
+		<?=form_close();?>
 	</div>
 </div>

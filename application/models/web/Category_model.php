@@ -5,6 +5,7 @@ class Category_model extends CI_Model {
 
 	public $vars;
 	private $table = 't_category';
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -23,7 +24,7 @@ class Category_model extends CI_Model {
 
 		$result = $query->num_rows();
 
-		if ($result >= 1)
+		if ( $result >= 1 )
 		{
 			$result = TRUE;
 		}
@@ -57,10 +58,10 @@ class Category_model extends CI_Model {
 
 		$query = $this->db
 			->select('
-					 t_post.id       as post_id,
-					 t_post.title    as post_title,
-					 t_post.seotitle as post_seotitle,
-					 t_post.active   as post_active,
+					 t_post.id           AS  post_id,
+					 t_post.title        AS  post_title,
+					 t_post.seotitle     AS  post_seotitle,
+					 t_post.active       AS  post_active,
 					 t_post.content,
 					 t_post.picture,
 			         t_post.datepost,
@@ -68,11 +69,11 @@ class Category_model extends CI_Model {
 			         t_post.tag,
 			         t_post.hits,
 
-					 t_category.id       as category_id,
-					 t_category.title    as category_title,
-					 t_category.seotitle as category_seotitle,
-					 t_user.id as user_id,
-					 t_user.name as user_name,
+					 t_category.id        AS  category_id,
+					 t_category.title     AS  category_title,
+					 t_category.seotitle  AS  category_seotitle,
+					 t_user.id            AS  user_id,
+					 t_user.name          AS  user_name
 					')
 			->join('t_category', 't_category.id = t_post.id_category', 'left')
 			->join('t_user', 't_user.id = t_post.id_user', 'left')
@@ -80,9 +81,10 @@ class Category_model extends CI_Model {
 			->where_in('t_post.id_category', $range_id)
 			->order_by('t_post.id', 'DESC')
 			->limit($batas, $posisi)
-			->get('t_post');
+			->get('t_post')
+			->result_array();
 
-		return $query->result_array();
+		return $query;
 	}
 
 
@@ -92,8 +94,9 @@ class Category_model extends CI_Model {
 			->select('id')
 			->where('active', 'Y')
 			->where('id_category', $id)
-			->get('t_post');
+			->get('t_post')
+			->num_rows();
 
-		return $query->num_rows();
+		return $query;
 	}
-} // End Class
+} // End class.

@@ -16,66 +16,58 @@ class Pages extends Admin_controller {
 	}
 
 
-
 	public function index()
 	{
-		if ($this->read_access == TRUE)
+		if ( $this->read_access )
 		{
-			$this->render_view('view_index', $this->vars);
-		}
-		else
-		{
-			return $this->render_404();
-		}
-	}
-
-
-
-	public function data_table()
-	{
-		if ($this->input->is_ajax_request() == TRUE && $this->delete_access == TRUE) 
-		{
-			$data_list = $this->mod_model->get_datatables();
-			$data_output = array();
-
-			foreach ($data_list as $val) 
+			if ( $this->input->is_ajax_request() ) 
 			{
-				$row = [];
-				$row[] = '<div class="text-center"><input type="checkbox" class="row_data" value="'. encrypt($val['id']) .'"></div>';
+				$data_list = $this->mod_model->get_datatables();
+				$data_output = array();
 
-				$row[] = $val['title'];
+				foreach ($data_list as $val) 
+				{
+					$row = [];
+					$row[] = '<div class="text-center"><input type="checkbox" class="row_data" value="'. encrypt($val['id']) .'"></div>';
 
-				$row[] = '<a href="'. site_url('pages/'.$val['seotitle']) .'" target="_blank">'. $val['seotitle'] .'</a>';
+					$row[] = $val['title'];
 
-				$row[] = ($val['active'] == 'Y' ? '<span class="badge badge-b badge-pill badge-primary">Active</span>' : '<span class="badge badge-b badge-pill badge-secondary">No</span>');
+					$row[] = '<a href="'. site_url('pages/'.$val['seotitle']) .'" target="_blank">'. $val['seotitle'] .'</a>';
 
-				$row[] = '<div class="text-center"><div class="btn-group">
-						<a href="'. admin_url($this->mod.'/edit/'.$val['id']) .'" class="button btn-xs btn-default" data-toggle="tooltip" data-placement="top" data-title="'. lang_line('button_edit') .'"><i class="icon-pencil3"></i></a>
-						<button type="button" class="button btn-xs btn-default delete_single" data-toggle="tooltip" data-placement="top" data-title="'. lang_line('button_delete') .'" data-pk="'. encrypt($val['id']) .'"><i class="icon-bin"></i></button>
-						</div></div>';
+					$row[] = ($val['active'] == 'Y' ? '<span class="badge badge-b badge-pill badge-primary">Active</span>' : '<span class="badge badge-b badge-pill badge-secondary">No</span>');
 
-				$data_output[] = $row;
+					$row[] = '<div class="text-center"><div class="btn-group">
+							<a href="'. admin_url($this->mod.'/edit/'.$val['id']) .'" class="button btn-xs btn-default" data-toggle="tooltip" data-placement="top" data-title="'. lang_line('button_edit') .'"><i class="icon-pencil3"></i></a>
+							<button type="button" class="button btn-xs btn-default delete_single" data-toggle="tooltip" data-placement="top" data-title="'. lang_line('button_delete') .'" data-pk="'. encrypt($val['id']) .'"><i class="icon-bin"></i></button>
+							</div></div>';
+
+					$data_output[] = $row;
+				}
+
+				$output = array(
+					"draw" => $this->input->post('draw'),
+					"recordsTotal" => $this->mod_model->count_all(),
+					"recordsFiltered" => $this->mod_model->count_filtered(),
+					"data" => $data_output,
+				);
+
+				$this->json_output($output);
 			}
-
-			$output = array(
-				"draw" => $this->input->post('draw'),
-				"recordsTotal" => $this->mod_model->count_all(),
-				"recordsFiltered" => $this->mod_model->count_filtered(),
-				"data" => $data_output,
-			);
-
-			$this->json_output($output);
+			else
+			{
+				$this->render_view('view_index', $this->vars);
+			}
 		}
 		else
 		{
-			return $this->render_404();
+			$this->render_403();
 		}
 	}
 
 
 	public function delete()
 	{
-		if ($this->input->is_ajax_request() == TRUE)
+		if ( $this->input->is_ajax_request() )
 		{
 			$data_pk = $this->input->post('data');
 			foreach ($data_pk as $key)
@@ -90,7 +82,7 @@ class Pages extends Admin_controller {
 		}
 		else
 		{
-			return $this->render_404();
+			show_404();
 		}
 	}
 
@@ -98,17 +90,19 @@ class Pages extends Admin_controller {
 
 	public function add_new()
 	{
-		if ($this->write_access == TRUE)
+		if ( $this->write_access )
 		{
-			if ($this->input->is_ajax_request() == TRUE) 
+			if ( $this->input->is_ajax_request() ) 
 			{
-				$this->form_validation->set_rules(array(array(
+				$this->form_validation->set_rules(array(
+					array(
 						'field' => 'title',
 						'label' => lang_line('form_label_title'),
-						'rules' => 'required|trim|min_length[3]|max_length[100]|callback__cek_add_seotitle',
-					)));
+						'rules' => 'required|trim|min_length[3]|max_length[100]|callback__cek_add_seotitle'
+					)
+				));
 				
-				if ($this->form_validation->run() == TRUE) 
+				if ( $this->form_validation->run() ) 
 				{
 					$active = ($this->input->post('active') == '1' ? 'Y' : 'N');
 					$data_form = array(
@@ -125,7 +119,6 @@ class Pages extends Admin_controller {
 				}
 				else 
 				{
-					// $this->alert->set($this->mod.'addnew', 'danger', validation_errors());
 					$response['success'] = false;
 					$response['alert']['type'] = 'error';
 					$response['alert']['content'] = validation_errors();
@@ -133,13 +126,12 @@ class Pages extends Admin_controller {
 				$this->json_output($response);
 			}
 
-			//  load view
 			$this->render_view('view_add_new', $this->vars);
 		}
 
 		else
 		{
-			return $this->render_404();
+			$this->render_403();
 		} 
 	}
 
@@ -149,47 +141,52 @@ class Pages extends Admin_controller {
 	{
 		$id_page = xss_filter($id_page ,'sql');
 
-		if (
-		    $this->modify_access == TRUE || 
-		    (!empty($id_page) && 
-		    $this->mod_model->cek_id($id_page) == 1
-		    ))
+		if ( $this->modify_access )
 		{
-			if ($this->input->is_ajax_request() == TRUE) 
-			{
-				$pk = encrypt($id_page);
-				$this->_submit_upate($pk);
+			if ( !empty($id_page) && $this->mod_model->cek_id($id_page) == 1 )
+			{			
+				if ( $this->input->is_ajax_request() ) 
+				{
+					$pk = encrypt($id_page);
+					$this->_submit_upate($pk);
+				}
+				else
+				{
+					$this->vars['res_pages'] = $this->mod_model->get_pages($id_page);
+					$this->render_view('view_edit', $this->vars);
+				}
 			}
-
-			$this->vars['res_pages'] = $this->mod_model->get_pages($id_page);
-			$this->render_view('view_edit', $this->vars);
+			else
+			{
+				$this->render_404();
+			}
 		}
 		else
 		{
-			return $this->render_404();
+			$this->render_403();
 		}
 	}
 
 
-	private function _submit_upate($param=null)
+	private function _submit_upate($param = NULL)
 	{
-		if ( $this->input->is_ajax_request() == TRUE && !is_null($param) ) 
+		if ( $this->input->is_ajax_request() && !empty($param) ) 
 		{
 			$pk = xss_filter(decrypt($param),'sql');
 
-			if ( $this->modify_access == TRUE  && $this->mod_model->cek_id($pk) == 1 ) 
+			if ( $this->modify_access && $this->mod_model->cek_id($pk) == 1 ) 
 			{
 				$rules = array(
 					array(
 						'field' => 'title',
 						'label' => lang_line('form_label_title'),
-						'rules' => 'required|trim|min_length[3]|max_length[100]|callback__cek_edit_seotitle',
+						'rules' => 'required|trim|min_length[3]|max_length[100]|callback__cek_edit_seotitle'
 					)
 				);
 
 				$this->form_validation->set_rules($rules);
 
-				if ($this->form_validation->run() == TRUE) 
+				if ( $this->form_validation->run() ) 
 				{
 					$active = ($this->input->post('active') == '1' ? 'Y' : 'N');
 					$data = array(
@@ -200,7 +197,7 @@ class Pages extends Admin_controller {
 						'active'   => $active
 					);
 
-					if ($this->mod_model->update($pk, $data)) 
+					if ( $this->mod_model->update($pk, $data) ) 
 					{
 						$response['success'] = true;
 						$response['alert']['type'] = 'success';
@@ -222,24 +219,29 @@ class Pages extends Admin_controller {
 
 				$this->json_output($response);
 			}
+			else
+			{
+				$this->render_403();
+			}
 		}
 		else
 		{
-			$this->render_404();
+			show_404();
 		}
 	}
-
 
 
 	public function _cek_add_seotitle($seotitle = '') 
 	{
 		$seotitle = seotitle($seotitle);
 		$cek = $this->mod_model->cek_seotitle($seotitle);
-		if ($cek >= 1) 
+		
+		if ( $cek >= 1 )
 		{
 			$this->form_validation->set_message('_cek_add_seotitle', lang_line('form_message_already_exists'));
 			return FALSE;
-		} 
+		}
+
 		else
 			return TRUE;
 	}
@@ -252,7 +254,7 @@ class Pages extends Admin_controller {
 		$idEdit = $this->uri->segment(4);
 		$cek = $this->mod_model->cek_seotitle2($idEdit, $seotitle);
 		
-		if ($cek == FALSE) 
+		if ( $cek == FALSE ) 
 		{
 			$this->form_validation->set_message('_cek_edit_seotitle', lang_line('form_message_already_exists'));
 			return FALSE;

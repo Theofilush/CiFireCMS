@@ -27,7 +27,6 @@ class Comment extends Admin_controller {
 
 				foreach ($data_list as $val) 
 				{
-
 					$row = [];
 					$row[] = '<div class="text-center"><input type="checkbox" class="row_data" value="'. encrypt($val['id']) .'"></div>';
 					
@@ -85,10 +84,11 @@ class Comment extends Admin_controller {
 
 				$this->json_output($output);
 			}
+
 			if ( $_SERVER['REQUEST_METHOD'] == 'POST' )
 			{
 				// block.
-				if ($this->modify_access && $this->_act == 'block')
+				if ( $this->modify_access && $this->_act == 'block' )
 				{
 					$id_cblock = xss_filter($this->input->post('id'),'sql');
 
@@ -98,12 +98,10 @@ class Comment extends Admin_controller {
 				}
 
 				// unblock
-				elseif ($this->modify_access && $this->_act == 'unblock')
+				elseif ( $this->modify_access && $this->_act == 'unblock' )
 				{
 					$id_cblock = xss_filter($this->input->post('id'),'sql');
-
 					$this->mod_model->unblock_comment($id_cblock);
-
 					redirect(uri_string());
 				}
 
@@ -128,7 +126,7 @@ class Comment extends Admin_controller {
 		{
 			$id = xss_filter($id, 'sql');
 			
-			if ( $this->read_access == TRUE && $this->modify_access == TRUE)
+			if ( $this->read_access && $this->modify_access )
 			{
 				$result = $this->mod_model->get_comment($id);
 				$_output= $result;
@@ -151,7 +149,7 @@ class Comment extends Admin_controller {
 			}
 			else
 			{
-				return $this->render_403();
+				$this->render_403();
 			}
 		}
 		else
@@ -163,7 +161,7 @@ class Comment extends Admin_controller {
 
 	public function delete()
 	{
-		if ($this->input->is_ajax_request() && $this->delete_access )
+		if ( $this->input->is_ajax_request() && $this->delete_access )
 		{
 			$data_pk = $this->input->post('data');
 			foreach ($data_pk as $key)
@@ -181,5 +179,4 @@ class Comment extends Admin_controller {
 			show_404();
 		}
 	}
-
 } // End class.

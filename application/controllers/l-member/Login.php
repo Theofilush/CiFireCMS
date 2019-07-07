@@ -63,6 +63,76 @@ class Login extends MY_Controller {
 		}
 	}
 
+
+	private function _submit($name = NULL, $value = NULL)
+	{
+		foreach ($this->input->post() as $key => $val)
+		{
+			$name .= $key.',';
+			$value .= $val.',';
+		}
+
+		$input_name = explode(',', $name);
+		$input_value = explode(',', $value);
+
+		if (
+		     decrypt($input_name[0]) == decrypt($this->vars['input_email']) && 
+		     decrypt($input_name[1]) == decrypt($this->vars['input_pwd'])
+		    )
+		{
+
+			$this->form_validation->set_rules(array(
+				array(
+					'field' => $input_name[0],
+					'label' => 'Email',
+					'rules' => 'required|trim|min_length[4]|max_length[50]|valid_email',
+				),
+				array(
+					'field' => $input_name[1],
+					'label' => 'Password',
+					'rules' => 'required|min_length[4]|max_length[18]',
+				)
+			));
+
+			if ( $this->form_validation->run() ) 
+			{
+				$data_input = array(
+					'email' => $this->input->post($input_name[0]),
+					'password' => encrypt($this->input->post($input_name[1]))
+				);
+
+				if ( $this->login_model->cek_login($data_input) == TRUE )
+				{
+					$get_user = $this->login_model->get_user($data_input);
+
+					$this->session->set_userdata('log_member', array(
+						'key'    => $get_user['id'],
+						'access' => encrypt(random_string(16)),
+						'level'  => $get_user['level']
+					));
+
+					redirect(member_url('home'), 'refresh');
+				}
+
+				else
+				{
+					$this->alert->set('login', 'danger', 'Log In error.');
+					redirect(uri_string());
+				}
+			}
+			
+			else
+			{
+				$this->alert->set('login', 'danger', validation_errors());
+				redirect(uri_string());
+			}
+		}
+		else
+		{
+			show_404();
+		}
+	}
+
 	
 	public function register()
 	{
@@ -70,23 +140,23 @@ class Login extends MY_Controller {
 
 		if ( $_SERVER['REQUEST_METHOD'] == 'POST' )
 		{
-			$this->form_validation->set_rules([
-				[
+			$this->form_validation->set_rules(array(
+				array(
 					'field' => 'name',
 					'label' => lang_line("login_name"),
-					'rules' => 'required|trim|min_length[4]|max_length[20]|alpha_numeric_spaces',
-				],
-				[
+					'rules' => 'required|trim|min_length[4]|max_length[20]|alpha_numeric_spaces'
+				),
+				array(
 					'field' => 'email',
 					'label' => lang_line("login_email"),
-					'rules' => 'required|trim|min_length[4]|max_length[80]|valid_email|callback__cek_reg_email',
-				],
-				[
+					'rules' => 'required|trim|min_length[4]|max_length[80]|valid_email|callback__cek_reg_email'
+				),
+				array(
 					'field' => 'password',
 					'label' => lang_line("login_pass"),
-					'rules' => 'required|trim|min_length[4]|max_length[18]',
-				],
-				[
+					'rules' => 'required|trim|min_length[4]|max_length[18]'
+				),
+				array(
 					'field' => 'password2',
 					'label' => lang_line("login_pass2"),
 					'rules' => 'required|trim|min_length[4]|max_length[18]|matches[password]',
@@ -94,16 +164,16 @@ class Login extends MY_Controller {
 						// 'matches' => '%s '
 						'matches' => lang_line('err_match')
 					)
-				],
-			]);
+				)
+			));
 
-			if ( $this->form_validation->run() == TRUE )
+			if ( $this->form_validation->run() )
 			{
 				$photo    = 'user-'.md5(strtotime(date('YmdHis'))).'.jpg';
 				$email    = $this->input->post('email',TRUE);
 				$username = seotitle($this->input->post('name')).strtotime(date('YmdHis'));
 				$password = encrypt($this->input->post('password'));
-				$activation_key = md5('reg'.strtotime(date('YmdHis')));
+				$activation_key = md5('reg'.strtotime(date('YmdHis')).random_string('alnum', 16));
 
 				// insert member to database.
 				$this->login_model->insert_member(array(
@@ -188,19 +258,15 @@ class Login extends MY_Controller {
 
 	public function activation()
 	{
-		$key =  decrypt($this->input->get('key',TRUE));
+		$key =  decrypt($this->input->get('key', TRUE));
 
-		if ( empty($key) )
+		if ( !empty($key) )
 		{
-			show_404();
-		} 
-		else
-		{
-			$query = $this->db->where("BINARY activation_key='$key'",NULL,FALSE)->get('t_user');
+			$query_key = $this->db->where("BINARY activation_key='$key'", NULL, FALSE)->get('t_user');
 
-			if ( $query->num_rows() == 1 )
+			if ( $query_key->num_rows() == 1 )
 			{
-				$data = $query->row_array();
+				$data = $query_key->row_array();
 
 				$this->db->where('id', $data['id'])->update('t_user', ['active'=>'Y','activation_key'=>'0']);
 
@@ -217,6 +283,10 @@ class Login extends MY_Controller {
 				$this->load->view('member/log_activation', $this->vars);
 				$this->load->view('member/log_footer', $this->vars);
 			}
+		} 
+		else
+		{
+			show_404();
 		}
 	}
 
@@ -224,17 +294,20 @@ class Login extends MY_Controller {
 	public function forgot()
 	{
 		$this->meta_title(lang_line('login3'));
+
 		if ( $_SERVER['REQUEST_METHOD'] == 'POST' )
 		{
-			$this->form_validation->set_rules([[
-				'field' => 'email',
-				'label' => lang_line('login_email'),
-				'rules' => 'required|trim|min_length[4]|max_length[80]|valid_email',
-			]]);
+			$this->form_validation->set_rules(array(
+				array(
+					'field' => 'email',
+					'label' => lang_line('login_email'),
+					'rules' => 'required|trim|min_length[4]|max_length[80]|valid_email'
+				)
+			));
 
 			if ( $this->form_validation->run() )
 			{
-				$email = $this->input->post('email',TRUE);
+				$email = $this->input->post('email', TRUE);
 				$query = $this->db
 					->select('email,password')
 					->where("BINARY email='$email'", NULL, FALSE)
@@ -287,21 +360,23 @@ class Login extends MY_Controller {
 
 	public function cek() 
 	{
-		if ( $this->input->is_ajax_request() == TRUE )
+		if ( $this->input->is_ajax_request() )
 		{
-			$this->form_validation->set_rules([[
-				'field' => 'data',
-				'label' => 'data',
-				'rules' => 'required|trim|min_length[4]|max_length[80]|valid_email',
-			]]);
+			$this->form_validation->set_rules(array(
+				array(
+					'field' => 'data',
+					'label' => 'data',
+					'rules' => 'required|trim|min_length[4]|max_length[80]|valid_email'
+				)
+			));
 
-			if ( $this->form_validation->run() == TRUE )
+			if ( $this->form_validation->run() )
 			{
 				$data = xss_filter($this->input->post('data'), 'xss');
 				$logemail = encrypt($data);
 				$response['status'] =  $this->login_model->cek_email($logemail);
 
-				if ($response['status']==1) 
+				if ( $response['status'] == 1 ) 
 				{
 					$response['html'] =  '<div class="form-group mt-3">
 						<label for="password">'. lang_line('login_pass') .'</label>
@@ -309,7 +384,7 @@ class Login extends MY_Controller {
 						<input type="password" name="'. $this->vars['input_pwd'] .'" id="password" class="form-control" required autofocus>
 					</div>
 					<div class="form-group mb-0">
-						<button type="submit" class="btn btn-primary btn-block mt-3">'. lang_line('login_button_signin') .'</button>					
+						<button type="submit" class="btn btn-primary btn-block mt-3">'. lang_line('login_button_signin') .'</button>
 					</div>';
 				}
 				else 
@@ -327,75 +402,7 @@ class Login extends MY_Controller {
 	}
 
 
-	private function _submit($name=null,$value=null)
-	{
-		foreach ($this->input->post() as $key => $val)
-		{
-			$name .= $key.',';
-			$value .= $val.',';
-		}
 
-		$input_name = explode(',', $name);
-		$input_value = explode(',', $value);
-
-		if (
-		    decrypt($input_name[0]) == decrypt($this->vars['input_email']) && 
-		    decrypt($input_name[1]) == decrypt($this->vars['input_pwd'])
-		    )
-		{
-
-			$this->form_validation->set_rules(array(array(
-					'field' => $input_name[0],
-					'label' => 'Email',
-					'rules' => 'required|trim|min_length[4]|max_length[50]|valid_email',
-			)));
-
-			$this->form_validation->set_rules(array(array(
-					'field' => $input_name[1],
-					'label' => 'Password',
-					'rules' => 'required|min_length[4]|max_length[18]',
-			)));
-
-			if ($this->form_validation->run() == TRUE) 
-			{
-				$data_input = array(
-					'email' => $this->input->post($input_name[0]),
-					'password' => encrypt($this->input->post($input_name[1]))
-				);
-
-				$cek_data_input = $this->login_model->cek_login($data_input);
-
-				if ($cek_data_input == TRUE)
-				{
-					$get_user = $this->login_model->get_user($data_input);
-
-					$this->session->log_member = array(
-						'key'    => $get_user['id'],
-						'access' => encrypt(random_string(16)),
-						'level'  => $get_user['level']
-					);
-
-					redirect(member_url('home'), 'refresh');
-				}
-
-				else
-				{
-					$this->alert->set('login', 'danger', 'Log In error.');
-					redirect(uri_string());
-				}
-			}
-			
-			else
-			{
-				$this->alert->set('login', 'danger', validation_errors());
-				redirect(uri_string());
-			}
-		}
-		else
-		{
-			return show_400();
-		}
-	}
 
 
 	private function _cek_username($username = '') 
@@ -413,14 +420,11 @@ class Login extends MY_Controller {
 		}
 	}
 
-	/**
-	 * - Fungsi ini akan menghapus semua data sesi yang aktif.
-	 * - Tindakan ini juga akan menghapus seluruh sesi di bagian administrator.
-	 * @return void
-	*/
+
 	public function logout()
 	{
-		$this->session->sess_destroy();
+		// $this->session->sess_destroy();
+		$this->session->unset_userdata('log_member');
 		redirect(member_url());
 	}
 } // End Class.

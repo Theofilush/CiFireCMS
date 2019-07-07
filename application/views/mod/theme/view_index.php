@@ -18,14 +18,14 @@
 
 <div class="content">
 
-	<?php echo $this->alert->show($this->mod); ?>
+	<?=$this->alert->show($this->mod); ?>
 	
 	<div class="block">
 		<div class="block-header">
-			<h3><?php echo lang_line('mod_title_all'); ?></h3>
+			<h3><?=lang_line('mod_title_all'); ?></h3>
 			<div class="pull-right">
-				<a href="<?php echo admin_url($this->mod.'/add-new');?>" class="button btn-sm btn-primary mr-2"><i class="icon-add"></i> <?php echo lang_line('button_add_new');?></a>
-				<span class="button btn-sm btn-default c_blank_theme"><i class="fa fa-magic"></i> <?php echo lang_line('button_create_blank_theme');?></span>
+				<a href="<?=admin_url($this->mod.'/add-new');?>" class="button btn-sm btn-primary mr-2"><i class="icon-add"></i> <?=lang_line('button_add_new');?></a>
+				<span class="button btn-sm btn-default c_blank_theme"><i class="fa fa-magic"></i> <?=lang_line('button_create_blank_theme');?></span>
 			</div>
 		</div>
 
@@ -54,24 +54,26 @@
 								margin-top: -4%;
 							}
 						</style>
-						<p><?php echo $res['title'];?></p>
+						<p><?=$res['title'];?></p>
 						<div class="theme-img-card">
-							<a href="<?=$img_preview;?>" title="<?php echo $res['title'];?>" class="fancybox" data-fancybox-group="">
-								<img src="<?php echo $img_preview;?>" style="width:100%;" alt="<?php echo $res['title'];?>">
+							<a href="<?=$img_preview;?>" title="<?=$res['title'];?>" class="fancybox" data-fancybox-group="">
+								<img src="<?=$img_preview;?>" style="width:100%;" alt="<?=$res['title'];?>">
 							</a>
 						</div>
 
 						<p class="mb-3"></p>
 						<div class="btn-group">
 							<?php if ($res['active'] == 'Y'): ?>
-							<span class="button btn-flat btn-sm btn-default"><i class="fa fa-star text-warning"></i> <?php echo lang_line('button_active');?></span>
+							<span class="button btn-flat btn-sm btn-default"><i class="fa fa-star text-warning"></i> <?=lang_line('button_active');?></span>
 							<?php endif ?>
 
 							<?php if ($res['active'] == 'N'): ?>
-							<span class="button btn-flat btn-sm btn-default modal_active" idActive="<?php echo $res['id'];?>" data-toggle="tooltip" data-title="<?php echo lang_line('button_active');?>"><i class='fa fa-check'></i></span>
+							<span class="button btn-flat btn-sm btn-default modal_active" idActive="<?=$res['id'];?>" data-toggle="tooltip" data-title="<?=lang_line('button_active');?>"><i class='fa fa-check'></i></span>
 							<?php endif ?>
 							
-							<a href="<?php echo admin_url($this->mod.'/edit/'.$res['id'].'/home');?>" class="button btn-flat btn-sm btn-default alertedit" data-toggle="tooltip" title="<?php echo lang_line('button_edit');?>"><i class="fa fa-edit"></i></a>
+							<a href="<?=admin_url($this->mod.'/edit/'.$res['id'].'/home');?>" class="button btn-flat btn-sm btn-default alertedit" data-toggle="tooltip" title="<?=lang_line('button_edit');?>"><i class="fa fa-edit"></i></a>
+
+							<span class="button btn-flat btn-sm btn-default backup_theme" data-toggle="tooltip" data-title="Download" data-theme-id="<?=encrypt($res['id']);?>" data-theme-folder="<?=encrypt($res['folder']);?>" data-theme-title="<?=encrypt($res['title']);?>"><i class="fa fa-download"></i></span>
 
 							<?php if ($res['active'] == 'N'): ?>
 							<span class="button btn-flat btn-sm btn-default delete_theme" data-toggle="tooltip" data-title="<?=lang_line('button_delete');?>" data-id="<?=encrypt($res['id']);?>" data-folder="<?=encrypt($res['folder']);?>"><i class="fa fa-trash"></i></span>
@@ -88,24 +90,24 @@
 <div id="modal_create_blank" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<?php echo form_open('','autocomplete="off"');?>
+			<?=form_open('','autocomplete="off"');?>
 			<input type="hidden" name="act" value="blank_theme">
 			<div class="modal-header">
-				<h5><i class="fa fa-desktop text-default mr-3"></i><?php echo lang_line('dialog_title_create_blank'); ?></h5> 
+				<h5><i class="fa fa-desktop text-default mr-3"></i><?=lang_line('dialog_title_create_blank'); ?></h5> 
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				
 			</div>
 			<div class="modal-body">
 				<div class="form-group">
-					<label><?php echo lang_line('form_label_title'); ?></label>
+					<label><?=lang_line('form_label_title'); ?></label>
 					<input type="text" name="title" class="form-control" required>
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="submit" class="button btn-md btn-primary"><i class="fa fa-magic"></i>&nbsp; <?php echo lang_line('button_create_now');?></button>
-				<span class="button btn-md btn-default" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i>&nbsp; <?php echo lang_line('button_cancel');?></span>
+				<button type="submit" class="button btn-md btn-primary"><i class="fa fa-magic"></i>&nbsp; <?=lang_line('button_create_now');?></button>
+				<span class="button btn-md btn-default" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i>&nbsp; <?=lang_line('button_cancel');?></span>
 			</div>
-			<?php echo form_close();?>
+			<?=form_close();?>
 		</div>
 	</div>
 </div>
@@ -123,17 +125,17 @@
 				                ));
 			?>
 			<div class="modal-header">
-				<h5><?php echo lang_line('dialog_title_activate'); ?></h5>
+				<h5><?=lang_line('dialog_title_activate'); ?></h5>
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> 
 			</div>
 			<div class="modal-body">
-				<h4><?php echo lang_line('dialog_content_active_theme'); ?></h4>
+				<h4><?=lang_line('dialog_content_active_theme'); ?></h4>
 			</div>
 			<div class="modal-footer">
-				<button type="submit" class="button btn-primary"><i class="fa fa-check mr-2"></i><?php echo lang_line('button_yes');?></button>
-				<span class="button btn-default" data-dismiss="modal" aria-hidden="true"><i class="fa fa-sign-out mr-2"></i><?php echo lang_line('button_no');?></span>
+				<button type="submit" class="button btn-primary"><i class="fa fa-check mr-2"></i><?=lang_line('button_yes');?></button>
+				<span class="button btn-default" data-dismiss="modal" aria-hidden="true"><i class="fa fa-sign-out mr-2"></i><?=lang_line('button_no');?></span>
 			</div>
-			<?php echo form_close();?>
+			<?=form_close();?>
 		</div>
 	</div>
 </div>
@@ -156,17 +158,17 @@
 				                ));
 			?>
 			<div class="modal-header">
-				<h5><i class="fa fa-exclamation-triangle text-danger mr-2"></i><?php echo lang_line('dialog_delete_title');?></h5>
+				<h5><i class="fa fa-exclamation-triangle text-danger mr-2"></i><?=lang_line('dialog_delete_title');?></h5>
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 			</div>
 			<div class="modal-body">
-				<h4><?php echo lang_line('dialog_delete_content');?></h4>
+				<h4><?=lang_line('dialog_delete_content');?></h4>
 			</div>
 			<div class="modal-footer">
-				<button type="submit" class="btn btn-md btn-danger"><i class="fa fa-trash"></i>&nbsp; <?php echo lang_line('button_yes');?></button>
-				<button type="button" class="btn btn-md btn-default" data-dismiss="modal" aria-hidden="true"><i class="fa fa-sign-out"></i>&nbsp; <?php echo lang_line('button_no');?></button>
+				<button type="submit" class="btn btn-md btn-danger"><i class="fa fa-trash"></i>&nbsp; <?=lang_line('button_yes');?></button>
+				<button type="button" class="btn btn-md btn-default" data-dismiss="modal" aria-hidden="true"><i class="fa fa-sign-out"></i>&nbsp; <?=lang_line('button_no');?></button>
 			</div>
-			<?php echo form_close();?>
+			<?=form_close();?>
 		</div>
 	</div>
 </div>

@@ -3,11 +3,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Theme_model extends CI_Model {
 	
-	/**
-	 * Primary table
-	 * @access 	private
-	 * @return 	string
-	*/
 	private $table = 't_theme';
 
 	public function __construct()
@@ -16,7 +11,6 @@ class Theme_model extends CI_Model {
 	}
 
 	/**
-	 * insert()
 	 * @param 	array 	$data
 	 * @return 	void
 	*/
@@ -25,11 +19,11 @@ class Theme_model extends CI_Model {
 		$this->db->insert($this->table, $data);
 	}
 
+
 	/**
-	 * update()
 	 * @param 	int|string 	$id
 	 * @param 	array 		$data
-	 * @return 	bol
+	 * @return 	bool
 	*/
 	public function update($id = 0, array $data)
 	{
@@ -42,10 +36,11 @@ class Theme_model extends CI_Model {
 			return FALSE;
 	}
 
+
 	/**
 	 * delete()
 	 * @param 	int|string 	$id
-	 * @return 	bol
+	 * @return 	bool
 	*/
 	public function delete($id = 0)
 	{
@@ -54,13 +49,15 @@ class Theme_model extends CI_Model {
 			$this->db->where('id', $id)->delete($this->table);
 			return TRUE;
 		}
-		else return FALSE;
+		else
+			return FALSE;
 	}
+
 
 	/**
 	 * active_theme()
 	 * @param 	int|string 	$id
-	 * @return 	bol
+	 * @return 	bool
 	*/
 	public function active_theme($id = 0)
 	{
@@ -74,26 +71,26 @@ class Theme_model extends CI_Model {
 				$this->update($id, array('active'=>'Y'));
 				return TRUE;
 			}
-			else return FALSE;
+			else 
+				return FALSE;
 		}
-		else return FALSE;
+		else 
+			return FALSE;
 	}
 
+
 	/**
-	 * all_themes()
 	 * @return 	array
 	*/
 	public function all_themes() 
 	{
-		$query = $this->db
-			->order_by('id', 'DESC')
-			->get($this->table)
-			->result_array();
-		return $query;
+		$query = $this->db->order_by('id', 'DESC');
+		$query = $this->db->get($this->table);
+		$result = $query->result_array();
+		return $result;
 	}
 
 	/**
-	 * get_theme()
 	 * @param 	int|string 	$id
 	 * @return 	array|NULL
 	*/
@@ -101,18 +98,17 @@ class Theme_model extends CI_Model {
 	{
 		if ( $this->cek_id($id) == 1 )
 		{		
-			$query = $this->db
-				->where('id', $id)
-				->get($this->table)
-				->row_array();
-			return $query;
+			$query = $this->db->where('id', $id);
+			$query = $this->db->get($this->table);
+			$result = $query->row_array();
+			return $result;
 		}
 		else
 			return NULL;
 	}
 
+
 	/**
-	 * cek_id()
 	 * @param 	int|string 	$id
 	 * @return 	int
 	*/
@@ -122,35 +118,44 @@ class Theme_model extends CI_Model {
 			return 0;
 		
 		else
-		{		
-			$query = $this->db
-				->select('id')
-				->where('id',$id)
-				->get($this->table)
-				->num_rows();
+		{
+			$query = $this->db->select('id');
+			$query = $this->db->where('id',$id);
+			$query = $this->db->get($this->table);
+			$result = $query->num_rows();
 
-			if ($query == 1)
-				return $query;
+			if ( $result == 1 )
+				return $result;
 			else
 				return 0;
 		}
 	}
 
+
+	public function cek_theme_folder($param = '')
+	{
+		$query = $this->db->select('folder')->where('folder', $param)->get($this->table)->num_rows();
+
+		if ( $query == 0 )
+			return TRUE;
+		else
+			return FALSE;
+	}
+
+
 	/**
-	 * cek_seotitle()
-	 * @return bol
+	 * @return bool
 	*/
 	public function cek_seotitle($seotitle = '')
 	{
 		if ( !empty($seotitle) )
 		{
-			$query = $this->db
-				->select('seotitle')
-				->where("BINARY seotitle = '$seotitle'", NULL, FALSE)
-				->get($this->table)
-				->num_rows();
+			$query = $this->db->select('seotitle');
+			$query = $this->db->where("BINARY seotitle = '$seotitle'", NULL, FALSE);
+			$query = $this->db->get($this->table);
+			$query = $query->num_rows();
 
-			if ($query == 0) 
+			if ( $query == 0 ) 
 				return TRUE;
 			else 
 				return FALSE;
@@ -160,17 +165,15 @@ class Theme_model extends CI_Model {
 	}
 
 	/**
-	 * cek_seotitle2()
-	 * @return bol
+	 * @return bool
 	*/
 	public function cek_seotitle2($id = 0, $seotitle = '')
 	{
-		if ( $id!=0 && !empty($id) && !empty($seotitle) )
+		if ( $id != 0 && !empty($id) && !empty($seotitle) )
 		{
-			$query = $this->db
-				->select('id,seotitle')
-				->where("BINARY seotitle = '$seotitle'", NULL, FALSE)
-				->get($this->table);
+			$query = $this->db->select('id,seotitle');
+			$query = $this->db->where("BINARY seotitle = '$seotitle'", NULL, FALSE);
+			$query = $this->db->get($this->table);
 
 			if (
 			    $query->num_rows() == 1 && 

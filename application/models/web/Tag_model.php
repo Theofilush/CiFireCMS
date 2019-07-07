@@ -10,17 +10,23 @@ class Tag_model extends CI_Model {
 		parent::__construct();
 	}
 
+	public function cek_tag($seotitle = NULL)
+	{
+		$query = $this->db->where('seotitle', $seotitle);
+		$query = $this->db->get('t_tag');
+		$num_rows = $query->num_rows();
+
+		if ( $num_rows == 1 )
+			return TRUE;
+		else
+			return FALSE;
+	}
 
 	public function get_tag($seotitle)
 	{
 		$query = $this->db->where('seotitle', $seotitle);
 		$query = $this->db->get('t_tag');
-		$num_rows = $query->row_array();
-
-		if ($num_rows >= 1)
-			return $num_rows;
-		else
-			return FALSE;
+		return $query->row_array();
 	}
 
 

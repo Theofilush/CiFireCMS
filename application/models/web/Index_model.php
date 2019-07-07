@@ -68,6 +68,7 @@ class Index_model extends CI_Model {
 			->join('t_category', 't_category.id=t_post.id_category', 'LEFT')
 			->where('t_post.active', 'Y')
 			->where('t_post.id_category', $id_category)
+			->or_where('t_category.id_parent', $id_category)
 			->order_by('t_post.id','DESC');
 
 		if ( count($limit) == 1 )
@@ -95,4 +96,4 @@ class Index_model extends CI_Model {
 
 		return $result;
 	}
-} // End Class
+} // End class.

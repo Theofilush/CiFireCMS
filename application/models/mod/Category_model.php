@@ -55,7 +55,7 @@ class Category_model extends CI_Model {
 	}
 
 
-	function get_datatables()
+	public function get_datatables()
 	{
 		$this->_datatable_query();
 

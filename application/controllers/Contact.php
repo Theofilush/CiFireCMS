@@ -8,20 +8,17 @@ class Contact extends Web_controller {
 		parent::__construct();
 		
 		$this->load->model('web/contact_model');
-
-		$this->set_meta(array(
-			'title' => "Contact"
-		));
+		$this->meta_title('Contact');
 	}
 	
 	
 	public function index()
 	{
-		if ($_SERVER['REQUEST_METHOD'] === 'POST')
-		{			
-			if (googleCaptcha()->success == TRUE)
+		if ( $_SERVER['REQUEST_METHOD'] == 'POST' )
+		{
+			if ( googleCaptcha()->success == TRUE )
 			{
-				$form_rules = array(
+				$this->form_validation->set_rules(array(
 					array(
 						'field' => 'name_contact',
 						'label' => 'name',
@@ -42,11 +39,9 @@ class Contact extends Web_controller {
 						'label' => 'message',
 						'rules' => 'required'
 					),
-				);
+				));
 
-				$this->form_validation->set_rules($form_rules);
-
-				if ($this->form_validation->run() == TRUE) 
+				if ( $this->form_validation->run() ) 
 				{
 					$data_contact = array(
 						'name'    => xss_filter($this->input->post('name_contact')),
@@ -71,7 +66,7 @@ class Contact extends Web_controller {
 					$this->email->subject('No Reply');
 					$this->email->message("Thanks to contact our website !");
 					$this->email->send();
-					// set alert and redirect
+
 					$this->alert->set('contact', 'success', 'Succes');
 					redirect(uri_string());
 				}
@@ -94,4 +89,4 @@ class Contact extends Web_controller {
 			$this->render_view('contact', $this->vars);
 		}
 	}
-} // end class
+} // End class.

@@ -13,7 +13,6 @@ class Maintenance extends CI_Controller {
 			redirect(site_url());
 	}
 	
-
 	public function index()
 	{
 		$this->load->view('maintenance', $this->vars);

@@ -17,7 +17,7 @@ class Member_Controller extends MY_Controller {
 		
 		if ( $this->settings->website('member_registration') == 'N' )
 		{
-			return show_404();
+			show_404();
 		}
 		
 		elseif ( login_status('member') == FALSE )

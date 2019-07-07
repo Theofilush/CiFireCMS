@@ -15,12 +15,9 @@ class Home extends Web_Controller {
 	}
 	
 
-
 	public function index()
 	{
 		$this->vars['headline'] = $this->home_model->get_headline();
-			
-
 		$this->render_view('home', $this->vars);
 	}
 

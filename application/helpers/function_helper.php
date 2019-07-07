@@ -2,8 +2,19 @@
 
 /**
  * - Fungsi untuk menulis ulang konten file pada application/cache/routes.php
- * - Fungsi ini digunakan setelah melakukan perubahan
- *   pada setingan konfigurasi slug url.
+ * - Fungsi ini digunakan setelah melakukan perubahan pada setingan konfigurasi slug url.
+ * 
+ * @return bool
+*/
+function check_internet_connection($addr = 'www.google.com')
+{
+	return (bool)  @fsockopen($addr, 80, $num, $error, 5);
+}
+
+
+/**
+ * - Fungsi untuk menulis ulang konten file pada application/cache/routes.php
+ * - Fungsi ini digunakan setelah melakukan perubahan pada setingan konfigurasi slug url.
  * 
  * @return void
 */
@@ -222,14 +233,14 @@ function favicon($param = '')
 /**
  * - Fungsi untuk menampilkan url gambar.
  * - Mode : NULL, medium, thumb
- * - noimage : Bol
+ * - noimage : bool
  * 
  *   Contoh : post_images($filename, 'medium', TRUE)
  *   Hasil  : http://your.dmoain/content/uploads/medium/filename.jpg
  * 
  * @param   string  $filename
  * @param   string  $mode
- * @param   bol     $noimage
+ * @param   bool     $noimage
  * @return  string
 */
 function post_images($filename = '', $mode = NULL, $noimage = FALSE)
@@ -288,7 +299,7 @@ function post_images($filename = '', $mode = NULL, $noimage = FALSE)
 		break;
 	}
 
-	return $image_url;
+	return $image_url."?".strtotime(date('YmdHis'));
 }
 
 
@@ -300,7 +311,7 @@ function post_images($filename = '', $mode = NULL, $noimage = FALSE)
  * 
  * @param   string  $filename
  * @param   string  $mode
- * @param   bol     $noimage
+ * @param   bool     $noimage
  * @return  string
 */
 function post_file($filename = '', $type = 'file')
@@ -329,7 +340,7 @@ function user_photo($photo = '')
 	else
 		$user_photo = content_url('images/avatar.jpg');
 
-	return $user_photo;
+	return $user_photo."?".strtotime(date('YmdHis'));
 }
 
 
@@ -356,7 +367,7 @@ function base64_image($img_url='')
  * 
  * @param   string      $data
  * @param   string|int  $long
- * @param   bol         $option
+ * @param   bool         $option
  * @return  string
 */
 function cut($data = '', $long = '', $option = FALSE)
@@ -675,8 +686,8 @@ function r_copy($src, $dst)
  * @param 	string 	$source
  * @param 	string 	$destination
  * @param 	int 	$permissions
- * @param 	bol 	$delete_source
- * @return 	bol 	
+ * @param 	bool 	$delete_source
+ * @return 	bool 	
 */
 function copy_folder($source, $destination, $permissions = 0755, $delete_source = FALSE)
 {
@@ -735,7 +746,7 @@ function copy_folder($source, $destination, $permissions = 0755, $delete_source 
  *   Contoh : delete_folder('foo/bar')
  * 
  * @param 	string 	$path
- * @return 	bol|void	
+ * @return 	bool|void	
 */
 function delete_folder($path = '')
 {
@@ -862,7 +873,7 @@ function login_timeout($mode)
  *   Contoh : login_status($mode = 'admin')
  * 
  * @param 	string 	$mode
- * @return 	bol	
+ * @return 	bool	
 */
 function login_status($mode = '')
 {
@@ -870,7 +881,6 @@ function login_status($mode = '')
 	{
 		$CI =& get_instance();
 		$CI->load->database();
-
 		$key_id = $_SESSION["log_$mode"]['key'];
 		$find   = $CI->db->where('id',$key_id)->get('t_user')->num_rows();
 
@@ -903,16 +913,15 @@ function login_key($mode = 'null')
  *   Contoh : login_level('member', FALSE) 
  * 
  * @param 	string 	$mode
- * @param 	bol 	$param
+ * @param 	bool 	$param
  * @return 	string	
 */
 function login_level($mode = '', $param = FALSE) 
 {
 	$item = 'log_'.$mode;
 	$session = $_SESSION[$item];
-
 	$result = NULL;
-	
+
 	if ( !empty($session['level']) ) 
 	{
 		$result =  $session['level'];
@@ -964,12 +973,9 @@ function data_login($mode, $field)
 {
 	$CI =& get_instance();
 	$CI->load->database();
-	
-	// $item   = 'log_'.$mode;
-	$key = $_SESSION['log_'.$mode]['key'];
-	$query = $CI->db->where('id', $key)->get('t_user')->row_array();
+	$key    = $_SESSION['log_'.$mode]['key'];
+	$query  = $CI->db->where('id', $key)->get('t_user')->row_array();
 	$result = $query[$field];
-	
 	return $result;
 }
 

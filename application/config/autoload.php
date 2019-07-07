@@ -41,6 +41,6 @@ $autoload['helper'] = array('url', 'language', 'date', 'cidate', 'function');
 
 $autoload['config'] = array();
 
-$autoload['language'] = array();
+$autoload['language'] = array('main_lang');
 
 $autoload['model'] = array('global_model');

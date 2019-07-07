@@ -9,6 +9,7 @@ class Login extends MY_Controller {
 	public function __construct()
 	{
 		parent::__construct();
+
 		$this->CI =& get_instance();
 
 		$this->_language = strtolower($this->set_language());
@@ -19,7 +20,7 @@ class Login extends MY_Controller {
 		$this->form_validation->set_error_delimiters('<div><small>*) ', '</small></div>');
 
 		$this->vars['input_uname'] = encrypt('username');
-		$this->vars['input_pwd'] = encrypt('password');
+		$this->vars['input_pwd']   = encrypt('password');
 	}
 
 
@@ -33,7 +34,7 @@ class Login extends MY_Controller {
 		}
 		else
 		{
-			if ($_SERVER['REQUEST_METHOD'] == 'POST')
+			if ( $_SERVER['REQUEST_METHOD'] == 'POST' )
 			{
 				return $this->_submit();
 			}
@@ -49,15 +50,17 @@ class Login extends MY_Controller {
 
 	public function cek_username() 
 	{
-		if ( $this->input->is_ajax_request() == TRUE )
+		if ( $this->input->is_ajax_request() )
 		{
-			$this->form_validation->set_rules([[
-				'field' => 'data',
-				'label' => 'data',
-				'rules' => 'required|trim|min_length[4]|max_length[20]|regex_match[/^[a-z0-9_.]+$/]',
-			]]);
+			$this->form_validation->set_rules(array(
+				array(
+					'field' => 'data',
+					'label' => 'data',
+					'rules' => 'required|trim|min_length[4]|max_length[20]|regex_match[/^[a-z0-9_.]+$/]'
+				)
+			));
 
-			if ( $this->form_validation->run() == TRUE )
+			if ( $this->form_validation->run() )
 			{
 				$data = xss_filter($this->input->post('data'), 'xss');
 
@@ -65,7 +68,6 @@ class Login extends MY_Controller {
 				$cek_username = $this->login_model->cek_login_username($username);
 				$response['status'] =  $cek_username;
 				$response['html'] =  '<div class="form-group mt-3"><label for="password">'. lang_line('login_pass') .'</label><a href="'. admin_url('forgot') .'" class="pull-right"><small>'. lang_line('login_forgot') .'</small></a> <input type="password" name="'. $this->vars['input_pwd'] .'" id="password" class="form-control" required autofocus></div> </div><div class="form-group mb-0"> <button type="submit" class="button btn-primary btn-block mt-3">'. lang_line('button_signin') .' <i class="icon-circle-right2 ml-2"></i></button> </div>';
-
 			}
 			else
 			{
@@ -96,19 +98,20 @@ class Login extends MY_Controller {
 		    decrypt($input_name[1]) == decrypt($this->vars['input_pwd'])
 		    )
 		{
-			$this->form_validation->set_rules(array(array(
+			$this->form_validation->set_rules(array(
+				array(
 					'field' => $input_name[0],
 					'label' => 'Username',
-					'rules' => 'required|trim|min_length[4]|max_length[20]|regex_match[/^[a-z0-9_.]+$/]',
-			)));
-
-			$this->form_validation->set_rules(array(array(
+					'rules' => 'required|trim|min_length[4]|max_length[20]|regex_match[/^[a-z0-9_.]+$/]'
+				),
+				array(
 					'field' => $input_name[1],
 					'label' => 'Password',
-					'rules' => 'required|min_length[6]|max_length[20]',
-			)));
+					'rules' => 'required|min_length[6]|max_length[20]'
+				)
+			));
 
-			if ($this->form_validation->run() == TRUE) 
+			if ( $this->form_validation->run() ) 
 			{
 				$data_input = array(
 					'username' => $this->input->post($input_name[0]),
@@ -117,15 +120,25 @@ class Login extends MY_Controller {
 
 				$cek_data_input = $this->login_model->cek_login($data_input);
 
-				if ($cek_data_input == TRUE)
+				if ( $cek_data_input == TRUE )
 				{
 					$get_user = $this->login_model->get_user($data_input);
 
-					$this->session->log_admin = array(
+					// set session filemanager_access.
+					$filemanager_access = array(
+ 						'read' => $this->user_role->access($get_user['level'], 'filemanager', 'read_access'), 
+ 						'write' => $this->user_role->access($get_user['level'], 'filemanager', 'write_access'), 
+ 						'modify' => $this->user_role->access($get_user['level'], 'filemanager', 'modify_access'),  
+ 						'delete' => $this->user_role->access($get_user['level'], 'filemanager', 'delete_access')
+					);
+
+					// set session.
+					$this->session->set_userdata('log_admin', array(
 						'key'    => $get_user['id'],
 						'access' => encrypt(random_string(16)),
-						'level'  => $get_user['level']
-					);
+						'level'  => $get_user['level'],
+						'filemanager_access' => $filemanager_access
+					));
 
 					redirect(admin_url('home'), 'refresh');
 				}
@@ -163,15 +176,17 @@ class Login extends MY_Controller {
 		{		
 			if ( $_SERVER['REQUEST_METHOD'] == 'POST' )
 			{
-				$this->form_validation->set_rules([[
+				$this->form_validation->set_rules(array(
+					array(
 					'field' => 'email',
 					'label' => lang_line('login_email'),
 					'rules' => 'required|trim|min_length[4]|max_length[80]|valid_email',
-				]]);
+					)
+				));
 
 				if ( $this->form_validation->run() )
 				{
-					$email = $this->input->post('email',TRUE);
+					$email = $this->input->post('email', TRUE);
 					$query = $this->db
 						->select('email,password')
 						->where("BINARY email='$email'", NULL, FALSE)
@@ -184,12 +199,12 @@ class Login extends MY_Controller {
 						$data = $query->row_array();
 						$password = decrypt($data['password']);
 
-						// Send actifation key to email.
+						// Send activation link to email.
 						$this->load->library('email');
 						$this->email->initialize($this->settings->email_config());
 						$this->email->from(
-						                   $this->settings->website('web_email'),
-						                   $this->settings->website('web_name')
+						                    $this->settings->website('web_email'),
+						                    $this->settings->website('web_name')
 						                   );
 						$this->email->to($email);
 						$this->email->subject('Forgot Password');
@@ -205,7 +220,6 @@ class Login extends MY_Controller {
 						$this->alert->set('forgot', 'warning', lang_line('err_mailnotexists'));
 						redirect(uri_string());
 					}
-					
 				} 
 				else
 				{
@@ -240,22 +254,12 @@ class Login extends MY_Controller {
 	}
 
 
-	/**
-	 * - Fungsi ini akan menghapus semua data sesi yang aktif.
-	 * - Tindakan ini juga akan menghapus seluruh sesi di bagian member.
-	 * @return void
-	*/
+
 	public function logout()
 	{
-		$this->session->sess_destroy();
+		// $this->session->sess_destroy();
+		$this->session->unset_userdata('log_admin');
+		$this->session->unset_userdata('filemanager');
 		redirect(admin_url());
-	}
-
-
-	public function meta_title($param = '')
-	{
-		$title = !empty($param) ? lang_line('ci_admin').' - '.$param : lang_line('ci_admin');
-		$this->meta_title = $title;
-		return $this;
 	}
 } // End Class.

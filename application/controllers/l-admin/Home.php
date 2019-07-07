@@ -9,29 +9,28 @@ class Home extends Admin_controller {
 	{
 		parent::__construct();
 		
-		if ($this->read_access == TRUE)
+		if ( $this->read_access )
 		{
 			$this->lang->load('mod/'.$this->mod, $this->_language);
 			$this->meta_title(lang_line('mod_title'));
 		}
 		else
 		{
-			$ths->render_404();
+			$this->render_404();
 		}
 	}
 
 
-
 	public function index()
 	{
-		$this->vars['h_post']     = $this->db->get('t_post')->num_rows();
-		$this->vars['h_category'] = $this->db->get('t_category')->num_rows();
-		$this->vars['h_tag']      = $this->db->get('t_tag')->num_rows();
-		$this->vars['h_comment']  = $this->db->get('t_comment')->num_rows();
-		$this->vars['h_pages']    = $this->db->get('t_pages')->num_rows();
-		$this->vars['h_theme']    = $this->db->get('t_theme')->num_rows();
-		$this->vars['h_mail']     = $this->db->get('t_mail')->num_rows();
-		$this->vars['h_users']    = $this->db->get('t_user')->num_rows();
+		$this->vars['h_post']       = $this->db->select('id')->get('t_post')->num_rows();
+		$this->vars['h_category']   = $this->db->select('id')->get('t_category')->num_rows();
+		$this->vars['h_tags']       = $this->db->select('id')->get('t_tag')->num_rows();
+		$this->vars['h_pages']      = $this->db->select('id')->get('t_pages')->num_rows();
+		$this->vars['h_component']  = $this->db->select('id')->get('t_component')->num_rows();
+		$this->vars['h_theme']      = $this->db->select('id')->get('t_theme')->num_rows();
+		$this->vars['h_mail']       = $this->db->select('id')->get('t_mail')->num_rows();
+		$this->vars['h_users']      = $this->db->select('id')->get('t_user')->num_rows();
 
 		$notif_mail = $this->db->where('active','N')->get('t_mail')->num_rows();
 		$this->vars['notif_mail'] = array(
@@ -49,161 +48,48 @@ class Home extends Admin_controller {
 		                                  lang_line('mod_notif_4')."&nbsp;".lang_line('mod_notif_3')
 		                                  );
 
-		$pilchart = 'chartweek';
-		
-		if ($this->input->post())
+		$range = 6;
+		for ($i = $range; $i >= 0; $i--) 
 		{
-			$showchart = $this->input->post('showchart');
-			$pilchart = $showchart;
-		}
-		
-		$this->vars['pilchart'] = $pilchart;
+			if ($i == 0) 
+			{
+				$visitorstemp = $this->db
+					->where('date', date('Y-m-d'))
+					->group_by('ip')
+					->get('t_visitor')
+					->result_array();
 
-		switch($pilchart) 
-		{
-			case "chartweek":
-				$range = 6;
-
-				for ($i = $range; $i >= 0; $i--) 
-				{
-					if ($i == 0) 
-					{
-						$visitorstemp = $this->db
-							->where('date', date('Y-m-d'))
-							->group_by('ip')
-							->get('t_visitor')
-							->result_array();
-
-						$hitstemp = $this->db
-							->select('SUM(hits) as hitstoday')
-							->where('date', date('Y-m-d'))
-							->group_by('date')
-							->get('t_visitor')
-							->row_array();
-					} 
-					else 
-					{
-						$visitorstemp = $this->db
-							->where('date', date('Y-m-d', strtotime('-'.$i.' days')))
-							->group_by('ip')
-							->get('t_visitor')
-							->result_array();
-
-						$hitstemp = $this->db
-							->select('SUM(hits) as hitstoday')
-							->where('date', date('Y-m-d', strtotime('-'.$i.' days')))
-							->group_by('date')
-							->get('t_visitor')
-							->row_array();
-					}
-
-					$arrvisitor[$i] = count($visitorstemp);
-					$this->vars['arrhari'][$i] = '"'.date('D, d M', strtotime('-'.$i.' days')).'"';
-					$arrhits[$i] = (empty($hitstemp['hitstoday']) ? '0' : $hitstemp['hitstoday']);
-				}
-
-				$this->vars['rvisitors'] = array_combine(array_keys($arrvisitor), array_reverse(array_values($arrvisitor)));
-				$this->vars['rhits'] = array_combine(array_keys($arrhits), array_reverse(array_values($arrhits)));
-			break;
-
-			case "chartmonth":
-				$lastend = $this->db
-					->select('*, SUM(hits) as hitstotal')
-					->where('YEAR(date) = '.date('Y'), null, false)
-					->where('MONTH(date) = '.date('m'), null, false)
+				$hitstemp = $this->db
+					->select('SUM(hits) as hitstoday')
+					->where('date', date('Y-m-d'))
 					->group_by('date')
-					->order_by('date','DESC')
 					->get('t_visitor')
 					->row_array();
-					
-				$range = date('j', strtotime($lastend['date']));
-
-				for ($i = $range; $i > 0; $i--) 
-				{
-					$stats = $this->db
-						->select('*, SUM(hits) as hitstotal')
-						->where('YEAR(date) = '.date('Y'), null, false)
-						->where('MONTH(date) ='.date('m'), null, false)
-						->where('DAY(date) =0'.$i, null, false)
-						->group_by('date')
-						->get('t_visitor')
-						->row_array();
-
-					if (empty($stats)) 
-					{
-						$this->vars['rvisitors'][$i] = 0;
-						$this->vars['arrhari'][$i] = '"'.date('d M', strtotime(date('Y-m-').$i)).'"';
-						$this->vars['rhits'][$i] = 0;
-					} 
-					else 
-					{
-						$unikvisitor = $this->db
-							->select('ip')
-							->where('MONTH(date) ='.date('m'), null, false)
-							->where('DAY(date) =0'.$i, null, false)
-							->group_by('ip')
-							->get('t_visitor')
-							->num_rows();
-
-						$this->vars['rvisitors'][$i] = $unikvisitor;
-						$this->vars['arrhari'][$i] = '"'.date('d M', strtotime($stats['date'])).'"';
-						$this->vars['rhits'][$i] = $stats['hitstotal'];
-					}
-				}
-				$this->vars['arrhari'] = array_reverse($this->vars['arrhari']);
-			break;
-
-			case "chartyear":
-				$lastend = $this->db
-					->select('*, SUM(hits) as hitstotal, count(date) as unikvisitor')
-					->where('YEAR(date) ='.date('Y'), null,false)
-					->group_by('MONTH(date)')
-					->order_by('date','DESC')
+			} 
+			else 
+			{
+				$visitorstemp = $this->db
+					->where('date', date('Y-m-d', strtotime('-'.$i.' days')))
+					->group_by('ip')
 					->get('t_visitor')
-					->row_array(); 
+					->result_array();
 
-				$range = date('n', strtotime($lastend['date']));
+				$hitstemp = $this->db
+					->select('SUM(hits) as hitstoday')
+					->where('date', date('Y-m-d', strtotime('-'.$i.' days')))
+					->group_by('date')
+					->get('t_visitor')
+					->row_array();
+			}
 
-				for ($i = $range; $i > 0; $i--) 
-				{
-					$stats = $this->db
-						->select('*, SUM(hits) as hitstotal')
-						->where('YEAR(date) ='.date('Y'), null, false )
-						->where('MONTH(date) = 0'.$i, null, false)
-						->group_by('MONTH(date)')
-						->order_by('date','DESC')
-						->get('t_visitor')
-						->row_array();
-
-
-
-					if (empty($stats)) 
-					{
-						$this->vars['rvisitors'][$i] = 0;
-						$this->vars['arrhari'][$i] = '"'.date('M', strtotime(date('Y-').$i.'-01')).'"';
-						$this->vars['rhits'][$i] = 0;
-					} 
-					else 
-					{
-						$unikvisitor = $this->db
-							->select('ip')
-							->where('YEAR(date) ='.date('Y'), null, false )
-							->where('MONTH(date) = 0'.$i, null, false)
-							->group_by('date')
-							->get('t_visitor')
-							->num_rows();
-
-						$this->vars['rvisitors'][$i] = $unikvisitor;
-						$this->vars['arrhari'][$i] = '"'.date('M', strtotime(date('Y-').$i.'-01')).'"';
-						$this->vars['rhits'][$i] = $stats['hitstotal'];
-					}
-				}
-				
-				$this->vars['arrhari'] = array_reverse($this->vars['arrhari']);
-			break;
+			$arrvisitor[$i] = count($visitorstemp);
+			$this->vars['arrhari'][$i] = '"'.date('D, d M', strtotime('-'.$i.' days')).'"';
+			$arrhits[$i] = (empty($hitstemp['hitstoday']) ? '0' : $hitstemp['hitstoday']);
 		}
+		$this->vars['rvisitors'] = array_combine(array_keys($arrvisitor), array_reverse(array_values($arrvisitor)));
+		$this->vars['rhits'] = array_combine(array_keys($arrhits), array_reverse(array_values($arrhits)));
 
-		// load view.
+		
 		$this->render_view('view_index', $this->vars);
 	}
 
@@ -229,13 +115,16 @@ class Home extends Admin_controller {
 
 	public function setlang()
 	{
-		if ( $this->input->is_ajax_request() ) {
-			# code...
+		if ( $this->input->is_ajax_request() ) 
+		{
 			$session_lang['lang_active'] = $this->input->post('data');
 			$this->session->set_userdata($session_lang);
 			$response['status'] = true;
 			$this->json_output($response);
 		}
-		//redirect(uri_string(), 'refresh');
+		else
+		{
+			show_404();
+		}
 	}
 } // End Class.

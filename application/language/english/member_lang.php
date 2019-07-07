@@ -23,7 +23,7 @@ $lang['menu_post'] = 'Post';
 $lang['menu_account'] = 'Account';
 $lang['menu_setting'] = 'Setting';
 $lang['menu_logout'] = 'Sign out';
-$lang['menu_write_post'] = 'Write Any Post';
+$lang['menu_write_post'] = 'Write Post';
 $lang['menu_view_site'] = 'View Site';
 
 $lang['home_title'] = 'Dashboard';

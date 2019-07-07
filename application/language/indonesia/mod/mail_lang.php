@@ -10,7 +10,7 @@ $lang['inbox'] = 'Kotak Masuk';
 $lang['send_box'] = 'Terkirim';
 
 
-$lang['table_from'] = 'Nama';
+$lang['table_from'] = 'Nama | Email';
 $lang['table_subject'] = 'Subyek';
 $lang['table_date'] = 'Tanggal';
 $lang['table_action'] = 'Aksi';

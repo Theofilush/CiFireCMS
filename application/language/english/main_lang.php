@@ -13,7 +13,6 @@ $lang['tooltip_select_all'] = 'Select All';
 $lang['select_all'] = 'Select All';
 $lang['select'] = 'Select';
 
-
 // Button
 $lang['button_login'] = 'Log In';
 $lang['button_forgot_pasword'] = 'Forgot Password';

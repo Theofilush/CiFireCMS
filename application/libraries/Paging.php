@@ -109,11 +109,11 @@ class Paging {
 		if ($halaman_aktif < $jml_halaman) 
 		{
 			$next = $halaman_aktif + 1;
-			$result_page .= '<li><a href="'.$url.$title.'&page='.$next.'">Next</a></li>';
+			$result_page .= '<li class="page-item"><a class="page-link" href="'.$url.$title.'&page='.$next.'">Next</a></li>';
 		} 
 		else 
 		{
-			$result_page .= '<li class="disabled"><a>Next</a></li>';
+			$result_page .= '<li class="page-item disabled"><a class="page-link">Next</a></li>';
 		}
 
 		return $result_page;

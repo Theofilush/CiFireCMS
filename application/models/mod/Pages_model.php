@@ -16,15 +16,14 @@ class Pages_model extends CI_Model {
 	private function _datatable_query()
 	{
 		$this->db->select('*');
-		
 		$this->db->from($this->_table);
 
 		$i = 0;	
 		foreach ($this->_column_search as $item) 
 		{
-			if ($this->input->post('search')['value'])
+			if ( $this->input->post('search')['value'] )
 			{
-				if ($i === 0)
+				if ( $i == 0 )
 				{
 					$this->db->group_start();
 					$this->db->like($item, $this->input->post('search')['value']);
@@ -34,7 +33,7 @@ class Pages_model extends CI_Model {
 					$this->db->or_like($item, $this->input->post('search')['value']);
 				}
 
-				if (count($this->_column_search) - 1 == $i) 
+				if ( count($this->_column_search) - 1 == $i ) 
 				{
 					$this->db->group_end(); 
 				}
@@ -42,7 +41,7 @@ class Pages_model extends CI_Model {
 			$i++;
 		}
 		
-		if (!empty($this->input->post('order'))) 
+		if ( !empty($this->input->post('order')) ) 
 		{
 			$this->db->order_by(
 				$this->_column_order[$this->input->post('order')['0']['column']], 
@@ -56,11 +55,11 @@ class Pages_model extends CI_Model {
 	}
 
 
-	function get_datatables()
+	public function get_datatables()
 	{
 		$this->_datatable_query();
 
-		if ($this->input->post('length') != -1) 
+		if ( $this->input->post('length') != -1 ) 
 		{
 			$this->db->limit($this->input->post('length'), $this->input->post('start'));
 			$query = $this->db->get();
@@ -74,7 +73,7 @@ class Pages_model extends CI_Model {
 	}
 
 
-	function count_filtered()
+	public function count_filtered()
 	{
 		$this->_datatable_query();
 		$query = $this->db->get();
@@ -106,16 +105,14 @@ class Pages_model extends CI_Model {
 
 	public function delete($id)
 	{
-		if ($this->cek_id($id) > 0) 
+		if ( $this->cek_id($id) > 0 ) 
 		{
 			$query = $this->db->where('id', $id);
 			$query = $this->db->delete($this->_table);
 			return TRUE;
 		}
 		else
-		{
 			return FALSE;
-		}
 	}
 
 
@@ -165,8 +162,6 @@ class Pages_model extends CI_Model {
 			return TRUE;
 		}
 		else 
-		{
 			return FALSE;
-		}
-	}	
+	}
 } // End class.

@@ -21,17 +21,14 @@ class Pages extends Web_controller {
 		{
 			$data = $this->pages_model->get_data($seotitle);
 			$this->vars['res'] = $data;
-
-			$this->set_meta(array(
-				'title' => $data['title'],
-				'description' => cut($data['content'], 150)
-			));
 			
+			$this->meta_title($data['title']);
+			$this->meta_description(cut($data['content'], 150));
 			$this->render_view('pages', $this->vars);
 		}
 		else
 		{
-			return $this->render_404();
+			$this->render_404();
 		}
 	}
-} // end class
+} // End class.

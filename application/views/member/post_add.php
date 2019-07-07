@@ -36,8 +36,17 @@
 							<div id="collapseCategory" class="collapse" aria-labelledby="collapse-category" data-parent="#accordionPost">
 								<div class="card-body">
 									<div id="select-category"></div>
-									<select name="category" class="select-category" data-placeholder="- Category -">
-										<option value="<?=encrypt('1')?>">Uncategory</option>
+									<select name="category" class="select-2" data-placeholder="- Category -">
+										<option value=""></option>
+										<?php
+											$categorys = $this->CI->db
+												->where('active', 'Y')
+												->get('t_category')
+												->result_array();
+											foreach ($categorys as $category):
+										?>
+										<option value="<?=encrypt($category['id'])?>"><?=$category['title']?></option>
+										<?php endforeach ?>
 									</select>
 								</div>
 							</div>
@@ -86,13 +95,22 @@
 							</div>
 						</div>
 						<!--/ Picture -->
-					</div>
 
-					<hr>
-					
-					<div>
-						<button type="submit" class="btn_submit_post btn btn-primary"><i class="fa fa-check"></i> <?=lang_line('button_submit')?></button>
-						<button type="button" class="btn btn-danger pull-right" onclick="location=href='<?=member_url($this->mod)?>'"><i class="fa fa-times"></i> <?=lang_line('button_cancel')?></button>
+						<!-- Publish -->
+						<div class="card">
+							<div class="card-header" id="collapse-publish">
+								<button class="btn btn-link" type="button" data-toggle="collapse" aria-expanded="true" data-target="#collapsePublish" aria-controls="collapsePublish">Publish</button>
+							</div>
+							<div id="collapsePublish" class="collapse show" aria-labelledby="collapse-publish" data-parent="#accordionPost">
+								<div class="card-body">
+									<div>
+										<button type="submit" class="btn_submit_post btn btn-primary"><i class="fa fa-check"></i> <?=lang_line('button_submit')?></button>
+										<button type="button" class="btn btn-danger pull-right" onclick="location=href='<?=member_url($this->mod)?>'"><i class="fa fa-times"></i> <?=lang_line('button_cancel')?></button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--/ Publish -->
 					</div>
 				</div>
 			</div>

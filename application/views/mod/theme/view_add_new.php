@@ -41,13 +41,6 @@
 					</div>
 
 					<div class="form-group">
-						<label>Author</label>
-						<input type="text" name="author" class="form-control" required style="max-width:410px;" />
-					</div>
-				
-				
-					
-					<div class="form-group">
 						<label>Theme Package <span class="text-danger">*</span></label></label>
 						<input type="file" name="fupload" class="file-input" 
 							data-show-caption="false" 

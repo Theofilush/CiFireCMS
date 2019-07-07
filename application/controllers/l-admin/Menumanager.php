@@ -11,30 +11,25 @@ class Menumanager extends Admin_Controller {
 	{
 		parent::__construct();
 		
+		$this->global_access($this->mod);
+
 		$this->lang->load('mod/'.$this->mod, $this->_language);
 		$this->meta_title(lang_line('mod_title'));
 
-		// $this->global_access('menumanager');
-
-		$this->mod = $this->uri->segment(2);
 		$this->act = $this->uri->segment(3);
 	}
 
 
 	public function index() 
 	{
-		if ($this->read_access == TRUE && $this->write_access == TRUE)
+		if ( $this->read_access && $this->write_access )
 		{
 			$grids = $this->input->get('group_id');
 
-			if (!empty($grids)) 
-			{
+			if ( !empty($grids) )
 				$_get_group_id = $grids;
-			} 
 			else 
-			{
 				$_get_group_id = 1;
-			}
 
 			$group_id = 1;
 
@@ -48,7 +43,7 @@ class Menumanager extends Admin_Controller {
 
 			$grids = $this->input->get('group_id');
 
-			if (!empty($grids))
+			if ( !empty($grids) )
 				$group_ids = $grids;
 			else 
 				$group_ids = 1;
@@ -81,17 +76,14 @@ class Menumanager extends Admin_Controller {
 		else
 		{
 			$this->render_403();
-			// show_403();
 		}
 	}
-
 
 
 	function _add_row($id, $parent, $li_attr, $label) 
 	{
 		$this->vars[$parent][] = array('id' => $id, 'li_attr' => $li_attr, 'label' => $label);
 	}
-	
 
 
 	function _generate_list($attr = '', $attrss = '') 
@@ -99,7 +91,6 @@ class Menumanager extends Admin_Controller {
 		return $this->_ul(0, $attr, $attrss);
 	}
 	
-
 
 	function _ul($parent = 0, $attr = '', $attrss = '') 
 	{
@@ -109,15 +100,11 @@ class Menumanager extends Admin_Controller {
 
 		if (isset($this->vars[$parent])) 
 		{
-			if ($attr) 
-			{
+			if ( $attr )
 				$attr = ' ' . $attr;
-			}
 
-			if ($attrss) 
-			{
+			if ( $attrss )
 				$attrss = ' ' . $attrss;
-			}
 
 			$html = "\n$indent";
 			$html .= "<ul $attr>";
@@ -130,7 +117,7 @@ class Menumanager extends Admin_Controller {
 				$html .= '<li'. $row['li_attr'] . '>';
 				$html .= $row['label'];
 
-				if ($child) 
+				if ( $child )
 				{
 					$i--;
 					$html .= $child;
@@ -145,20 +132,19 @@ class Menumanager extends Admin_Controller {
 		} 
 		else 
 		{
-			return false;
+			return FALSE;
 		}
 	}
 
 
-
 	public function add_menu_group()
 	{
-		if (! $_POST) 
+		if ( ! $_POST )
 		{
 			$this->load->view($this->dirout.'templates/menu_group_add', $this->vars);
 		}
 
-		elseif ($this->input->post('act') === 'add') 
+		elseif ($this->input->post('act') == 'add') 
 		{
 			if (!empty($this->input->post('title'))) 
 			{
@@ -167,7 +153,7 @@ class Menumanager extends Admin_Controller {
 					$id_self = $this->db->insert_id();
 					
 					$this->db->insert('t_menu', array(
-						'title'    => 'Delete Me',
+						'title'    => 'Menu Title',
 						'url'      => '',
 						'class'    => '',
 						'group_id' => $id_self,
@@ -192,21 +178,24 @@ class Menumanager extends Admin_Controller {
 			header('Content-type: application/json');
 			echo json_encode($response);
 		}
-	}
 
+		else
+		{
+			show_404();
+		}
+	}
 
 
 	public function edit_menu_group() 
 	{
-		if (!empty($this->input->post('title'))) 
+		if ( !empty($this->input->post('title')) )
 		{
 			$id = (int)$this->input->post('id');
-			
 			$dataTitle = trim($this->input->post('title'));
 
-			$update = $this->db->where('id',$id)->update('t_menu_group',array('title'=>$dataTitle));
+			$update = $this->db->where('id',$id)->update('t_menu_group', array('title' => $dataTitle));
 			
-			if ($update) 
+			if ( $update )
 			{
 				$response['success'] = true;
 			} 
@@ -218,17 +207,20 @@ class Menumanager extends Admin_Controller {
 			header('Content-type: application/json');
 			echo json_encode($response);
 		}
+		else
+		{
+			show_404();
+		}
 	}
-
 
 
 	public function delete_menu_group() 
 	{
-		if (!empty($this->input->post('id'))) 
+		if ( !empty($this->input->post('id')) ) 
 		{
 			$id = $this->input->post('id');
 			
-			if ($id === 1) 
+			if ( $id == 1 ) 
 			{
 				$response['success'] = false;
 				$response['msg'] = 'Cannot delete Group ID = 1';
@@ -237,7 +229,7 @@ class Menumanager extends Admin_Controller {
 			{
 				$del_group = $this->db->where('id', $id)->delete('t_menu_group');
 				
-				if ($del_group) 
+				if ( $del_group ) 
 				{
 					$this->db->where('group_id', $id)->delete('t_menu');
 				}
@@ -254,10 +246,9 @@ class Menumanager extends Admin_Controller {
 	}
 
 
-
 	function add_single_menu() 
 	{
-		if ($_POST) 
+		if ( $_SERVER['REQUEST_METHOD'] == 'POST' )
 		{
 			$query_lp = $this->db->select_max('position')
 				->where('group_id', $this->input->post('gid'))
@@ -298,22 +289,9 @@ class Menumanager extends Admin_Controller {
 	}
 
 
-
 	function editsinglemenu() 
-	{
-		if (! $_POST) 
-		{
-			$this->vars['title'] = $this->input->get('id');
-
-			$this->vars['res_menu'] = $this->db
-				->where('id',$this->input->get('id'))
-				->get('t_menu')
-				->row();
-
-			$this->load->view($this->dirout.'templates/menu_edit', $this->vars);
-		}
-		
-		elseif ($this->input->post('acc') === 'editsinglemenu') 
+	{	
+		if ( $this->input->post('acc') == 'editsinglemenu' ) 
 		{
 			$id = (int)$this->input->post('menu_id');
 			
@@ -336,16 +314,26 @@ class Menumanager extends Admin_Controller {
 				->_display();
 			exit;
 		}
+
+		else
+		{
+			$this->vars['title'] = $this->input->get('id');
+
+			$this->vars['res_menu'] = $this->db
+				->where('id',$this->input->get('id'))
+				->get('t_menu')
+				->row();
+
+			$this->load->view($this->dirout.'templates/menu_edit', $this->vars);
+		}
 	}
 	
-
 
 	function savemenuposition() 
 	{
 		$easymm = $this->input->post('easymm');
 		$this->update_position(0, $easymm);
 	}
-
 
 
 	function update_position($parent, $children) 
@@ -372,10 +360,9 @@ class Menumanager extends Admin_Controller {
 	}
 
 
-
 	function deletesinglemenu() 
 	{
-		if ($_POST) 
+		if ( $_SERVER['REQUEST_METHOD'] == 'POST' )
 		{
 			$id = $this->input->post('id');
 			$del_menu = $this->db->where('id', $id)->delete('t_menu');

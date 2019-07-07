@@ -6,8 +6,10 @@ class Web_Controller extends MY_Controller {
 	public function __construct() 
 	{
 		parent::__construct();
+		
 		$this->CI =& get_instance();
-		if ($this->settings->website('maintenance') == 'Y') 
+
+		if ( $this->settings->website('maintenance') == 'Y' ) 
 		{
 			redirect(site_url('maintenance'), 'refresh');
 		}
@@ -18,14 +20,19 @@ class Web_Controller extends MY_Controller {
 
 			$this->set_cache();
 			$this->set_meta();
+
 			$this->load->model('web/index_model');
 			$this->theme_folder = theme_active('folder');
 		}
-		
-		// Get Visitors
-		$this->get_visitors();
-	}
 
+		$this->form_validation->set_error_delimiters('<div>*&nbsp; ', '</div>');
+		
+		// Visitors.
+		if ( $this->settings->website('visitors') == 'Y' )
+		{
+			$this->get_visitors();
+		} 
+	}
 
 
 	public function theme_asset($asset = '')
@@ -49,7 +56,7 @@ class Web_Controller extends MY_Controller {
 
 	public function render_404()
 	{
-		if ( file_exists(VIEWPATH.'themes/'.$this->theme_folder.'/404.php') )
+		if ( file_exists(VIEWPATH."themes/$this->theme_folder/404.php") )
 		{
 			$this->load->view("themes/$this->theme_folder/404");
 		}
@@ -65,7 +72,4 @@ class Web_Controller extends MY_Controller {
 		echo $this->menu->front_menu($group_id, $ul, $ul_li, $ul_li_a, $ul_li_a_ul);
 		$this->menu->clear();
 	}
-
-
-
-} // End Class
+} // End class.

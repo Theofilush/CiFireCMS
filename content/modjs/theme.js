@@ -74,7 +74,8 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-$(".upload_theme_asets").click(function() {
+$(".upload_theme_asets").on('click',function(e) {
+    e.preventDefault();
     $('#modal_upload_theme_assets').modal('show');
 }); 
 
@@ -112,30 +113,18 @@ $('#folder').on('input', function() {
     $('#folder').val($('#folder').val().replace(/\s+/g, '-'));
 });
 
-$(".modal-helper").click(function() {
+$(".modal-helper").on('click',function(e) {
+    e.preventDefault();
     $('#modal-helper').modal('show');
 });
 
-$(".c_blank_theme").click(function() {
+$(".c_blank_theme").on('click',function(e) {
+    e.preventDefault();
     $('#modal_create_blank').modal('show');
 });
 
-// $(".modal_delete").click(function() {
-//     var idDel = $(this).attr("idDel");
-//     $('#idDel').val(idDel);
-//     $('#modal_delete').modal('show');
-// });
-
-// $(".modal_delete_theme").click(function() {
-//     var idDel = $(this).attr("idDel");
-//     var dirDel = $(this).attr("dirDel");
-//     $('#idDel').val(idDel);
-//     $('#dirDel').val(dirDel);
-//     $('#modal_delete_theme').modal('show');
-// });
-
-$('.delete_theme').on('click',function(event) {
-    event.preventDefault();
+$('.delete_theme').on('click',function(e) {
+    e.preventDefault();
     var idTeme = $(this).attr("data-id");
     var folderTheme = $(this).attr("data-folder");
     var data = {
@@ -217,6 +206,34 @@ $(".modal_active").click(function() {
     $('#modal_active').modal('show');
 });
 
-$(".create_file").click(function() {
+$(".create_file").click(function(e) {
+    e.preventDefault();
     $('#modal_create_file').modal('show');
+});
+
+$(".backup_theme").click(function(e) {
+    e.preventDefault();
+    var self = $(this); 
+    var id = self.attr('data-theme-id');
+    var folder = self.attr('data-theme-folder');
+    var title = self.attr('data-theme-title');
+    self.find('i').removeClass().addClass('icon-spinner2 spinner');
+    $.ajax({
+        url: window.location.href + '/backup',
+        type: 'POST',
+        dataType: 'JSON',
+        data:{
+            id: id,
+            folder: folder,
+            title: title,
+        },
+        cache: false,
+        success: function(response){
+            if (response['status']==true) {
+                window.open(response['file'], '_blank');
+            };
+
+            self.find('i').removeClass().addClass('fa fa-download');
+        }
+    });
 });

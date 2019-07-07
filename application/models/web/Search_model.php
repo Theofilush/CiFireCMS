@@ -14,15 +14,14 @@ class Search_model extends CI_Model {
 		$pisah_kata = explode(" ",$kata);
 		$jml_kata = (integer)count($pisah_kata)-1;
 
-		$query = $this->db->select('title,seotitle,content');
+		$query = $this->db->select('*');
 		$query = $this->db->from('t_post');
 		for ($i=0; $i<=$jml_kata; $i++)
 		{
 			$query = $this->db->or_group_start();
-			  $query = $this->db->like('title', $pisah_kata[$i]);
-			  $query = $this->db->or_like('content', $pisah_kata[$i]);
+			$query = $this->db->like('title', $pisah_kata[$i]);
+			$query = $this->db->or_like('content', $pisah_kata[$i]);
 			$query = $this->db->group_end();
-
 			$query = $this->db->where('active', 'Y');
 		}
 		$query = $this->db->order_by('id', 'DESC');

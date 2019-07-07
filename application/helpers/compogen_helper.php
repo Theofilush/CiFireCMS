@@ -6,7 +6,7 @@
  *   author  : Adiman
  *   website : https://www.alweak.com 
  *
- * - Helper ini dugunakan pada CompGen.
+ * - Helper ini di gunakan pada komponen CompGen.
  *
 */
 

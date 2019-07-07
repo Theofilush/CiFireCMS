@@ -18,18 +18,17 @@ class Tag_model extends CI_Model {
 		$this->db->select('
 		                  t_tag.*, 
 		                  COUNT(t_post.id) AS tag_count
-		                  ');
+		                 ');
 		
 		$this->db->from($this->_table);
-
 		$this->db->join('t_post', "t_post.tag LIKE CONCAT('%',t_tag.seotitle,'%')", 'LEFT');
 
 		$i = 0;	
 		foreach ($this->_column_search as $item) 
 		{
-			if ($this->input->post('search')['value'])
+			if ( $this->input->post('search')['value'] )
 			{
-				if ($i === 0)
+				if ($i == 0)
 				{
 					$this->db->group_start();
 					$this->db->like($item, $this->input->post('search')['value']);
@@ -39,7 +38,7 @@ class Tag_model extends CI_Model {
 					$this->db->or_like($item, $this->input->post('search')['value']);
 				}
 
-				if (count($this->_column_search) - 1 == $i) 
+				if ( count($this->_column_search) - 1 == $i ) 
 				{
 					$this->db->group_end(); 
 				}
@@ -47,7 +46,7 @@ class Tag_model extends CI_Model {
 			$i++;
 		}
 		
-		if (!empty($this->input->post('order'))) 
+		if ( !empty($this->input->post('order')) ) 
 		{
 			$this->db->order_by(
 				$this->_column_order[$this->input->post('order')['0']['column']], 
@@ -63,11 +62,11 @@ class Tag_model extends CI_Model {
 	}
 
 
-	function get_datatables()
+	public function get_datatables()
 	{
 		$this->_datatable_query();
 
-		if ($this->input->post('length') != -1) 
+		if ( $this->input->post('length') != -1 ) 
 		{
 			$this->db->limit($this->input->post('length'), $this->input->post('start'));
 			$query = $this->db->get();
@@ -96,13 +95,13 @@ class Tag_model extends CI_Model {
 	}
 
 	
-	public function insert($data)
+	public function insert(array $data)
 	{
 		$this->db->insert($this->_table, $data);
 	}
 
 
-	public function update($id,$data)
+	public function update($id, array $data)
 	{
 		$this->db->where('id', $id)->update($this->_table, $data);
 	}
@@ -110,7 +109,7 @@ class Tag_model extends CI_Model {
 
 	public function delete($id)
 	{
-		if ($this->cek_id($id) > 0) 
+		if ( $this->cek_id($id) > 0 ) 
 		{
 			$this->db->where('id', $id);
 			$this->db->delete($this->_table);
@@ -125,53 +124,47 @@ class Tag_model extends CI_Model {
 
 	public function get_tags($id) 
 	{
-		$query = $this->db->where('id',$id)->get($this->_table)->row_array();
-		return $query;
+		$query = $this->db->where('id',$id);
+		$query = $this->db->get($this->_table);
+		$result = $query->row_array();
+		return $result;
 	}
 
 
 	public function cek_seotitle($seotitle)
 	{
-		$num_rows = $this->db
-			->where('seotitle', $seotitle)
-			->get($this->_table)
-			->num_rows();
+		$query = $this->db->where('seotitle', $seotitle);
+		$query = $this->db->get($this->_table);
+		$result = $query->num_rows();
 
-		if ($num_rows == 0)
-		{
+		if ( $result == 0 )
 			return TRUE;
-		}
 		else 
-		{
 			return FALSE;
-		}
 	}
 
 
 	public function cek_seotitle2($id, $seotitle)
 	{
-		$query = $this->db->where('seotitle', $seotitle)->get($this->_table);
+		$query = $this->db->where('seotitle', $seotitle);
+		$query = $this->db->get($this->_table);
 		
-		if ($query->num_rows() == 1 && $query->row_array()['id'] == $id || $query->num_rows() != 1) 
-		{
+		if ( $query->num_rows() == 1 && $query->row_array()['id'] == $id || $query->num_rows() != 1 ) 
 			return TRUE;
-		}
 		else 
-		{
 			return FALSE;
-		}
 	}
 
 
 	public function cek_id($id)
 	{
-		$num_rows = $this->db->where('id', $id)->get($this->_table)->num_rows();
+		$query = $this->db->where('id', $id);
+		$query = $this->db->get($this->_table);
+		$result = $query->num_rows();
 
-		if ($num_rows < 1)
-		{
-			$num_rows = 0;
-		}
+		if ( $result < 1 )
+			$result = 0;
 		
-		return $num_rows;
+		return $result;
 	}
 } // End class.

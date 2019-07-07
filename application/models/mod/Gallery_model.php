@@ -86,18 +86,15 @@ class Gallery_model extends CI_Model {
 	{
 		$num_rows = 0;
 		
-		if ($id != "")
+		if ( !empty($id) )
 		{
 			$query = $this->db->select('id');
 			$query = $this->db->where('id', $id);
 			$query = $this->db->get($this->_table);
-			
 			$num_rows = $query->num_rows();
 
-			if ($num_rows < 1) 
-			{
+			if ( $num_rows < 1 ) 
 				$num_rows = 0;
-			}
 		}
 		
 		return $num_rows;
@@ -109,16 +106,12 @@ class Gallery_model extends CI_Model {
 		$query = $this->db->select('id,seotitle');
 		$query = $this->db->where("BINARY seotitle = '$seotitle'", NULL, FALSE);
 		$query = $this->db->get($this->_table);
-		
 		$num_rows = $query->num_rows();
 
-		if ($num_rows == 0) 
-		{
+		if ( $num_rows == 0 ) 
 			return TRUE;
-		}
-		else {
+		else
 			return FALSE;
-		}
 	}
 
 

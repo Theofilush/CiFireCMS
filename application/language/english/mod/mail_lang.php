@@ -9,7 +9,7 @@ $lang['mod_title_read'] = 'Read';
 $lang['inbox'] = 'Inbox';
 $lang['send_box'] = 'Send';
 
-$lang['table_from'] = 'Name';
+$lang['table_from'] = 'Name | Email';
 $lang['table_subject'] = 'Subject';
 $lang['table_date'] = 'Date';
 $lang['table_action'] = 'Action';

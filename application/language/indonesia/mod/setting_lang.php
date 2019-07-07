@@ -30,6 +30,8 @@ $lang['table_address'] = 'Alamat';
 $lang['table_country'] = 'Negara';
 $lang['table_timezone'] = 'Sona Waktu';
 $lang['table_language'] = 'Bahasa';
+
+$lang['table_visitors'] = 'Pengunjung';
 $lang['table_maintenance'] = 'Mode Pemeliharaan';
 $lang['table_member_reg'] = 'Registrasi Anggota';
 $lang['table_sitemap'] = 'Peta Situs';

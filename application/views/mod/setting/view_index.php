@@ -252,6 +252,14 @@ function tabactive($tabactive, $tab = '') {
 						<div class="box-body">
 							<div class=" table-responsive mb-3">
 								<table class="table table-striped no-row-border mb-0">
+								<!-- visitors -->
+									<tr>
+										<td width="200"><?=lang_line('table_visitors');?></td>
+										<td class="link-setting">
+											<a href="javascript:void(0)" id="visitors" data-type="select" data-pk="visitors" data-url="<?=admin_url('setting/submit');?>" data-value="<?=$this->settings->website('visitors');?>"><?=$this->settings->website('visitors');?></a>
+										</td>
+									</tr>
+									<!--/ visitors -->
 									<!-- maintenance -->
 									<tr>
 										<td width="200"><?=lang_line('table_maintenance');?></td>
@@ -422,7 +430,7 @@ function tabactive($tabactive, $tab = '') {
 
 								<textarea class="form-control content" id="code_metasocial" name="meta_content"><?=$data_meta;?></textarea>
 
-								<button type="button" id="submit-meta" class="btn btn-md btn-primary pull-right"><i class="fa fa-save"></i> &nbsp; <?=lang_line('button_save');?> <?=lang_line('mod_lang_metasocial');?></button>
+								<button type="button" id="submit-meta" class="button btn-sm btn-primary mt-2"><i class="fa fa-save"></i> &nbsp; <?=lang_line('button_save');?> <?=lang_line('mod_lang_metasocial');?></button>
 								<div class="clearfix"></div>
 								<?php } ?>
 							</form>

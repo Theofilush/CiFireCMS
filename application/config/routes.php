@@ -34,5 +34,5 @@ $route['search/([^/]*)/([0-9]+)'] = 'search/index/$1/$2';
 $route['gallery'] = 'gallery/index';
 $route['gallery/([a-z0-9-]+)'] = 'gallery/album/$1';
 
-// Custom route post.
+// dinamic post route.
 require_once APPPATH . 'cache/routes.php';

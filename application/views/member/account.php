@@ -25,7 +25,7 @@
 						</p>
 					</div>
 					<p class="card-description text-center">
-						<small class="text-strong">About me :</small><br>
+						<small class="text-strong"><b>About me :</b></small><br>
 						<?=$row['about'];?>
 					</p>
 					<hr class="text-center mt-4 mb-2">
@@ -176,6 +176,7 @@
 	</div>
 </div>
 
+<!-- modal -->
 <div id="modal_edit_photo" class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-dialog" role="document">
@@ -203,11 +204,13 @@
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="submit" class="btn btn-success upload"><i class="fa fa-upload mr-2"></i> <?=lang_line('button_upload')?></button>
-						<button type="button" class="btn btn-secondary" data-dismiss="modal"><?=lang_line('button_cancel')?></button>
+						<button type="button" class="btn btn-danger delete_photo"><i class="fa fa-trash mr-2"></i> <?=lang_line('button_delete')?></button>
+						<button type="submit" class="btn btn-primary upload"><i class="fa fa-upload mr-2"></i> <?=lang_line('button_upload')?></button>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-sign-out"></i>  <?=lang_line('button_cancel')?></button>
 					</div>
 				<?php echo form_close(); ?>
 			</div>
 		</div>
 	</div>
 </div>
+<!--/ modal -->

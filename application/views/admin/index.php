@@ -7,11 +7,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<title><?=$this->CI->meta_title;?></title>
 	<!-- favicon -->
-	<link rel="shortcut icon" href="<?=favicon()?>" >
+	<link rel="shortcut icon" href="<?=favicon()?>">
 
 	<link rel="stylesheet" href="<?=content_url('plugins/font-awesome/font-awesome.min.css')?>" type="text/css">
 	<link rel="stylesheet" href="<?=content_url('plugins/icomoon/styles.css')?>" type="text/css">
-	<link rel="stylesheet" href="<?=content_url('plugins/dashboard/css/bootstrap_limitless.css')?>"  type="text/css">
+	<link rel="stylesheet" href="<?=content_url('plugins/dashboard/css/bootstrap_limitless.css')?>" type="text/css">
 	<link rel="stylesheet" href="<?=content_url('plugins/dashboard/css/bootstrap.css')?>" type="text/css">
 	<link rel="stylesheet" href="<?=content_url('plugins/dashboard/css/layout.css')?>" type="text/css">
 	<link rel="stylesheet" href="<?=content_url('plugins/dashboard/css/components.css')?>" type="text/css">
@@ -23,7 +23,7 @@
 	<link rel="stylesheet" href="<?=content_url('plugins/uploaders/fileinput.css')?>" type="text/css">
 	<link rel="stylesheet" href="<?=content_url('plugins/jqueri-ui-interactions/interactions.css')?>" type="text/css">
 	<link rel="stylesheet" href="<?=content_url('plugins/notifications/noty.css')?>" type="text/css">
-	<link rel="stylesheet" href="<?=content_url('plugins/sweetalert2/sweetalert2.css')?>">
+	<link rel="stylesheet" href="<?=content_url('plugins/sweetalert2/sweetalert2.css')?>" type="text/css">
 	<link rel="stylesheet" href="<?=content_url('plugins/datetime/bootstrap-datetimepicker.min.css');?>" type="text/css">
 	<link rel="stylesheet" href="<?=content_url('plugins/fancybox-2.1.7/jquery.fancybox.css');?>" type="text/css" media="screen">
 
@@ -176,7 +176,7 @@
 	<div class="sgo-top"></div>
 
 	<!-- bootstrap.bundle -->
-	<script type="text/javascript" src="<?=content_url('plugins/dashboard/js/bootstrap.bundle.min.js')?>"></script>
+	<script src="<?=content_url('plugins/dashboard/js/bootstrap.bundle.min.js')?>"></script>
 	<!-- jqueri-ui-interactions -->
 	<script src="<?=content_url('plugins/jqueri-ui-interactions/interactions.min.js')?>"></script>
 	<!-- sticky -->

@@ -27,11 +27,11 @@ class Admin_login_model extends CI_Model {
         $query = $this->db->where('active','Y');
         $query = $this->db->get('t_user');
 
-        if ($query->num_rows() == 1)
+        if ( $query->num_rows() == 1 )
         {
             $userdata = $query->row_array();
 
-            if (decrypt($userdata['password']) == decrypt($input['password']))
+            if ( decrypt($userdata['password']) == decrypt($input['password']) )
                 return TRUE;
             else
                 return FALSE;

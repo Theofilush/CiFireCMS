@@ -24,8 +24,7 @@ var DataTable = $('#DataTable').DataTable({
 	],
 	'ajax': {
 		'type': 'POST',
-		'url': admin_url + a_mod + '/data-table',
-		// data: csrfData
+		'url': window.location.href
 	},
 	'drawCallback': function( settings ) {
 		var api_table = this.api();

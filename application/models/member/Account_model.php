@@ -12,6 +12,7 @@ class Account_model extends CI_Model {
 		$this->key = login_key('member');
 	}
 
+
 	public function get_account()
 	{
 		$query = $this->db->select('username,email,name,gender,birthday,about,address,tlpn,photo')
@@ -21,14 +22,15 @@ class Account_model extends CI_Model {
 		return $query;
 	}
 
+
 	public function update_profile(array $data)
 	{
 		return $this->db->where('id', $this->key)->update($this->_table, $data);
 	}
 
+
 	public function delete()
 	{
 		return $this->db->where('id', $this->key)->delete($this->_table);
 	}
-
 } // End class.

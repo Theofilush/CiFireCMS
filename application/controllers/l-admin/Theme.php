@@ -12,19 +12,27 @@ class Theme extends Admin_controller {
 		$this->lang->load('mod/'.$this->mod, $this->_language);
 		$this->meta_title(lang_line('mod_title'));
 		$this->load->model('mod/theme_model');
+
+		$this->_path = array(
+			'views'       => APPPATH."views/themes/",
+			'themes'      => APPPATH."views/themes/",
+			'assets'      => CONTENTPATH."themes/",
+			'temp'        => CONTENTPATH."temp/",
+			'uploads'     => CONTENTPATH."uploads/",
+		);
 	}
 
 
 	public function index()
 	{
-		if ($this->read_access == TRUE) 
+		if ( $this->read_access ) 
 		{
-			if ($this->_act == 'blank_theme' && $this->write_access == TRUE)
+			if ( $this->_act == 'blank_theme' && $this->write_access )
 			{
 				return $this->_create_blank_theme();
 			}
 			
-			elseif ($this->_act == 'active' && $this->modify_access == TRUE)
+			elseif ( $this->_act == 'active' && $this->modify_access )
 			{
 				$id_theme = $this->input->post('id');
 				$this->theme_model->active_theme($id_theme);
@@ -35,58 +43,64 @@ class Theme extends Admin_controller {
 			else
 			{
 				$this->vars['all_themes'] = $this->theme_model->all_themes();
-
-				// load view
 				$this->render_view('view_index', $this->vars);
 			}
 		}
 		else
 		{
-			return $this->render_404();
+			$this->render_403();
 		}
 	}
 
+
 	public function delete_theme()
 	{
-		$data = $this->input->post('data');
-		$idTheme = xss_filter(decrypt($data['id']),'sql');
-		$folderTheme = xss_filter(decrypt($data['folder']),'xss');
-		
-		if ( $this->theme_model->delete($idTheme) )
+		if ( $this->delete_access && $this->input->is_ajax_request() ) 
 		{
-			if ( 
-				// delete theme views
-			    @delete_folder(VIEWPATH.'themes/'.$folderTheme) && 
-				// delete theme asset
-			    @delete_folder(CONTENTPATH.'themes/'.$folderTheme) 
-			    ) 
+			$data = $this->input->post('data');
+			$idTheme = xss_filter(decrypt($data['id']),'sql');
+			$folderTheme = xss_filter(decrypt($data['folder']), 'xss');
+			
+			if ( $this->theme_model->delete($idTheme) )
 			{
+				// delete theme views dir.
+				@delete_folder(VIEWPATH.'themes/'.$folderTheme); 
+				// delete theme asset dir.
+			    @delete_folder(CONTENTPATH.'themes/'.$folderTheme);
+				
 				$response['success'] = true;
 				$response['dataDelete'] = $idTheme;
 				$response['alert']['type'] = 'success';
 				$response['alert']['content'] = lang_line('message_delete_success');
-				$this->json_output($response);
 			}
+			else
+			{
+				$response['success'] = false;
+				$response['dataDelete'] = '0';
+				$response['alert']['type'] = 'error';
+				$response['alert']['content'] = 'ERROR';
+			}
+
+			$this->json_output($response);
 		}
 		else
 		{
-			$response['success'] = false;
-			$response['dataDelete'] = '0';
-			$response['alert']['type'] = 'error';
-			$response['alert']['content'] = 'ERROR';
-			$this->json_output($response);
+			show_404();
 		}
 	}
 
+
 	private function _create_blank_theme()
 	{
-		$this->form_validation->set_rules(array(array(
-			'field' => 'title',
-			'label' => lang_line('form_label_title'),
-			'rules' => 'required|trim|min_length[3]|max_length[50]',
-		)));
+		$this->form_validation->set_rules(array(
+			array(
+				'field' => 'title',
+				'label' => lang_line('form_label_title'),
+				'rules' => 'required|trim|min_length[3]|max_length[50]'
+			)
+		));
 
-		if ($this->form_validation->run() == TRUE)
+		if ( $this->form_validation->run() )
 		{
 			$title = $this->input->post('title');
 			$folder = seotitle($title).'-'.md5(encrypt(1));
@@ -101,7 +115,7 @@ class Theme extends Admin_controller {
 			@fopen(CONTENTPATH."themes/$folder/index.html", "w");
 			
 			$this->theme_model->insert(array(
-				'title' => $title,
+				'title'  => $title,
 				'folder' => $folder
 			));
 
@@ -116,19 +130,17 @@ class Theme extends Admin_controller {
 	}
 
 
-
 	public function add_new()
 	{
-		if ($this->write_access == TRUE)
+		if ( $this->write_access )
 		{
-			if ($this->_act == 'add_new')
+			if ( $_SERVER['REQUEST_METHOD'] == 'POST' )
 			{
 				$theme_title = xss_filter($this->input->post('title'), 'xss');
-				$theme_folder = seotitle($theme_title)."-".md5($theme_title);
+				$theme_folder = seotitle($theme_title)."-".md5(date('YmdHis'));
+				$cek_theme_folder = $this->theme_model->cek_theme_folder($theme_folder);
 
-				$cek_db = $this->db->where('folder', $theme_title)->get('t_theme')->num_rows();
-
-				if ( $cek_db > 0 )
+				if ( $cek_theme_folder == FALSE )
 				{
 					echo "Oups..! Themes is exist.";
 				}
@@ -192,22 +204,24 @@ class Theme extends Admin_controller {
 					}
 				}
 			}
-
-			$this->render_view('view_add_new', $this->vars);
+			else
+			{
+				$this->render_view('view_add_new', $this->vars);
+			}
 		}
 		else
 		{
-			return $this->render_403();
+			$this->render_403();
 		}
 	}
 
 
 	public function edit($id = 0, $file = 'home')
-	{	
-		$this->vars['res_theme'] = $this->theme_model->get_theme((int)$id);
-
-		if ( $this->modify_access == TRUE )
+	{
+		if ( $this->modify_access )
 		{
+			$this->vars['res_theme'] = $this->theme_model->get_theme((int)$id);
+
 			if ( !empty($this->vars['res_theme']) ) 
 			{
 				$folder_edit = $this->vars['res_theme']['folder'];
@@ -296,7 +310,58 @@ class Theme extends Admin_controller {
 		}
 		else
 		{
-			return $this->render_403();
+			$this->render_403();
+		}
+	}
+
+	public function backup()
+	{
+		if ( $this->input->is_ajax_request() && $this->read_access && $this->write_access ) 
+		{
+			$theme_id     = decrypt($this->input->post('id'));
+			$theme_folder = decrypt($this->input->post('folder'));
+			$theme_title  = decrypt($this->input->post('title'));
+			$path_views   = $this->_path['themes'].$theme_folder;
+			$path_assets  = $this->_path['assets'].$theme_folder;
+
+			$dir_temp_theme = "backup-theme-".seotitle($theme_title)."-".md5(date('YmdHis'));
+			$path_dir_temp  = $this->_path['temp'].$dir_temp_theme;
+
+			// create folder in temp.
+			if ( mkdir($path_dir_temp) )
+			{
+				@mkdir($path_dir_temp . "/views");
+				@mkdir($path_dir_temp . "/assets");
+
+				@copy_folder($path_views, $path_dir_temp . "/views");
+				@copy_folder($path_assets, $path_dir_temp . "/assets");
+
+				$this->load->library('zip');
+				$zip_name = $dir_temp_theme . ".zip";
+				
+				$this->zip->read_dir($path_dir_temp . '/views', FALSE);
+				$this->zip->read_dir($path_dir_temp . '/assets', FALSE);
+				$this->zip->compression_level = 2;
+				$this->zip->archive($this->_path['temp'] . $zip_name);
+				$this->zip->clear_data();
+
+				@delete_folder($path_dir_temp);
+				@r_copy($this->_path['temp'].$zip_name, $this->_path['uploads']."file/$zip_name");
+				@delete_folder($this->_path['temp'].$zip_name);
+				
+				$response['status'] = true;
+				$response['file'] = site_url($this->_path['uploads']."file/$zip_name");
+			}
+			else
+			{
+				$response['status'] = false;
+			}
+
+			$this->json_output($response);
+		}
+		else
+		{
+			show_404();
 		}
 	}
 } // End Class.

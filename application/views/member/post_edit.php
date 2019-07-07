@@ -39,10 +39,17 @@
 							<div id="collapseCategory" class="collapse" aria-labelledby="collapse-category" data-parent="#accordionPost">
 								<div class="card-body">
 									<div id="select-category"></div>
-									<select name="category" class="select-category" data-placeholder="- <?=lang_line('post_label_category');?> -">
+									<select name="category" class="select-2" data-placeholder="- Category -">
 										<?php
-											echo '<option value="'. encrypt($result_post['category_id']) .'">'. $result_post['category_title'] .'</option>';
+											$categorys = $this->CI->db
+												->where('active', 'Y')
+												->get('t_category')
+												->result_array();
+											foreach ($categorys as $category):
+												$selected = ( $result_post['category_id'] == $category['id'] ? 'selected' : '');
 										?>
+										<option value="<?=encrypt($category['id'])?>" <?=$selected?>><?=$category['title']?></option>
+										<?php endforeach ?>
 									</select>
 								</div>
 							</div>
@@ -98,13 +105,20 @@
 							</div>
 						</div>
 						<!--/ Picture -->
-					</div>
 
-					<hr>
-					
-					<div>
-						<button type="submit" class="btn_submit_post btn btn-primary"><i class="fa fa-save mr-2"></i> <?=lang_line('button_save')?></button>
-						<button type="button" class="btn btn-danger pull-right" onclick="location=href='<?=member_url($this->mod)?>'"><i class="fa fa-times"></i> <?=lang_line('button_cancel')?></button>
+						<!-- Publish -->
+						<div class="card">
+							<div class="card-header" id="collapse-publish">
+								<button class="btn btn-link" type="button" data-toggle="collapse" aria-expanded="true" data-target="#collapsePublish" aria-controls="collapsePublish">Publish</button>
+							</div>
+							<div id="collapsePublish" class="collapse show" aria-labelledby="collapse-publish" data-parent="#accordionPost">
+								<div class="card-body">
+									<button type="submit" class="btn_submit_post btn btn-primary"><i class="fa fa-save mr-2"></i> <?=lang_line('button_save')?></button>
+									<button type="button" class="btn btn-danger pull-right" onclick="location=href='<?=member_url($this->mod)?>'"><i class="fa fa-times"></i> <?=lang_line('button_cancel')?></button>
+								</div>
+							</div>
+						</div>
+						<!--/ Publish -->
 					</div>
 				</div>
 			</div>

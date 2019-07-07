@@ -26,9 +26,9 @@ class Mail_model extends CI_Model {
 		$i = 0;	
 		foreach ($this->column_search as $item) // loop column 
 		{
-			if ($this->input->post('search')['value']) // if datatable send POST for search
+			if ( $this->input->post('search')['value'] ) // if datatable send POST for search
 			{
-				if ($i === 0) // first loop
+				if ( $i === 0 ) // first loop
 				{
 					$this->db->group_start();
 					$this->db->like($item, $this->input->post('search')['value']);
@@ -39,7 +39,7 @@ class Mail_model extends CI_Model {
 				}
 
 				// last loop
-				if (count($this->column_search) - 1 == $i)
+				if ( count($this->column_search) - 1 == $i )
 				{
 					$this->db->group_end(); //close bracket
 				}
@@ -48,14 +48,15 @@ class Mail_model extends CI_Model {
 			$i++;
 		}
 		
-		if (!empty($this->input->post('order'))) 
+		if ( !empty($this->input->post('order')) ) 
 		{
 			$this->db->order_by(
 				$this->column_order[$this->input->post('order')['0']['column']], 
 				$this->input->post('order')['0']['dir']
 			);
 		}
-		else {
+		else 
+		{
 			$this->db->order_by('id', 'DESC');
 		}
 	}
@@ -65,7 +66,7 @@ class Mail_model extends CI_Model {
 	{
 		$this->_datatable_query();
 
-		if ($this->input->post('length') != -1) 
+		if ( $this->input->post('length') != -1 ) 
 		{
 			$this->db->limit($this->input->post('length'), $this->input->post('start'));
 			$query = $this->db->get();
@@ -153,17 +154,16 @@ class Mail_model extends CI_Model {
 
 	public function get_mail($id=0)
 	{
-		if ($this->cek_id($id) == 1 )
-		{
+		if ( $this->cek_id($id) == 1 )
 			return $this->db->where('id',$id)->get($this->table)->row_array();
-		}
-		else return NULL;
+		else
+			return NULL;
 	}
 
 
 	public function cek_id($id = 0)
 	{
-		if ( empty($id) || $id==0 )
+		if ( empty($id) || $id == 0 )
 			return 0;
 		
 		else
@@ -174,7 +174,7 @@ class Mail_model extends CI_Model {
 				->get($this->table)
 				->num_rows();
 
-			if ($query == 1)
+			if ( $query == 1 )
 				return $query;
 			else
 				return 0;

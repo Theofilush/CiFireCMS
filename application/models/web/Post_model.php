@@ -20,7 +20,7 @@ class Post_model extends CI_Model {
 		$bln = $this->uri->segment(2);
 		$hri = $this->uri->segment(3);
 
-		if ($segments == 4)
+		if ( $segments == 4 )
 		{
 			$cdate = "$thn-$bln-$hri";
 			$cek = $this->db
@@ -30,7 +30,7 @@ class Post_model extends CI_Model {
 				->get('t_post')
 				->num_rows();
 		}
-		elseif ($segments == 3)
+		elseif ( $segments == 3 )
 		{
 			$cdate = "$thn-$bln";
 			$cek = $this->db
@@ -95,34 +95,32 @@ class Post_model extends CI_Model {
 	{
 		$id_post = $this->id_post($seotitle);
 
-		$query = $this->db
+		$query_post = $this->db
 			->select('
-					 t_post.id       as post_id,
-					 t_post.title    as post_title,
-					 t_post.seotitle as post_seotitle,
-					 t_post.active   as post_active,
-					 t_post.content,
-					 t_post.picture,
-					 t_post.image_caption,
-			         t_post.datepost,
-			         t_post.timepost,
-			         t_post.tag,
-			         t_post.hits,
-
-					 t_category.id       as category_id,
-					 t_category.title    as category_title,
-					 t_category.seotitle as category_seotitle,
-
-					 t_user.name as author_name,
-					 t_user.photo as author_photo,
-					 t_user.about as author_about
+						t_post.id             AS  post_id,
+						t_post.title          AS  post_title,
+						t_post.seotitle       AS  post_seotitle,
+						t_post.active         AS  post_active,
+						t_post.content,
+						t_post.picture,
+						t_post.image_caption,
+						t_post.datepost,
+						t_post.timepost,
+						t_post.tag,
+						t_post.hits,
+						t_category.id         AS  category_id,
+						t_category.title      AS  category_title,
+						t_category.seotitle   AS  category_seotitle,
+						t_user.name           AS  author_name,
+						t_user.photo          AS  author_photo,
+						t_user.about          AS  author_about
 					')
 			->join('t_category', 't_category.id = t_post.id_category', 'left')
 			->join('t_user', 't_user.id = t_post.id_user', 'left')
 			->where('t_post.id', $id_post)
 			->get('t_post');
 		
-		$res_post = $query->row_array();
+		$post = $query_post->row_array();
 
 		$query_comment = $this->db
 			->where('id_post', $id_post)
@@ -131,8 +129,7 @@ class Post_model extends CI_Model {
 			->num_rows();
 
 		$qount_comment = array('comment' => $query_comment);
-
-		$result = array_merge($res_post,$qount_comment);
+		$result = array_merge($post, $qount_comment);
 		
 		return $result;
 	}
@@ -141,14 +138,14 @@ class Post_model extends CI_Model {
 	public function prev_post($id = 0) 
 	{
 		$query = $this->db
-			->select('id,title,seotitle')
+			->select('id, title, seotitle')
 			->where('id <',$id)
 			->where('active','Y')
 			->order_by('id','DESC')
 			->limit(1)
 			->get('t_post');
 
-		if ($query->num_rows() > 0) 
+		if ( $query->num_rows() > 0 ) 
 		{
 			$result = $query->row_array();
 		}
@@ -164,14 +161,14 @@ class Post_model extends CI_Model {
 	public function next_post($id = 0) 
 	{
 		$query = $this->db
-			->select('title,seotitle')
+			->select('id, title, seotitle')
 			->where('id >',$id)
 			->where('active','Y')
 			->order_by('id','ASC')
 			->limit(1)
 			->get('t_post');
 
-		if ($query->num_rows() > 0) 
+		if ( $query->num_rows() > 0 )
 		{
 			$result = $query->row_array();
 		}
@@ -184,40 +181,42 @@ class Post_model extends CI_Model {
 	}
 
 
-	public function related_post($post_tag='', $post_id='', $limit='') 
-	{	
-		$tags = (!empty($post_tag) ? $post_tag : 'no-tag');
+	public function related_post($post_tags = '', $post_id = '', $limit = '')
+	{
+		$tags = (!empty($post_tags) ? $post_tags : 'no-tag');
 		$pecah_tags  = explode(",",$tags);
 		$count_tags = (int)count($pecah_tags)-1; 
 
-		$query = $this->db->select('id,title,seotitle,picture,tag');
+		$query = $this->db->select('*');
 		$query = $this->db->from('t_post');
 		$query = $this->db->where('active', 'Y');
 		$query = $this->db->where('id !=', $post_id);
 
+		$query = $this->db->group_start();
 		for ( $i=0; $i<=$count_tags; $i++ )
 		{
-			if ( $i < $count_tags )
+			if ( $i > $count_tags )
 				$query = $this->db->like('tag', $pecah_tags[$i]);
 			else
 				$query = $this->db->or_like('tag', $pecah_tags[$i]);
 		}
+		$query = $this->db->group_end();
 
-		$query = $this->db->order_by('id', 'RAND');
+		$query = $this->db->order_by('RAND()');
 		$query = $this->db->limit($limit);
 		$query = $this->db->get();
 
-		if ( $query->num_rows() > 1 )
+		if ( $query->num_rows() >= 2 )
 		{
 			$result = $query->result_array();
 		}
 		else
 		{
-			$query2 = $this->db->select('id,title,seotitle,picture');
+			$query2 = $this->db->select('*');
 			$query2 = $this->db->from('t_post');
 			$query2 = $this->db->where('active', 'Y');
 			$query2 = $this->db->where('id !=', $post_id);
-			$query2 = $this->db->order_by('id', 'RAND');
+			$query2 = $this->db->order_by('id', 'RANDOM');
 			$query2 = $this->db->limit($limit);
 			$query2 = $this->db->get();
 			$result = $query2->result_array();
@@ -227,10 +226,9 @@ class Post_model extends CI_Model {
 	}
 
 
-	public function insert_comment($data)
+	public function insert_comment(array $data)
 	{
 		$this->db->insert('t_comment', $data);
-		return 0;
 	}
 
 
@@ -239,4 +237,4 @@ class Post_model extends CI_Model {
 		$data = array('hits' => $hits);
 		$this->db->where('id', $id_post)->update('t_post', $data);
 	}
-} // End Class
+} // End class.

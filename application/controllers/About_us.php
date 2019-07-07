@@ -14,9 +14,9 @@ class About_us extends Web_controller {
 	
 	public function index($seotitle = 'about-us')
 	{
-		$check = $this->pages_model->check_seotitle($seotitle);
+		$check_seotitle = $this->pages_model->check_seotitle($seotitle);
 
-		if ( !empty($seotitle) && $check == TRUE ) 
+		if ( !empty($seotitle) && $check_seotitle == TRUE ) 
 		{
 			$data = $this->pages_model->get_data($seotitle);
 			$this->vars['result_pages'] = $data;
@@ -31,7 +31,7 @@ class About_us extends Web_controller {
 		}
 		else
 		{
-			return $this->render_404();
+			$this->render_404();
 		}
 	}
-} // end class
+} // End class.

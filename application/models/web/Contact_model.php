@@ -10,10 +10,8 @@ class Contact_model extends CI_Model {
 		parent::__construct();
 	}
 
-
 	public function insert(array $data)
 	{
 		$this->db->insert('t_mail', $data);
 	}
-
-} // End Class
+} // End class.

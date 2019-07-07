@@ -24,7 +24,7 @@ $("#DataTable").DataTable({
 	],
 	'ajax': {
 		'type': 'POST',
-		'url': admin_url + a_mod + '/data-table'
+		'url': window.location.href
 	},
 	"drawCallback": function( settings ) {
 		var api_table = this.api();
@@ -109,8 +109,6 @@ $(document).ready(function() {
 	// load TnyMCE
 	cfTnyMCE('#Content');
 });
-
-
 
 $('.delete_read_mail').on('click',function(event) {
 	event.preventDefault();

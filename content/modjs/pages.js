@@ -22,8 +22,7 @@ $('#DataTable').DataTable({
 	],
 	'ajax': {
 		'type': 'POST',
-		'url': admin_url + a_mod + '/data-table',
-		// data: csrfData
+		'url': window.location.href
 	},
 	drawCallback: function( settings ) {
         var api_table = this.api();
@@ -33,7 +32,6 @@ $('#DataTable').DataTable({
             var data_pk = [];
             var url = admin_url+a_mod+'/delete';
             data_pk = [$(this).attr('data-pk')];
-            // $('.noty_layout').remove(); // close jsnotif
             cfSwalDelete(data_pk,api_table,url);
         });
 
@@ -44,12 +42,12 @@ $('#DataTable').DataTable({
                 data_pk[i] = $(this).val();
             });
             if (data_pk != '' && data_pk != 'on') {
-                // $('.noty_layout').remove(); // close jsnotif
                 cfSwalDelete(data_pk,api_table,url);
             }
         });
 	}
 });
+
 
 $('#form_add').on('submit',function(event){
 	event.preventDefault();
@@ -75,6 +73,7 @@ $('#form_add').on('submit',function(event){
 	return false;
 });
 
+
 $('#form_update').on('submit',function(event){
 	event.preventDefault();
 	$('.submit_update').find('i').removeClass().addClass('icon-spinner2 spinner mr-2');
@@ -93,7 +92,6 @@ $('#form_update').on('submit',function(event){
 	})
 	return false;
 });
-
 
 
 $('#delpict').on('click',function(event){

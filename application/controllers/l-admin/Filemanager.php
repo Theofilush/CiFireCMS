@@ -17,6 +17,4 @@ class Filemanager extends Admin_controller {
 	{
 		$this->render_view('view_index', $this->vars);
 	}
-
-
 } // End Class.
