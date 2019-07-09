@@ -443,7 +443,7 @@ CREATE TABLE `t_theme` (
 --
 
 INSERT INTO `t_theme` (`id`, `title`, `folder`, `active`) VALUES
-(2, 'Sovi', 'sovi', 'Y');
+(2, 'Canvas', 'canvas', 'Y');
 
 -- --------------------------------------------------------
 
