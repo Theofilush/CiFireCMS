@@ -44,7 +44,7 @@ class Login extends MY_Controller {
 	{
 		$this->meta_title(lang_line('login1'));
 
-		if (login_status('member') == TRUE)
+		if ( login_status('member') == TRUE )
 		{
 			redirect(member_url('home'), 'refresh');
 		}
@@ -52,7 +52,7 @@ class Login extends MY_Controller {
 		{
 			if ( $_SERVER['REQUEST_METHOD'] == 'POST' )
 			{
-				return $this->_submit();
+				return $this->_submit_login();
 			}
 			else
 			{
@@ -64,7 +64,7 @@ class Login extends MY_Controller {
 	}
 
 
-	private function _submit($name = NULL, $value = NULL)
+	private function _submit_login($name = NULL, $value = NULL)
 	{
 		foreach ($this->input->post() as $key => $val)
 		{
@@ -193,7 +193,7 @@ class Login extends MY_Controller {
 				$urlenkey = urlencode($enkey);
 				$activationlink = member_url("activation/?key=$urlenkey");
 
-				// Send actifation key to email.
+				// Send vctivation key to email.
 				$this->load->library('email');
 				$this->email->initialize($this->settings->email_config());
 				$this->email->set_newline("\r\n");
@@ -202,8 +202,8 @@ class Login extends MY_Controller {
 				                   $this->settings->website('web_name')
 				                   );
 				$this->email->to($email);
-				$this->email->subject('Konfirmasi Pendaftaran');
-				$this->email->message('link aktivasi : <a href="'. $activationlink .'" target="_blank">'. $activationlink .'</a> <br> Untuk mengaktifkan akun anda, silahkan klik link diatas.');
+				$this->email->subject('Registration Confirmation');
+				$this->email->message('Activation link : <a href="'. $activationlink .'" target="_blank">'. $activationlink .'</a> <br> To activate your account, please click the link above.');
 				$this->email->send();
 
 				$this->session->set_flashdata('reg_success','1');
@@ -400,9 +400,6 @@ class Login extends MY_Controller {
 			$this->json_output($response);
 		}
 	}
-
-
-
 
 
 	private function _cek_username($username = '') 
