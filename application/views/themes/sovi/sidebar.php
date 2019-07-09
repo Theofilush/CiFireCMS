@@ -1,145 +1,87 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');?>
-<div class="sidebar-widgets-wrap clearfix">
-
-	<div class="widget clearfix">
-		<div class="col_one_third nobottommargin">
-			<a href="#" class="social-icon si-dark si-colored si-facebook nobottommargin" style="margin-right: 10px;">
-				<i class="icon-facebook"></i>
-				<i class="icon-facebook"></i>
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+<div class="colright">
+	<!-- advertising -->
+	<div class="box hidden-xs">
+		<div class="box-advertising">
+			<a href="#">
+				<img alt="ads" src="<?=post_images('ads/ads.jpg');?>" />
 			</a>
-			<small style="display: block; margin-top: 3px;">
-				<strong>
-					<div class="counter counter-inherit">
-						<span data-from="1000" data-to="58742" data-refresh-interval="100" data-speed="3000" data-comma="true"></span>
-					</div>
-				</strong>Likes
-			</small>
-		</div>
-
-		<div class="col_one_third nobottommargin">
-			<a href="#" class="social-icon si-dark si-colored si-twitter nobottommargin" style="margin-right: 10px;">
-				<i class="icon-twitter"></i>
-				<i class="icon-twitter"></i>
-			</a>
-			<small style="display: block; margin-top: 3px;"><strong><div class="counter counter-inherit"><span data-from="500" data-to="9654" data-refresh-interval="50" data-speed="2500" data-comma="true"></span></div></strong>Followers</small>
-		</div>
-
-		<div class="col_one_third nobottommargin col_last">
-			<a href="#" class="social-icon si-dark si-colored si-rss nobottommargin" style="margin-right: 10px;">
-				<i class="icon-rss"></i>
-				<i class="icon-rss"></i>
-			</a>
-			<small style="display: block; margin-top: 3px;"><strong><div class="counter counter-inherit"><span data-from="200" data-to="15475" data-refresh-interval="150" data-speed="3500" data-comma="true"></span></div></strong>Readers</small>
 		</div>
 	</div>
-	
-	<!-- ADS -->
-	<div class="widget clearfix">
-		<a href="#" title="Ads">
-			<img class="aligncenter" src="<?=$this->CI->theme_asset('images/ad.png?'.strtotime(date('Ymd')));?>" alt="Ads">
-		</a>
-	</div>
-	<!--/ ADS -->
-	
-	<!-- Popular, Latest -->
-	<div class="widget clearfix">
-		<div class="tabs nobottommargin clearfix" id="sidebar-tabs">
-			<ul class="tab-nav clearfix">
-				<li><a href="#tabs-1"><i class="icon-star"></i>&nbsp; Populer</a></li>
-				<li><a href="#tabs-2"><i class="icon-clock"></i>&nbsp; Terbaru</a></li>
+
+	<!-- latest - popular -->
+	<div class="box hidden-xs">
+		<div class="tab-caption">
+			<ul role="tablist">
+				<li class="active">
+					<a href="#tabPopular" role="tab" data-toggle="tab"><i class="fa fa-heart"></i> Popular</a>
+				</li>
+				<li>
+					<a href="#tabLatest" role="tab" data-toggle="tab"><i class="fa fa-clock-o"></i> Latest</a>
+				</li>
 			</ul>
-			<div class="tab-container">
-				<!-- Popular -->
-				<div class="tab-content clearfix" id="tabs-1">
-					<div id="popular-post-list-sidebar">
-						<?php
-							$sidebar_popular = $this->CI->db
-								->select('id_category,title,seotitle,picture,datepost,timepost,hits')
-								->where('active','Y')
-								->order_by('hits','DESC')
-								->limit(5)
-								->get('t_post')
-								->result_array();
-							foreach ($sidebar_popular as $row_spopular):
-								$pop_category = $this->CI->db
-									->select('title,seotitle')
-									->where('id',$row_spopular['id_category'])
-									->get('t_category')
-									->row_array();
-						?>
-						<div class="spost clearfix">
-							<div class="entry-image">
-								<a href="<?=post_url($row_spopular['seotitle']);?>" title="<?=$row_spopular['title'];?>" class="nobg">
-									<img class="rounded-circle" src="<?=post_images($row_spopular['picture'], 'thumb', TRUE);?>">
-								</a>
-							</div>
-							<div class="entry-c">
-								<div class="entry-title">
-									<h4>
-										<a href="<?=post_url($row_spopular['seotitle']);?>" title="<?=$row_spopular['title'];?>"><?=$row_spopular['title'];?></a>
-									</h4>
-								</div>
-								<ul class="entry-meta">
-									<li><i class="icon-calendar3"></i> <?=ci_date($row_spopular['datepost'].$row_spopular['timepost'], 'd F Y');?></li>
-									<li><i class="icon-folder-open"></i> <a href="<?=site_url('category/'.$pop_category['seotitle']);?>"><?=$pop_category['title'];?></a></li>
-									<li><i class="icon-eye"></i> <?=$row_spopular['hits'];?></li>
-								</ul>
-							</div>
+		</div>
+		<div class="tab-content">
+			<div role="tabpanel" class="tab-pane active" id="tabPopular">
+				<ul class="list-news list-news-right">
+					<?php
+						$sidebar_popular = $this->db
+							->select('title,seotitle,picture')
+							->where('active','Y')
+							->order_by('hits','DESC')
+							->limit(4)
+							->get('t_post')
+							->result_array();
+						foreach ($sidebar_popular as $row_spopular):
+					?>
+					<li>
+						<div class="post-thumb">
+							<a href="<?=post_url($row_spopular['seotitle']);?>" title="<?=$row_spopular['title'];?>">
+								<img src="<?=post_images($row_spopular['picture'], 'thumb', TRUE);?>" alt="populer">
+							</a>
 						</div>
-						<?php endforeach ?>
-					</div>
-				</div>
-				<!--/ Popular -->
-				<!-- Latest -->
-				<div class="tab-content clearfix" id="tabs-2">
-					<div id="recent-post-list-sidebar">
-						<?php
-							$sidebar_latest = $this->CI->db
-								->select('id_category,title,seotitle,picture,datepost,timepost,hits')
-								->where('active','Y')
-								->order_by('id','DESC')
-								->limit(5)
-								->get('t_post')
-								->result_array();
-							foreach ($sidebar_latest as $row_slatest):
-								$pop_category = $this->CI->db
-									->select('title,seotitle')
-									->where('id',$row_slatest['id_category'])
-									->get('t_category')
-									->row_array();
-						?>
-						<div class="spost clearfix">
-							<div class="entry-image">
-								<a href="<?=post_url($row_slatest['seotitle']);?>" title="<?=$row_slatest['title'];?>" class="nobg">
-									<img class="rounded-circle" src="<?=post_images($row_slatest['picture'], 'thumb', TRUE);?>">
-								</a>
-							</div>
-							<div class="entry-c">
-								<div class="entry-title">
-									<h4>
-										<a href="<?=post_url($row_slatest['seotitle']);?>" title="<?=$row_slatest['title'];?>"><?=$row_slatest['title'];?></a>
-									</h4>
-								</div>
-								<ul class="entry-meta">
-									<li><i class="icon-clock"></i> <?=ci_timeago($row_slatest['datepost'].$row_slatest['timepost']);?></li>
-									<li><i class="icon-folder-open"></i> <a href="<?=site_url('category/'.$pop_category['seotitle']);?>"><?=$pop_category['title'];?></a></li>
-									<li><i class="icon-eye"></i> <?=$row_spopular['hits'];?></li>
-								</ul>
-							</div>
+						<h3 class="lpr">
+							<a href="<?=post_url($row_spopular['seotitle']);?>" title="<?=$row_spopular['title'];?>"><?=$row_spopular['title'];?></a>
+						</h3>
+					</li>
+					<?php endforeach ?>
+				</ul>
+			</div>
+			<div role="tabpanel" class="tab-pane" id="tabLatest">
+				<ul class="list-news list-news-right">
+					<?php
+						$sidebar_latest = $this->db
+							->select('title,seotitle,picture')
+							->where('active','Y')
+							->order_by('id','DESC')
+							->limit(4)
+							->get('t_post')
+							->result_array();
+						foreach ($sidebar_latest as $row_slatest):
+					?>
+					<li>
+						<div class="post-thumb">
+							<a href="<?=post_url($row_slatest['seotitle']);?>" title="<?=$row_slatest['title'];?>">
+								<img src="<?=post_images($row_slatest['picture'], 'thumb', TRUE);?>" alt="populer">
+							</a>
 						</div>
-						<?php endforeach ?>
-					</div>
-				</div>
-				<!--/ Latest -->
+						<h3 class="lpr">
+							<a href="<?=post_url($row_slatest['seotitle']);?>" title="<?=$row_slatest['title'];?>"><?=$row_slatest['title'];?></a>
+						</h3>
+					</li>
+					<?php endforeach ?>
+				</ul>
 			</div>
 		</div>
 	</div>
-	<!--/ Popular, Latest -->
+	<!--/ latest - popular -->
 
-	<!-- Category -->
-	<div class="widget widget_links clearfix">
-		<h4>Kategori</h4>
-		<div class="col_half nobottommargin col_last">
+	<!-- category -->
+	<div class="box">
+		<div class="box-caption">
+			<h2><a href="#">CATEGORY</a></h2>
+		</div>
+		<div class="box-category">
 			<ul>
 				<?php
 					$sidebar_category = $this->CI->db
@@ -150,6 +92,7 @@
 						->order_by('COUNT(*)','DESC')
 						->get()
 						->result_array();
+
 					foreach ($sidebar_category as $rescount):
 						$row_scategory = $this->CI->db
 							->select('id,title,seotitle')
@@ -169,40 +112,40 @@
 						if ( is_null($row_scategory['id']) || $num_spost < 1 )
 							continue;
 				?>
-				<li><a href="<?=site_url('category/'.$row_scategory['seotitle']);?>"><?=$row_scategory['title'];?> <span>(<?=$num_spost;?>)</span></a></li>
+				<li><a href="<?=site_url('category/'.$row_scategory['seotitle']);?>"><?=$row_scategory['title'];?> <span><?=$num_spost;?></span></a></li>
 				<?php endforeach ?>
 			</ul>
 		</div>
 	</div>
-	<!--/ Category -->
+	<!--/ category -->
 
-
-
-	<!-- Tags -->
-	<div id="tags" class="widget clearfix">
-		<h4 class="highlight-me">Tag</h4>
-		<div class="tagcloud">
-			<?php
-				$side_tags = $this->CI->db
-					->select('
-							  t_tag.title, 
-							  t_tag.seotitle, 
-							  COUNT(t_post.id) AS tag_count
-							')
-					->from('t_tag')
-					->join('t_post', "t_post.tag LIKE CONCAT('%',t_tag.seotitle,'%')", 'LEFT')
-					->group_by('t_tag.id')
-					->get()
-					->result_array();
-				foreach ( $side_tags as $row_stag ):
-					if ( $row_stag['tag_count'] == 0 )
-						continue;
-			?>
-			<a href="<?=site_url('tag/'.$row_stag['seotitle']);?>"><?=$row_stag['title'];?></a>
-			<?php endforeach ?>
+	<!-- tags -->
+	<div class="box">
+		<div class="box-caption">
+			<h2><a href="#">TAG CLOUD</a></h2>
+		</div>
+		<div class="box-tag">
+			<div class="tagcloud">
+				<?php
+					$side_tags = $this->CI->db
+						->select('
+								  t_tag.title, 
+								  t_tag.seotitle, 
+								  COUNT(t_post.id) AS tag_count
+								')
+						->from('t_tag')
+						->join('t_post', "t_post.tag LIKE CONCAT('%',t_tag.seotitle,'%')", 'LEFT')
+						->group_by('t_tag.id')
+						->get()
+						->result_array();
+					foreach ( $side_tags as $row_stag ):
+						if ( $row_stag['tag_count'] == 0 )
+							continue;
+				?>
+				<a href="<?=site_url('tag/'.$row_stag['seotitle']);?>"><?=$row_stag['title'];?></a>
+				<?php endforeach ?>
+			</div>
 		</div>
 	</div>
-	<!--/ Tags -->
-
-
+	<!--/ tags -->
 </div>

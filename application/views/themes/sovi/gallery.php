@@ -1,73 +1,44 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');?>
-<!-- 
-*******************************************************
-	Include Header Template
-******************************************************* 
--->
-<?php include_once('header.php'); ?>
-<!-- End Header -->
-
-<!-- 
-*******************************************************
-	Insert Content
-******************************************************* 
--->
-<section id="page-title">
-	<div class="container clearfix">
-		<h1>Galeri</h1>
-		<ol class="breadcrumb">
-			<li class="breadcrumb-item"><a href="<?= site_url(); ?>">Home</a></li>
-			<li class="breadcrumb-item active" aria-current="page">Galeri</li>
-		</ol>
-	</div>
-</section>
-
-<section id="content">
-	<div class="content-wrap">
-		<div class="container clearfix">
-			<div class="portfolio grid-container clearfix">
-				<?php
-					foreach ($albums as $row_album):
-						$cover = $this->CI->gallery_model->album_cover($row_album['id']);
-						$pitures = $this->CI->gallery_model->get_gallery_images($row_album['id']);
-				?>
-				<article class="portfolio-item pf-icons pf-illustrations mb-5">
-					<div class="portfolio-image">
-						<a href="#">
-							<img src="<?=post_images($cover['picture'],'medium',TRUE);?>" alt="<?=$cover['title'];?>">
-						</a>
-						<div class="portfolio-overlay" data-lightbox="gallery">
-							<?php foreach ($pitures as $img): ?>
-							<a href="<?=post_images($img['picture']);?>" title="<?=$img['title'];?>" class="center-icon" data-lightbox="gallery-item"><i class="icon-line-stack-2"></i></a>
-							<?php endforeach ?>
+<?php 
+defined('BASEPATH') OR exit('No direct script access allowed'); 
+$this->CI->render_view('header');
+?>
+<div class="cols cols-full">
+	<div class="colleft">
+		<div class="box">
+			<div class="sitemap">
+				<a href="#">Home</a>
+				<span><i class="fa fa-angle-right"></i></span>
+				<a href="#">Gallery</a>
+			</div>
+			<div class="gallery-page">
+				<div class="row">
+					<?php
+						foreach ($albums as $row_album):
+							$cover = $this->CI->gallery_model->album_cover($row_album['id']);
+							$pitures = $this->CI->gallery_model->get_gallery_images($row_album['id']);
+					?>
+					<div class="col-md-3 col-sm-4 col-xs-2">
+						<div class="gallery-album">
+							<a class="fancybox" data-fancybox-group="<?=$row_album['id']?>" href="<?=post_images($cover['picture']);?>" title="<?=$cover['title'];?>">
+								<img src="<?=post_images($cover['picture'],'medium');?>">
+								<h3><?=$row_album['title'];?></h3>
+							</a>
+							<div class="hidden">
+								<?php
+									foreach ($pitures as $img):
+										if ( $img['picture'] === $cover['picture'])
+											continue;
+								?>
+								<a class="fancybox" data-fancybox-group="<?=$row_album['id']?>" href="<?=post_images($img['picture']);?>" title="<?=$img['title'];?>"><?=$img['title'];?></a>
+								<?php endforeach ?>
+							</div>
 						</div>
 					</div>
-					<div class="portfolio-desc">
-						<h3><a href="#"><?=$row_album['title']?></a></h3>
-					</div>
-				</article>
-				<?php endforeach ?>
+					<?php endforeach ?>
+				</div>
 			</div>
 		</div>
-		<!-- Pagination
-		<div class="col-12">
-			<ul class="pagination justify-content-center">
-				<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-				<li class="page-item"><a class="page-link" href="#">1</a></li>
-				<li class="page-item active"><a class="page-link" href="#">2</a></li>
-				<li class="page-item"><a class="page-link" href="#">3</a></li>
-				<li class="page-item"><a class="page-link" href="#">Next</a></li>
-			</ul>
-		</div>
-		<!--/ Pagination -->
 	</div>
-</section>
-<!-- End Content -->
-
-<!-- 
-*******************************************************
-	Include Footer Template
-******************************************************* 
--->
-<?php include_once('footer.php'); ?>
-<!-- End Footer -->
+	<div class="clearfix"></div>
+</div>
+<?php $this->CI->render_view('footer'); ?>

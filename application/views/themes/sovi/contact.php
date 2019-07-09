@@ -1,125 +1,69 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');?>
-<!-- 
-*******************************************************
-	Include Header Template
-******************************************************* 
--->
-<?php include_once('header.php'); ?>
-<!-- End Header -->
-
-<!-- 
-*******************************************************
-	Insert Content
-******************************************************* 
--->
-<section id="page-title">
-	<div class="container clearfix">
-		<h1>Contact</h1>
-		<ol class="breadcrumb">
-			<li class="breadcrumb-item"><a href="<?= site_url(); ?>">Home</a></li>
-			<li class="breadcrumb-item active" aria-current="page">Contact</li>
-		</ol>
-	</div>
-</section>
-
-<section id="content">
-	<div class="content-wrap">
-		<div class="container clearfix">
-			<!-- Postcontent -->
-			<div class="postcontent nobottommargin">
-				<div class="contact-widget">
-					<div class="contact-form-result"></div>
-					<?php
-						$this->alert->show('contact');
-						echo form_open('','class="nobottommargin" id="template-contactform" autocomplete="off"');
-					?>
-						<div class="form-process"></div>
-
-						<div class="col_half">
-							<label for="cf-name">Nama</label>
-							<input type="text" id="cf-name" name="name_contact" class="sm-form-control required" required/>
+<?php 
+defined('BASEPATH') OR exit('No direct script access allowed'); 
+$this->CI->render_view('header');
+?>
+<div class="cols cols-full">
+	<div class="colleft">
+		<div class="box">
+			<div class="page-contact">
+				<div class="row">
+					<div class="col-md-6 col-sm-12">
+						<h3>CONTACT INFORMATION</h3>
+						<div class="contact-information">
+							<div><?=htmlspecialchars_decode($this->settings->website('address'))?></div>
+							<hr>
+							<ul class="list-infomation">
+								<li>
+									<p><i class="fa fa-envelope"></i> <?=$this->settings->website('web_email')?></p>
+								</li>
+								<li>
+									<p><i class="fa fa-phone"></i> <?=$this->settings->website('tlpn')?></p>
+								</li>
+								<li>
+									<p><i class="fa fa-fax"></i> <?=$this->settings->website('fax')?></p>
+								</li>
+							</ul>
 						</div>
-
-						<div class="col_half col_last">
-							<label for="cf-email">Email</label>
-							<input id="cf-email" type="email" name="email_contact" class="required email sm-form-control" required/>
-						</div>
-
-						<div class="clear"></div>
-
-						<div class="col_full">
-							<label for="cf-subject">Subyek</label>
-							<input id="cf-subject" type="text" name="subject_contact" class="required sm-form-control" required/>
-						</div>
-
-						<div class="clear"></div>
-
-						<div class="col_full">
-							<label for="cf-message">Pesan</label>
-							<textarea id="cf-message" class="required sm-form-control" name="message_contact" rows="6" cols="30" required></textarea>
-						</div>
-
-						<div class="col_full">
-							<div class="g-recaptcha pull-right" data-sitekey="<?=$this->settings->website('recaptcha_site_key')?>" style="margin-bottom:5px;"></div>
-							<script src='https://www.google.com/recaptcha/api.js'></script>
-							<button type="submit" class="button button-3d m-0"><?=lang_line('button_send')?> <i class="icon-paperplane"></i></button>
-						</div>
-					<?=form_close();?>
+					</div>
+					<div class="col-md-6 col-sm-12">
+						<?php
+							$this->alert->show('contact');
+							echo form_open('','autocomplete="on"');
+						?>
+							<div class="row">
+								<div class="col-md-8">
+									<div class="field-item">
+										<input type="text" name="name_contact" placeholder="Name" />
+									</div>
+								</div>
+								<div class="col-md-8">
+									<div class="field-item">
+										<input type="email" name="email_contact" placeholder="Email" />
+									</div>
+								</div>
+								<div class="col-md-8">
+									<div class="field-item">
+										<input type="text" name="subject_contact" placeholder="Subject" />
+									</div>
+								</div>
+							</div>
+							<div class="field-item">
+								<textarea name="message_contact" placeholder="Text here..."></textarea>
+							</div>
+							<div class="field-item">
+								<div class="g-recaptcha pull-right" data-sitekey="<?=$this->settings->website('recaptcha_site_key')?>" style="margin-bottom:5px;"></div>
+								<script src='https://www.google.com/recaptcha/api.js'></script>
+								<button class="my-btn pull-left"><i class="fa fa-send"> </i> SEND</button>
+							</div>
+						<?=form_close();?>
+					</div>
 				</div>
 			</div>
-
-			<!-- Sidebar -->
-			<div class="sidebar col_last nobottommargin">
-				<address>
-					<strong>Address:</strong><br>
-					<?=htmlspecialchars_decode($this->CI->settings->website('address'));?>
-				</address>
-				<abbr title="Phone Number"><strong>Phone : </strong></abbr> <?=$this->CI->settings->website('tlpn');?><br>
-				<abbr title="Fax"><strong>Fax : </strong></abbr> <?=$this->CI->settings->website('fax');?><br>
-				<abbr title="Email Address"><strong>Email : </strong></abbr> <?=$this->CI->settings->website('web_email');?>
-
-				<div class="widget noborder notoppadding">
-					<a href="#" class="social-icon si-small si-dark si-facebook">
-						<i class="icon-facebook"></i>
-						<i class="icon-facebook"></i>
-					</a>
-
-					<a href="#" class="social-icon si-small si-dark si-twitter">
-						<i class="icon-twitter"></i>
-						<i class="icon-twitter"></i>
-					</a>
-
-					<a href="#" class="social-icon si-small si-dark si-instagram">
-						<i class="icon-instagram"></i>
-						<i class="icon-instagram"></i>
-					</a>
-
-					<a href="#" class="social-icon si-small si-dark si-youtube">
-						<i class="icon-youtube"></i>
-						<i class="icon-youtube"></i>
-					</a>
-
-					<a href="#" class="social-icon si-small si-dark si-pinterest">
-						<i class="icon-pinterest"></i>
-						<i class="icon-pinterest"></i>
-					</a>
-
-					<a href="#" class="social-icon si-small si-dark si-rss">
-						<i class="icon-rss"></i>
-						<i class="icon-rss"></i>
-					</a>
-				</div>
-			</div>
-			<!--/ Sidebar -->
 		</div>
 	</div>
-</section>
-<!-- End Content -->
-
-<!-- 
-*******************************************************
-	Include Footer Template
-******************************************************* 
--->
-<?php include_once('footer.php'); ?>
-<!-- End Footer -->
+	<div class="clearfix"></div>
+</div>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4aoOIudqSItjwJmznfbFFjMiieOTRFv8"></script>
+	<script>/* Map */
+!function(e){"use strict";google.maps.event.addDomListener(window,"load",function(){var e=new google.maps.LatLng(1.484732,124.8330983),o={zoom:14,center:e},n=new google.maps.Map(document.getElementById("map"),o);new google.maps.Marker({position:e,map:n})})}(jQuery);</script>
+<?php $this->CI->render_view('footer'); ?>

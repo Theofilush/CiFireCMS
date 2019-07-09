@@ -1,347 +1,280 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');?>
-<!--
-*******************************************************
-	Include Header Template
-******************************************************* 
--->
-<?php include_once('header.php'); ?>
-<!-- End Header -->
+<?php 
+defined('BASEPATH') OR exit('No direct script access allowed'); 
+$this->CI->render_view('header');
+?>
+<div class="cols">
+	<div class="colleft">
+		<div class="box">
+			<div class="post-meta">
+				<span class="post-date">
+					<i class="fa fa-calendar"></i>
+					<span><?=ci_date($result_post['datepost'].$result_post['timepost'], 'l, d M Y, h:i A');?></span>
+				</span>
+				<span class="post-author">
+					<i class="fa fa-user"></i>
+					<span><?=$result_post['author_name'];?></span>
+				</span>
+				<span class="post-category">
+					<i class="fa fa-folder-o"></i>
+					<span><?=$result_post['category_title'];?></span>
+				</span>
+				<span class="post-hits">
+					<i class="fa fa-eye"></i>
+					<span><?=$result_post['hits'];?> kali dilihat</span>
+				</span>
+			</div>
+			<article class="detail">
+				<h1><?=$result_post['post_title'];?></h1>
+				<?php if ( post_images($result_post['picture']) ):?>
+				<div class="detail-thumbnail">
+					<img src="<?=post_images($result_post['picture']);?>" alt="<?=$result_post['image_caption'];?>" class="post-image">
+					<p class="post-image-caption"><?php echo $result_post['image_caption']; ?></p>
+				</div>
+				<?php endif ?>
+				<div class="detail-content">
+					<?=html_entity_decode($result_post['content']);?>
+				</div>
+			</article>
 
-<!-- 
-*******************************************************
-	Insert Content
-******************************************************* 
--->
-<section id="page-title">
-	<div class="container clearfix">
-		<ol class="breadcrumb">
-			<li class="breadcrumb-item"><a href="<?= site_url(); ?>">Home</a></li>
-			<li class="breadcrumb-item"><a href="<?= site_url('category/'.$result_post['category_seotitle']); ?>"><?=$result_post['category_title'];?></a></li>
-			<li class="breadcrumb-item active" aria-current="page"><?=$result_post['post_title']?></li>
-		</ol>
-	</div>
-</section>
-
-<section id="content">
-	<div class="content-wrap">
-		<div class="container clearfix">
-			<div class="row">
-				<div class="col-lg-8 nobottommargin clearfix">
-					<div class="single-post nobottommargin">
-						<div class="entry clearfix">
-							<div class="entry-title">
-								<h2><?=$result_post['post_title']?></h2>
-							</div>
-							<ul class="entry-meta clearfix">
-								<li><i class="icon-calendar3"></i><?=ci_date($result_post['datepost'], 'l, d F Y');?> &nbsp; <i class="icon-clock"></i> <?=ci_date($result_post['timepost'], 'h:i A');?></li>
-								<li><a href="#"><i class="icon-user"></i> <?=$result_post['author_name'];?></a></li>
-								<li><i class="icon-folder-open"></i> <a href="<?= site_url('category/'.$result_post['category_seotitle']); ?>"><?=$result_post['category_title'];?></a></li>
-								<li><a href="#comments"><i class="icon-comments"></i> <?=$result_post['comment'];?> Komentar</a></li>
-								<li><i class="icon-eye"></i> <?=$result_post['hits'];?> kali di lihat</li>
-							</ul>
-
-							<div class="entry-image">
-								<?php if ( post_images($result_post['picture']) ):?>
-								<img src="<?=post_images($result_post['picture']);?>" alt="<?=$result_post['image_caption'];?>" style="max-witdth:100%;margin:auto;">
-								<?php if ($result_post['image_caption']): ?>
-								<p class="post-image-caption text-center"><?=$result_post['image_caption']; ?></p>
-								<?php endif ?>
-								<?php endif ?>
-							</div>
-
-							<!-- Entry Content -->
-							<div class="entry-content notopmargin">
-								<?=html_entity_decode($result_post['content']);?>
-
-								<div class="clear"></div>
-								<!-- Tag Cloud -->
-								<div class="tagcloud clearfix bottommargin">
-									<?php
-										if (!empty($result_post['tag']))
-										{
-											$data_tags = explode(',', $result_post['tag']);
-
-											foreach ($data_tags as $tag)
-											{
-												$tag_seo = seotitle($tag);
-												$resultTag = $this->CI->db->where('seotitle',$tag_seo)->get('t_tag')->row_array();
-												echo '<a href="'.site_url('tag/'.$tag_seo).'" rel="tag">'.$resultTag['title'].'</a>';
-											}
-										}
-									?>
-								</div>
-								<div class="clear"></div>
-
-								<!-- Share -->
-								<div class="si-share noborder clearfix">
-									<span>Share this Post:</span>
-									<div>
-										<a href="#" class="social-icon si-borderless si-facebook">
-											<i class="icon-facebook"></i>
-											<i class="icon-facebook"></i>
-										</a>
-										<a href="#" class="social-icon si-borderless si-twitter">
-											<i class="icon-twitter"></i>
-											<i class="icon-twitter"></i>
-										</a>
-										<a href="#" class="social-icon si-borderless si-instagram">
-											<i class="icon-instagram"></i>
-											<i class="icon-instagram"></i>
-										</a>
-										<a href="#" class="social-icon si-borderless si-rss">
-											<i class="icon-rss"></i>
-											<i class="icon-rss"></i>
-										</a>
-										<a href="#" class="social-icon si-borderless si-email3">
-											<i class="icon-email3"></i>
-											<i class="icon-email3"></i>
-										</a>
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<!-- Post Navigation -->
-						<div class="post-navigation clearfix">
-							<div class="col_half nobottommargin">
-								<a href="<?=$prev_post['url']?>" title="<?=$prev_post['title']?>" class="btn btn-light">&lArr; Post Sebelumnya</a>
-							</div>
-
-							<div class="col_half col_last tright nobottommargin">
-								<a href="<?=$next_post['url']?>" title="<?=$next_post['title']?>" class="btn btn-light">Post Berikutnya &rArr;</a>
-							</div>
-						</div>
-						<!--/ Post Navigation -->
-
-						<div class="line"></div>
-
-						<!-- Author Info -->
-						<div class="card">
-							<div class="card-header">
-								<strong>Editor: <a href="#"><?=$result_post['author_name']?></a></strong>
-							</div>
-							<div class="card-body">
-								<div class="author-image">
-									<img src="<?=user_photo($result_post['author_photo'])?>" alt="<?=$result_post['author_name']?>" class="rounded-circle">
-								</div>
-								<p><?=$result_post['author_about']?></p>
-							</div>
-						</div>
-						<!--/ Author Info -->
-
-						<div class="line"></div>
-
-						<!-- related-posts -->
-						<div class="fancy-title title-border">
-							<h4>Related Posts</h4>
-						</div>
-						<div class="related-posts clearfix">
-							<!-- item -->
-							<?php
-								$related_posts = $this->CI->post_model->related_post($result_post['tag'], $result_post['post_id'], 4);
-								foreach ($related_posts as $res_relatedpost):
-							?>
-							<div class="col_half nobottommarginX">
-								<div class="mpost clearfix">
-									<div class="entry-image">
-										<a href="<?=post_url($res_relatedpost['seotitle']);?>" title="<?=$res_relatedpost['title'];?>">
-											<img src="<?=post_images($res_relatedpost['picture'],'medium',TRUE);?>" alt="<?=$res_relatedpost['title'];?>">
-										</a>
-									</div>
-									<div class="entry-c">
-										<div class="entry-title">
-											<h4>
-												<a href="<?=post_url($res_relatedpost['seotitle']);?>" title="<?=$res_relatedpost['title'];?>"><?=cut($res_relatedpost['title'],30);?>...</a>
-											</h4>
-										</div>
-										<ul class="entry-meta clearfix">
-											<li><i class="icon-calendar3"></i> <?=ci_date($res_relatedpost['datepost'], 'd M Y');?></li>
-										</ul>
-										<div class="entry-content"><?=cut($res_relatedpost['content'],40);?>...</div>
-									</div>
-								</div>
-							</div>
-							<?php endforeach ?>
-							<!--/ item -->
-						</div>
-						<!--/ related-posts -->
-
-
-						<!-- Comments -->
-						<div id="comments" class="clearfix">
-							<h3 id="comments-title"><span><?=$result_post['comment']?></span> Komentar</h3>
-
-							<!-- Comments List -->
-							<ol class="commentlist clearfix">
-								<?php
-									$data_comments = $this->CI->db
-										->where('id_post', $result_post['post_id'])
-										->where('active != "N"')
-										->where('parent = "0"', NULL, FALSE)
-										->get('t_comment');
-
-									foreach ($data_comments->result_array() as $comment):
-										$usersa = $this->CI->db
-											->select('id,photo')
-											->where('id', $comment['id_user'])
-											->get('t_user')
-											->row_array();
-								?>
-								<li class="comment byuser comment-author-_smcl_admin even thread-odd thread-alt depth-1" id="li-comment-1">
-									<div id="comment-1" class="comment-wrap clearfix">
-										<div class="comment-meta">
-											<div class="comment-author vcard">
-												<span class="comment-avatar clearfix">
-													<img src="<?=user_photo($usersa['photo']);?>" class="avatar avatar-60 photo" height="60" width="60" />
-												</span>
-											</div>
-										</div>
-										<div class="comment-content clearfix">
-											<div class="comment-author">
-												<a href="#" rel="external nofollow" class="url"><?=$comment['name'];?></a>
-												<span><a href="#"><?=ci_date($comment['date'],'d M Y, h:i A');?></a></span>
-											</div>
-											<p>
-												<?php 
-													if ($comment['active'] == 'X') {
-														echo '<span class="text-danger">Komentar ini telah diblokir</span>';
-													} else {
-														echo auto_link($comment['comment']);
-													}
-												?>
-											</p>
-											<!-- reply -->
-											<a href="#form_comment" class="comment-reply-link reply_comment" data-parent="<?=encrypt($comment['id'])?>"><i class="icon-reply"></i></a>
-										</div>
-										<div class="clear"></div>
-									</div>
-
-									<!-- children -->
-									<?php
-										if ($comment['active'] != 'X'):
-											
-											$rep_comments = $this->CI->db
-												->where('parent', $comment['id'])
-												->where('active != "N"')
-												->get('t_comment');
-
-											foreach ($rep_comments->result_array() as $res_rep):
-												$users_rep = $this->CI->db
-													->select('id,photo')
-													->where('id', $res_rep['id_user'])
-													->where('active', 'Y')
-													->get('t_user')
-													->row_array();
-
-									?>
-									<ul class="children">
-										<li class="comment byuser comment-author-_smcl_admin odd alt depth-2" id="li-comment-3">
-											<div id="comment-3" class="comment-wrap clearfix">
-												<div class="comment-meta">
-													<div class="comment-author vcard">
-														<span class="comment-avatar clearfix">
-														<img src="<?=user_photo($users_rep['photo']);?>" class="avatar avatar-40 photo" height="40" width="40" /></span>
-													</div>
-												</div>
-												<div class="comment-content clearfix">
-													<div class="comment-author">
-														<a href="#" rel="external nofollow" class="url"><?=$res_rep['name'];?></a>
-														<span><a href="#"> <?=ci_date($res_rep['date'],'d M Y, h:i A');?></a></span>
-													</div>
-													<p>
-														<?php 
-															if ($res_rep['active'] == 'X') {
-																echo '<i class="text-danger">Komentar ini telah diblokir</i>';
-															} else {
-																echo auto_link($res_rep['comment']);
-															}
-														?>
-													</p>
-													<!-- reply -->
-													<a href="#form_comment" class="comment-reply-link reply_comment" data-parent="<?=encrypt($comment['id'])?>"><i class="icon-reply"></i></a>
-												</div>
-												<div class="clear"></div>
-											</div>
-										</li>
-									</ul>
-									<?php endforeach ?>
-									<?php endif ?>
-								</li>
-								<?php endforeach ?>
-							</ol>
-							<!--/ Comments List -->
-
-							<div class="clear"></div>
-
-							<!-- Comment Form -->
-							<div id="form_comment">
-								<div id="respond" class="clearfix">
-									<h3>Tinggalkan Komentar</h3>
-									<?php $this->alert->show('alert_comment'); ?>
-									<?=form_open('','id="commentform" class="clearfix" autocomplete="off"');?>
-
-										<input type="hidden" name="parent" class="comment_parent">
-
-										<?php if ( login_status('member') == TRUE ): ?>
-
-										<div class="col_half">
-											<label for="Nama">Nama</label>
-											<input type="text" name="name" id="Nama" size="22" tabindex="1" class="sm-form-control" value="<?=data_login('member', 'name')?>" required/>
-										</div>
-										<div class="col_half col_last">
-											<label for="email">Email</label>
-											<input type="email" name="email" id="email" size="22" tabindex="2" class="sm-form-control" value="<?=data_login('member', 'email')?>" required/>
-										</div>
-
-										<?php else: ?>
-
-										<div class="col_half">
-											<label for="Nama">Nama</label>
-											<input type="text" name="name" id="Nama" size="22" tabindex="1" class="sm-form-control" required/>
-										</div>
-										<div class="col_half col_last">
-											<label for="email">Email</label>
-											<input type="email" name="email" id="email" size="22" tabindex="2" class="sm-form-control" required/>
-										</div>
-										
-										<?php endif ?>
-
-										<div class="clear"></div>
-
-										<div class="col_full">
-											<label for="comment">Komentar</label>
-											<textarea name="comment" cols="58" rows="7" tabindex="4" class="sm-form-control" required></textarea>
-										</div>
-
-										<div class="col_full nobottommargin">
-											<div class="g-recaptcha pull-right" data-sitekey="<?=$this->settings->website('recaptcha_site_key')?>" style="margin-bottom:5px;"></div>
-											<script src='https://www.google.com/recaptcha/api.js'></script>
-											<button type="submit" id="submit-button" tabindex="5" class="button button-3d m-0"><?=lang_line('button_submit')?></button>
-										</div>
-									<?=form_close();?>
-								</div>
-							</div>
-							<!--/ Comment Form -->
-						</div>
-						<!--/ Comments -->
+			<div class="detail-bottom">
+				<div class="single-share">
+					<div class="single-share-inner">
+						<span>Share to:</span>
+						<a href="#" class="facebook">
+							<i class="fa fa-facebook"></i>
+						</a>
+						<a href="#" class="twitter">
+							<i class="fa fa-twitter"></i>
+						</a>
+						<a href="#" class="google">
+							<i class="fa fa-google-plus"></i>
+						</a>
+						<a href="#" class="pinterest">
+							<i class="fa fa-pinterest"></i>
+						</a>
+						<a href="#" class="youtube">
+							<i class="fa fa-youtube"></i>
+						</a>
+						<a href="#" class="instagram">
+							<i class="fa fa-instagram"></i>
+						</a>
+						<a href="#" class="linkedin">
+							<i class="fa fa-linkedin"></i>
+						</a>
+						<a href="#" class="soundcloud">
+							<i class="fa fa-soundcloud"></i>
+						</a>
+						<a href="#" class="rss">
+							<i class="fa fa-rss"></i>
+						</a>
+						<a href="#" class="email">
+							<i class="fa fa-envelope"></i>
+						</a>
 					</div>
 				</div>
+				<!-- tags -->
+				<div class="tags">
+					<div class="box-detail-caption">
+						<span>TAGS</span>
+					</div>
+					<div>
+						<?php
+							if (!empty($result_post['tag']))
+							{
+								$data_tags = explode(',', $result_post['tag']);
 
-				<div class="col-lg-4 nobottommargin col_last clearfix">
-					<!-- Include Sidebar -->
-					<?php include_once('sidebar.php'); ?>
-					<!--/ Include Sidebar -->
+								foreach ($data_tags as $tag)
+								{
+									$tag_seo = seotitle($tag);
+									$resultTag = $this->CI->db->where('seotitle',$tag_seo)->get('t_tag')->row_array();
+									echo '<a href="'.site_url('tag/'.$tag_seo).'" rel="tag">'.$resultTag['title'].'</a>';
+								}
+							}
+						?>
+					</div>
 				</div>
+			</div>
+			
+			<!-- Related Post -->
+			<div class="related-post">
+				<div class="box-detail-caption">
+					<span>Related Post</span>
+				</div>
+				<div class="row">
+					<?php
+						foreach ($related_post as $res_relatedpost):
+							if ($res_relatedpost['id'] == $result_post['post_id']) {
+								continue;
+							}
+					?>
+					<div class="col-md-4 col-sm-4 col-xs-12">
+						<article class="news-item-big">
+							<div class="post-thumb">
+								<a href="<?=post_url($res_relatedpost['seotitle']);?>" title="<?=$res_relatedpost['title'];?>">
+									<img src="<?=post_images($res_relatedpost['picture'],'medium',TRUE);?>" alt="<?=$res_relatedpost['title'];?>">
+								</a>
+							</div>
+							<h3 class="post-title">
+								<a href="<?=post_url($res_relatedpost['seotitle']);?>" title="<?=$res_relatedpost['title'];?>"><?=$res_relatedpost['title'];?></a>
+							</h3>
+						</article>
+					</div>
+					<?php endforeach ?>
+				</div>
+			</div>
+
+			<!-- comments -->
+			<div id="comments" class="comments-area">
+				<div class="detail-caption">
+					<span> <?=$result_post['comment'];?> comments  </span>
+				</div>
+				<ol class="comment-list">
+					<?php
+						$data_comments = $this->CI->db
+							->where('id_post', $result_post['post_id'])
+							->where('active != "N"')
+							->where('parent = "0"', NULL, FALSE)
+							->get('t_comment');
+
+						foreach ($data_comments->result_array() as $comment):
+							$usersa = $this->CI->db
+								->select('id,photo')
+								->where('id', $comment['id_user'])
+								->get('t_user')
+								->row_array();
+					?>
+					<li class="comment">
+						<article class="comment-body">
+							<footer class="comment-meta">
+								<div class="comment-author vcard">
+									<img src="<?=user_photo($usersa['photo']);?>" class="avatar">
+									<b class="fn"><a href="#"><?=$comment['name'];?></a></b>
+								</div>
+								<div class="comment-metadata">
+									<a href="#">
+										<time datetime="2017-04-18T03:21:01+00:00">
+										   <?=ci_date($comment['date'],'d M Y, h:i A');?>
+										</time>
+									</a>
+								</div>
+							</footer>
+							<div class="comment-content">
+								<p>
+									<?php 
+										if ($comment['active'] == 'X')
+										{
+											echo '<span class="text-danger">Komentar ini telah diblokir</span>';
+										} 
+										else
+										{
+											echo auto_link($comment['comment']);
+										}
+									?>
+								</p>
+							</div>
+							<div class="reply"><a class="comment-reply-link" href="#">Reply</a></div>
+						</article>
+						<?php
+							if ($comment['active'] != 'X'):
+								
+								$rep_comments = $this->CI->db
+									->where('parent', $comment['id'])
+									->where('active != "N"')
+									->get('t_comment');
+
+								foreach ($rep_comments->result_array() as $res_rep):
+									$users_rep = $this->CI->db
+										->select('id,photo')
+										->where('id', $res_rep['id_user'])
+										->where('active', 'Y')
+										->get('t_user')
+										->row_array();
+						?>
+						<ol class="children">
+							<li class="comment even depth-2 parent">
+								<article class="comment-body">
+									<footer class="comment-meta">
+										<div class="comment-author vcard">
+											<img alt="" src="<?=user_photo($users_rep['photo']);?>" class="avatar">
+											<b class="fn"><a href="#"><?=$res_rep['name'];?> </a></b>
+										</div>
+										<div class="comment-metadata">
+											<a href="#">
+												<time datetime="2017-04-18T03:21:01+00:00">
+												   <?=ci_date($res_rep['date'],'d M Y, h:i A');?>
+												</time>
+											</a>
+										</div>
+									</footer>
+									<div class="comment-content">
+										<p>
+											<?php 
+												if ($res_rep['active'] == 'X') 
+												{
+													echo '<i class="text-danger">Komentar ini telah diblokir</i>';
+												} 
+												else
+												{
+													echo auto_link($res_rep['comment']);
+												}
+											?>
+										</p>
+									</div>
+									<div class="reply"><a class="comment-reply-link" href="#">Reply</a></div>
+								</article>
+							</li>
+						</ol>
+						<?php endforeach ?>
+						<?php endif ?>
+					</li>
+					<?php endforeach ?>
+				</ol>
+			</div>
+
+			<!--comment form-->
+			<div id="form_comment" class="comment-respond">
+				<h3 id="reply-title" class="comment-reply-title">
+					<span>Leave Your comment</span>
+				</h3>
+				<?php $this->alert->show('post_comment'); ?>
+				<?=form_open('','class="comment-form" autocomplete="on"');?>
+					<div class="row">
+						<div class="col-md-6 col-sm-6 col-xs-12">
+							<div class="field-item">
+								<p class="field-caption">
+									Name <span>*</span>
+								</p>
+								<input id="author" type="text" name="name" tabindex="1">
+							</div>
+						</div>
+						<div class="col-md-6 col-sm-6 col-xs-12">
+							<div class="field-item">
+								<p class="field-caption">
+									Email <span>*</span>
+								</p>
+								<input id="email" type="email" name="email" tabindex="2">
+							</div>
+						</div>
+					</div>
+					<div class="field-item">
+						<p class="field-caption">
+							Message <span>*</span>
+						</p>
+						<textarea id="comment" name="comment" aria-required="true" placeholder=""></textarea>
+					</div>
+					<p class="form-submit">
+						<div class="g-recaptcha pull-right" data-sitekey="<?=$this->settings->website('recaptcha_site_key')?>" style="margin-bottom:5px;"></div>
+						<script src='https://www.google.com/recaptcha/api.js'></script>
+						<button type="submit" class="my-btn my-btn-dark">SUBMIT</button>
+					</p>
+				<?=form_close(); ?>
 			</div>
 		</div>
 	</div>
-</section>
-<!-- End Content -->
-
-<!-- 
-*******************************************************
-	Include Footer Template
-******************************************************* 
--->
-<?php include_once('footer.php'); ?>
-<!-- End Footer -->
+	
+	<!-- sidebar -->
+	<?php $this->CI->render_view('sidebar'); ?>
+	<!--/ sidebar -->
+	<div class="clearfix"></div>
+</div>
+<?php $this->CI->render_view('footer'); ?>
