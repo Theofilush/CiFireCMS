@@ -1,7 +1,7 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$lang['ci_member'] = 'CiFireCMS Member';
+$lang['ci_member'] = 'Member';
 
 $lang['login1'] = 'Sign In To Dashboard';
 $lang['login2'] = 'Create New Account';

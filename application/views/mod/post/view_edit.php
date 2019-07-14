@@ -41,7 +41,7 @@
 					<!--/ Title -->
 					<!-- Content -->
 					<div class="form-group">
-						<label class="mb-1"><?=lang_line('form_label_content');?></label>
+						<!-- <label class="mb-1"><?=lang_line('form_label_content');?></label> -->
 						<span class="btn-group pull-right">
 							<button type="button" id="tiny-text" class="button btn-xs btn-default btn-flat">Text</button type="button">
 							<button type="button" id="tiny-visual" class="button btn-xs btn-default btn-flat">Visual</button type="button">
@@ -55,12 +55,12 @@
 				<div class="col-md-3" style="min-width:120px;">
 					<div id="sticky" class="bg-white">
 						<div class="accordion post-setting" id="accordionPost">
-							<!-- Status -->
+							<!-- Publish -->
 							<div class="card">
 								<div class="card-header" id="collapse-category">
-									<button class="btn btn-link" type="button" data-toggle="collapse" aria-expanded="true" data-target="#collapseStatus" aria-controls="collapseStatus">Status</button>
+									<button class="btn btn-link" type="button" data-toggle="collapse" aria-expanded="true" data-target="#Publish" aria-controls="Publish">Publish</button>
 								</div>
-								<div id="collapseStatus" class="collapse show" aria-labelledby="collapse-status" data-parent="#accordionPost">
+								<div id="Publish" class="collapse show" aria-labelledby="collapse-status" data-parent="#accordionPost">
 									<div class="card-body">
 										<!-- active -->
 										<div class="form-check">
@@ -92,10 +92,31 @@
 											<?php endif ?>
 										</div>
 										<!--/ headline -->
+
+										<!-- comment -->
+										<div class="form-check mb-3">
+											<?php if ( $result_post['comment'] == 'Y' ): ?>
+
+											<input class="form-check-input" type="checkbox" id="cCommenta" name="comment" value="1" checked>
+											<label class="form-check-label" for="cCommenta"><?=lang_line('form_label_comment');?></label>
+
+											<?php else: ?>
+
+											<input class="form-check-input" type="checkbox" id="cCommentb" name="comment" value="1">
+											<label class="form-check-label" for="cCommentb"><?=lang_line('form_label_comment');?></label>
+											
+											<?php endif ?>
+										</div>
+										<!--/ comment -->
+
+										<div class="mt-2">
+											<button type="submit" class="button btn-sm btn-primary submit_update mr-2"><i id="submit_icon" class="fa fa-save mr-2"></i><?=lang_line('button_save');?></button>
+											<a href="<?=admin_url($this->mod);?>" class="button btn-sm btn-default"><i class="fa fa-times mr-2"></i><?=lang_line('button_cancel');?></a>
+										</div>
 									</div>
 								</div>
 							</div>
-							<!--/ Status -->
+							<!--/ Publish -->
 
 							<!-- Category -->
 							<div class="card">
@@ -236,11 +257,6 @@
 								</div>
 							</div>
 							<!--/ Author -->
-						</div>
-						<hr>
-						<div>
-							<button type="submit" class="button btn-primary submit_update"><i id="submit_icon" class="fa fa-save mr-2"></i><?=lang_line('button_save');?></button>
-							<a href="<?=admin_url($this->mod);?>" class="button btn-default pull-right"><i class="fa fa-times mr-2"></i><?=lang_line('button_cancel');?></a>
 						</div>
 					</div>
 				</div>

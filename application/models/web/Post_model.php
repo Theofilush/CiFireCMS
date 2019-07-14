@@ -108,6 +108,7 @@ class Post_model extends CI_Model {
 						t_post.timepost,
 						t_post.tag,
 						t_post.hits,
+						t_post.comment        AS  post_comment,
 						t_category.id         AS  category_id,
 						t_category.title      AS  category_title,
 						t_category.seotitle   AS  category_seotitle,

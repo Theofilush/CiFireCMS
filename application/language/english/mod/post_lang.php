@@ -25,6 +25,7 @@ $lang['form_label_date'] = 'Date';
 $lang['form_label_time'] = 'Time';
 $lang['form_label_author'] = 'Author';
 $lang['form_label_headline'] = 'Headline';
+$lang['form_label_comment'] = 'Comment';
 $lang['form_label_active'] = 'Active';
 
 $lang['form_message_add_success'] = 'Post data has been successfully added';

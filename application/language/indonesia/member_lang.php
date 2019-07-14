@@ -1,10 +1,10 @@
 <?php 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$lang['ci_member'] = 'CiFireCMS Pengguna';
+$lang['ci_member'] = 'Member';
 
 $lang['login1'] = 'Masuk Ke Dasbor';
-$lang['login2'] = 'Create New Account';
+$lang['login2'] = 'Buat Akun Baru';
 $lang['login3'] = 'Forgot Password';
 $lang['or'] = 'ATAU';
 $lang['login_title'] = 'Masuk';

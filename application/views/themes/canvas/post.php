@@ -168,6 +168,7 @@
 
 
 						<!-- Comments -->
+						<?php if ( $result_post['post_comment'] == "Y" ): ?>
 						<div id="comments" class="clearfix">
 							<h3 id="comments-title"><span><?=$result_post['comment']?></span> Komentar</h3>
 
@@ -323,6 +324,7 @@
 							</div>
 							<!--/ Comment Form -->
 						</div>
+						<?php endif ?>
 						<!--/ Comments -->
 					</div>
 				</div>

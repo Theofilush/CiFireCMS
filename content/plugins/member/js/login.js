@@ -1,9 +1,3 @@
-/*---------------------------------------
- * Custom JavaScript for member area login & register.
- * Author : Adimancifi.
- * Site   : https://www.alweak.com
- *---------------------------------------
-*/
 
 $('input:not(textarea)').keydown(function(event){
 	var kc = event.witch || event.keyCode;
@@ -17,12 +11,12 @@ $('.input-email').on('input', function(e){
 	e.preventDefault();
 	var ref = $(this);
 	var val = $(this).val();
-	var maxChar = 50;
+	var maxChar = 80;
 
-	// limit username length char
+	// limit email length char
 	if ( val.length >= maxChar ) {
 		ref.val(function() {
-			console.log(val.substr(0, maxChar))
+			// console.log(val.substr(0, maxChar))
 			return val.substr(0, maxChar);       
 		});
 	}

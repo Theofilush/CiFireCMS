@@ -17,4 +17,4 @@ class Maintenance extends CI_Controller {
 	{
 		$this->load->view('maintenance', $this->vars);
 	}
-}
+} // End class.

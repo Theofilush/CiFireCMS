@@ -246,6 +246,7 @@ function favicon($param = '')
 function post_images($filename = '', $mode = NULL, $noimage = FALSE)
 {
 	$image_url = '';
+	$dt = "?".strtotime(date('YmdHis'));
 
 	switch ($noimage) 
 	{
@@ -255,51 +256,51 @@ function post_images($filename = '', $mode = NULL, $noimage = FALSE)
 				if ( $mode == 'thumb' ) 
 				{
 					if (file_exists(CONTENTPATH."thumbs/$filename")) 
-						$image_url = content_url("thumbs/$filename");
+						$image_url = content_url("thumbs/$filename").$dt;
 					else 
-						$image_url = content_url("images/thumb_noimage.jpg");
+						$image_url = content_url("images/thumb_noimage.jpg").$dt;
 				}
 				elseif ( $mode == 'medium' ) 
 				{
 					if (file_exists(CONTENTPATH."uploads/medium/$filename")) 
-						$image_url = content_url("uploads/medium/$filename");
+						$image_url = content_url("uploads/medium/$filename").$dt;
 					else
-						$image_url = content_url("images/medium_noimage.jpg");
+						$image_url = content_url("images/medium_noimage.jpg").$dt;
 				}
 				else
 				{
 					if ( file_exists(CONTENTPATH."uploads/$filename") ) 
-						$image_url = content_url("uploads/$filename");
+						$image_url = content_url("uploads/$filename").$dt;
 					else
-						$image_url = content_url("images/noimage.jpg");
+						$image_url = content_url("images/noimage.jpg").$dt;
 				}
 			}
 
 			else
 			{
 				if ( $mode == 'thumb' )
-					$image_url = content_url("images/thumb_noimage.jpg");
+					$image_url = content_url("images/thumb_noimage.jpg").$dt;
 				elseif ($mode == 'medium')
-					$image_url = content_url("images/medium_noimage.jpg");
+					$image_url = content_url("images/medium_noimage.jpg").$dt;
 				else
-					$image_url = content_url("images/noimage.jpg");
+					$image_url = content_url("images/noimage.jpg").$dt;
 			}			
 		break;
 		
 		default:
 		case FALSE:
 			if ( !empty($filename) && file_exists(CONTENTPATH."uploads/$filename") && $mode == '' ) 
-				$image_url = content_url("uploads/$filename" );
+				$image_url = content_url("uploads/$filename").$dt;
 			elseif ( !empty($filename) && file_exists(CONTENTPATH."uploads/medium/$filename") && $mode == 'medium' ) 
-				$image_url = content_url("uploads/medium/$filename");
+				$image_url = content_url("uploads/medium/$filename").$dt;
 			elseif ( !empty($filename) && file_exists(CONTENTPATH."thumbs/$filename") && $mode == 'thumb' ) 
-				$image_url = content_url("thumbs/$filename");
+				$image_url = content_url("thumbs/$filename").$dt;
 			else
 				$image_url = '';
 		break;
 	}
 
-	return $image_url."?".strtotime(date('YmdHis'));
+	return $image_url;
 }
 
 

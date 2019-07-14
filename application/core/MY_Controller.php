@@ -79,6 +79,7 @@ class MY_Controller extends CI_Controller {
 		}
 	}
 
+
 	/**
 	 * - Fungsi ini digunakan untuk menentukan bahasa.
 	 * @return void
@@ -100,6 +101,7 @@ class MY_Controller extends CI_Controller {
 		
 		return $langActive;
 	}
+
 
 	/**
 	 * - Fungsi ini digunakan untuk menentukan meta pada view.
@@ -139,6 +141,7 @@ class MY_Controller extends CI_Controller {
 		return $this;
 	}
 
+
 	/**
 	 * - Fungsi ini digunakan untuk menentukan meta keyword pada view.
 	 * @return void
@@ -148,6 +151,7 @@ class MY_Controller extends CI_Controller {
 		$this->meta_keywords = $param;
 		return $this;
 	}
+
 
 	/**
 	 * - Fungsi ini digunakan untuk menentukan meta description pada view.
@@ -159,6 +163,7 @@ class MY_Controller extends CI_Controller {
 		return $this;
 	}
 
+
 	/**
 	 * - Fungsi ini digunakan untuk menentukan meta image pada view.
 	 * @return void
@@ -169,6 +174,7 @@ class MY_Controller extends CI_Controller {
 		return $this;
 	}
 
+
 	/**
 	 * - Fungsi untuk set cache.
 	 * @return void
@@ -178,6 +184,7 @@ class MY_Controller extends CI_Controller {
 		if ( $this->settings->website('cache') == 'Y' )
 			return $this->output->cache($this->settings->website('cache_time'));
 	}
+
 
 	/**
 	 * - Fungsi ini digunakan untuk output json.
@@ -192,6 +199,7 @@ class MY_Controller extends CI_Controller {
 			 ->_display();
 		exit();
 	}
+
 
 	/**
 	 * - Fungsi ini digunakan untuk mencatat pengunjung.
@@ -222,7 +230,7 @@ class MY_Controller extends CI_Controller {
 			->get('t_visitor')
 			->num_rows();
 
-		if ($totalvi < 1) 
+		if ( $totalvi < 1 ) 
 		{
 			$this->db->insert('t_visitor', array(
 				'ip'       => $ipvi,

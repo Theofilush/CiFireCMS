@@ -23,6 +23,7 @@ $lang['form_label_date'] = 'Tanggal';
 $lang['form_label_time'] = 'Waktu';
 $lang['form_label_author'] = 'Penulis';
 $lang['form_label_headline'] = 'Headline';
+$lang['form_label_comment'] = 'Komentar';
 $lang['form_label_active'] = 'Aktif';
 
 $lang['form_message_add_success'] = 'Data post telah berhasil ditambahkan';

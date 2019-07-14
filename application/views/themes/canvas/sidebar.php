@@ -45,8 +45,8 @@
 	<div class="widget clearfix">
 		<div class="tabs nobottommargin clearfix" id="sidebar-tabs">
 			<ul class="tab-nav clearfix">
-				<li><a href="#tabs-1"><i class="icon-star"></i>&nbsp; Populer</a></li>
-				<li><a href="#tabs-2"><i class="icon-clock"></i>&nbsp; Terbaru</a></li>
+				<li><a href="#tabs-1"><i class="icon-star"></i>&nbsp; Popular</a></li>
+				<li><a href="#tabs-2"><i class="icon-clock"></i>&nbsp; Latest</a></li>
 			</ul>
 			<div class="tab-container">
 				<!-- Popular -->
@@ -123,7 +123,7 @@
 								<ul class="entry-meta">
 									<li><i class="icon-clock"></i> <?=ci_timeago($row_slatest['datepost'].$row_slatest['timepost']);?></li>
 									<li><i class="icon-folder-open"></i> <a href="<?=site_url('category/'.$pop_category['seotitle']);?>"><?=$pop_category['title'];?></a></li>
-									<li><i class="icon-eye"></i> <?=$row_spopular['hits'];?></li>
+									<li><i class="icon-eye"></i> <?=$row_slatest['hits'];?></li>
 								</ul>
 							</div>
 						</div>

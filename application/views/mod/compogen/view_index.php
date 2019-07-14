@@ -3,7 +3,7 @@
 	<div class="compogen-heading text-center">
 		<i class="icon-cup2"></i>
 		<h2>CompoGen</h2>
-		<p>Component Generator (Beta)</p>
+		<p>Component Generator</p>
 	</div>
 
 	<div class="card compogen">

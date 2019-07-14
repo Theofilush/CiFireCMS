@@ -176,6 +176,7 @@ class Post extends Admin_controller {
 					$date_post = (empty($this->input->post('datepost')) ? date('Y-m-d') : date('Y-m-d', strtotime($this->input->post('datepost'))));
 					$headline = ($this->input->post('headline') == '1' ? 'Y' : 'N');
 					$active = ($this->input->post('active') == '1' ? 'Y' : 'N');
+					$comment = ($this->input->post('comment') == '1' ? 'Y' : 'N');
 
 					$data_post = array(
 						'title'         => xss_filter($this->input->post('title')),
@@ -189,6 +190,7 @@ class Post extends Admin_controller {
 						'timepost'      => xss_filter($this->input->post('timepost').':'.date('s')),
 						'id_user'       => login_key('admin'),
 						'headline'      => $headline,
+						'comment'       => $comment,
 						'active'        => $active,
 					);
 
@@ -271,6 +273,7 @@ class Post extends Admin_controller {
 						$id_category = (!empty($input_category) ? $input_category : '1');
 
 						$headline = ($this->input->post('headline') == '1' ? 'Y' : 'N');
+						$comment = ($this->input->post('comment') == '1' ? 'Y' : 'N');
 						$active = ($this->input->post('active') == '1' ? 'Y' : 'N');
 
 						if ( user_level('level') == 'super-admin' || user_level('level') == 'admin' )
@@ -287,6 +290,7 @@ class Post extends Admin_controller {
 								'timepost'     => xss_filter($this->input->post('timepost')),
 								'id_user'      => xss_filter($this->input->post('author'), 'sql'),
 								'headline'     => $headline,
+								'comment'      => $comment,
 								'active'       => $active,
 							);
 						}
@@ -303,6 +307,7 @@ class Post extends Admin_controller {
 								// 'datepost'      => date('Y-m-d', strtotime($this->input->post('datepost'))),
 								// 'timepost'      => $this->input->post('timepost') . ':' . date('s'),
 								'headline'     => $headline,
+								'comment'     => $comment,
 								'active'       => $active,
 							);	
 						}
