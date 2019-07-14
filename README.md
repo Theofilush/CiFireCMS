@@ -82,7 +82,12 @@ RewriteRule ^ http://%1%{REQUEST_URI} [L,NE,R=301]
 ```
 
 ### Production
-Jika web sudah di online-kan silahkan ubah kode pada **index.php** di baris ke 56 menjadi seperti dibawah.
+Jika web sudah di online-kan silahkan ubah kode pada **index.php**
+Cari baris kode berikut :
+```
+define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
+```
+Ubah menjadi seperti berikut :
 ```
 define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'production');
 ```
