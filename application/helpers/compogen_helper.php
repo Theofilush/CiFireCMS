@@ -655,7 +655,7 @@ function dump_file_javascript($data = '') {
 $rdate = DATE('Y-m-d ~ h:i:s');
 $write = <<<EOS
 /**
- * - File ini dibuat dari CompoGen v.1 (Beta).
+ * - This file was created using CompoGen
  * 
  * - File   : javascript.js
  * - Date   : {$rdate}
@@ -845,7 +845,7 @@ $rdate = DATE('Y-m-d ~ h:i:s');
 $write .= <<<EOS
 <?php
 /**
- * - File ini dibuat dari CompoGen v.1 (Beta).
+ * - This file was created using CompoGen
  * 
  * - File   : {$class_name}.php
  * - Date   : {$rdate}
@@ -1292,7 +1292,7 @@ $rdate = DATE('Y-m-d ~ h:i:s');
 $write .= <<<EOS
 <?php
 /**
- * - File ini dibuat dari CompoGen v.1 (Beta).
+ * - This file was created using CompoGen
  * 
  * - File   : {$class_name}_model.php
  * - Date   : {$rdate}
