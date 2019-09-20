@@ -100,9 +100,7 @@ $('#delpict').on('click',function(event){
 	$('#imgprv').attr('src',site_url+'content/images/noimage.jpg');
 });
 
-
-// load TnyMCE
-cfTnyMCE('#Content');
+cfTnyMCE('#Content'); // load TnyMCE
 
 $('input:not(textarea)').keydown(function(event){
 	var kc = event.witch || event.keyCode;

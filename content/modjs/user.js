@@ -49,7 +49,6 @@ var DataTableIndex = $('#DataTable').DataTable({
     }
 });
 
-
 $('#form_add_user').on('submit', function(e){
     //e.preventDefault();
     $('.submit_add').find('i').removeClass().addClass('icon-spinner2 spinner mr-2');
@@ -75,12 +74,9 @@ $('#form_add_user').on('submit', function(e){
 
 $('#form_update_user').on('submit',function(e){
     e.preventDefault();
-
     $('.submit_update').find('i').removeClass().addClass('icon-spinner2 spinner mr-2');
     $('.noty_layout').remove();
-
     var formData = new FormData(this);
-
     var form = $('#form_update_user');
     $.ajax({
         url: admin_url + a_mod + '/submit-update-user',
@@ -98,8 +94,6 @@ $('#form_update_user').on('submit',function(e){
     })
     return false;
 });
-
-
 
 // data-table level
 var DataTableLevel = $("#DataTableLevel").DataTable({
@@ -172,7 +166,6 @@ var DataTableLevel = $("#DataTableLevel").DataTable({
 	},
 });
 
-
 $(".add_level").click(function() {
 	$('#modal_add_level').modal('show');
 });
@@ -221,7 +214,6 @@ $(".moda_delete_module").click(function() {
     $('#modal_delete_level').modal('show');
 });
 
-
 $(".close-preview2").click(function(){
 	$(this).hide();
 	var resimg = $('#resset-image').val();
@@ -238,7 +230,6 @@ $(".close-preview").click(function(){
     $('#upload-image').val('');
 });
 
-
 $('#input-datepicker').datetimepicker({
     format: 'YYYY-MM-DD',
     showTodayButton: true,
@@ -251,10 +242,6 @@ $('#input-datepicker').datetimepicker({
     },
 });
 
-
-$('.form-check-input-styled').uniform();
-
-
 $('input:not(textarea)').keydown(function(event){
     var a = event.witch || event.keyCode;
     if(a == 13){
@@ -262,7 +249,6 @@ $('input:not(textarea)').keydown(function(event){
         return false;
     }
 });
-
 
 function readImgURL(input) {
     if (input.files && input.files[0]) {

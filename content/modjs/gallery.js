@@ -96,7 +96,6 @@ function galleryDelete(pk,uri){
 	});
 }
 
-
 function responsive_filemanager_callback(field_id) {
 	var url = $('#'+field_id).val();
 	$('#prv').val(url);

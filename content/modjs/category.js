@@ -71,7 +71,6 @@ $('#form_add').on('submit',function(event){
 	})
 });
 
-
 $('#form_update').on('submit',function(event){
 	event.preventDefault()
 	$('.submit_update').find('i').removeClass().addClass('icon-spinner2 spinner mr-2');

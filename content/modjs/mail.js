@@ -103,10 +103,7 @@ $(document).ready(function() {
 	});
 });
 
-
-
 $(document).ready(function() {
-	// load TnyMCE
 	cfTnyMCE('#Content');
 });
 
@@ -116,6 +113,7 @@ $('.delete_read_mail').on('click',function(event) {
 	var dataUrl = admin_url + a_mod + '/delete';
 	_mail_delete(dataPk,dataUrl)
 });
+
 function _mail_delete(pk,uri) {
 	var dataPk = pk;
 	var dataUrl = uri;

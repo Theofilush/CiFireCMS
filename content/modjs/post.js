@@ -1,4 +1,3 @@
-
 var DataTable = $('#DataTable').DataTable({
 	'language': {
 		'url': datatable_lang,
@@ -29,7 +28,6 @@ var DataTable = $('#DataTable').DataTable({
 	'drawCallback': function( settings ) {
 		var api_table = this.api();
 		dataTableDrawCallback(); // standard setting
-
 
 		$('.delete_single').on('click', function(i) {
 			var data_pk = [];
@@ -73,7 +71,6 @@ var DataTable = $('#DataTable').DataTable({
 		});
 	}
 });
-
 
 $('input:not(textarea)').keydown(function(event){
 	var a = event.witch || event.keyCode;
@@ -126,7 +123,6 @@ $('#form_update').on('submit',function(event){
 	})
 	return false;
 });
-
 
 var tagName = new Bloodhound({
 	datumTokenizer: Bloodhound.tokenizers.obj.whitespace('title'),
@@ -208,6 +204,4 @@ $('#delpict').on('click',function(){
 	$('#imgprv').attr('src', site_url + 'content/images/noimage.jpg');
 });
 
-// load TnyMCE
-cfTnyMCE('#Content');
-
+cfTnyMCE('#Content'); // load TnyMCE

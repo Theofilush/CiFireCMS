@@ -1,4 +1,3 @@
-
 var sFileUpload = function() {
     // Bootstrap file upload
     var _FileUpload = function() {
@@ -182,7 +181,6 @@ $(document).ready(function(){
 		}
 	});
 
-
 	$('#visitors').editable({
 		source: [
 			{value: 'N', text: 'N'},
@@ -193,6 +191,7 @@ $(document).ready(function(){
 			return params;
 		}
 	});
+
 	$('#maintenance').editable({
 		source: [
 			{value: 'N', text: 'N'},
@@ -203,8 +202,6 @@ $(document).ready(function(){
 			return params;
 		}
 	});
-
-
 
 	$('#member_registration').editable({
 		source: [
@@ -325,6 +322,7 @@ $(document).ready(function(){
 		});
 		return Country;
 	}
+
 	$('#country').editable({
 		source: getJsonCountry(),
 		select2: {
@@ -399,6 +397,7 @@ $(document).ready(function(){
 		});
 		return SlugUrl;
 	}
+
 	$('#slug_url').editable({
 		source: getSlugUrl(),
 		select2: {
@@ -418,11 +417,9 @@ $(document).ready(function(){
 	});
 });
 
-
 $(document).ready(function(){
 	$('.fupload').on('input',function() {
 		var f = $(this)[0].files[0];
-
 		if (f.type == 'image/png' || f.type == 'image/jpeg') {
 			$('.fav').val(f.name);
 		} else {
@@ -434,7 +431,6 @@ $(document).ready(function(){
 
 	$('.lupload').on('input',function() {
 		var f = $(this)[0].files[0];
-
 		if (f.type == 'image/png' || f.type == 'image/jpeg') {
 			$('.logm').val(f.name);
 		} else {
@@ -481,9 +477,7 @@ $(document).ready(function(){
 			dataType: 'json',
 			success:function(data) {
 				cfNotif(data['alert']);
-
 				$("#form-meta").fadeIn(200);
-
 				editor.refresh();
 			}
 		}); 

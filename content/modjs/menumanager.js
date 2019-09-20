@@ -7,7 +7,6 @@ jQuery(document).ready(function(){
 		-----------------------------------------------------------------------------*/
 		$('#menu-group li[id="group-' + current_group_id + '"]').addClass('current');
 
-
 		/* global ajax setup 
 		-----------------------------------------------------------------------------*/
 		$.ajaxSetup({
@@ -23,7 +22,6 @@ jQuery(document).ready(function(){
 		$('#loading').ajaxStop(function() {
 			$(this).hide();
 		});
-
 
 
 		/* modal box 
@@ -169,10 +167,6 @@ jQuery(document).ready(function(){
 			return false;
 		});
 
-
-
-
-
 		/* add menu 
 		-----------------------------------------------------------------------*/
 		$('#form-add-menu').submit(function() {
@@ -215,9 +209,6 @@ jQuery(document).ready(function(){
 		});
 
 
-
-
-
 		/* edit menu 
 		-----------------------------------------------------------------------------*/
 		$('.edit-menu').live('click', function() {
@@ -255,7 +246,6 @@ jQuery(document).ready(function(){
 		});
 
 
-
 		/* delete menu 
 		-----------------------------------------------------------------------------*/
 		$('.delete-menu').live('click', function() {
@@ -282,9 +272,6 @@ jQuery(document).ready(function(){
 			});
 			return false;
 		});
-
-
-
 
 
 		/* add menu group 
@@ -338,11 +325,6 @@ jQuery(document).ready(function(){
 		});
 
 
-
-
-
-
-
 		/* edit group  
 		------------------------------------------------------------------------------------*/
 		$('#edit-group').click(function() {
@@ -372,7 +354,6 @@ jQuery(document).ready(function(){
 			});
 			return false;
 		});
-
 
 
 		/* delete menu group 

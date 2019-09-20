@@ -86,9 +86,7 @@ getLangJSON().done(function(jsonLang){
 	$.validator.messages.maxlength = errMsg['maxlength'];
 });
 
-
-function _compGenOnInit()
-{
+function _compGenOnInit(){
 	$('.btn-add-field').on('click',function(e){
 		e.preventDefault();
 		var id = $(this).attr("id");

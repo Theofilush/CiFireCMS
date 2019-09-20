@@ -1,4 +1,3 @@
-
 var themeFileUpload = function() {
     // Bootstrap file upload
     var _FileUpload = function() {
@@ -73,12 +72,10 @@ document.addEventListener('DOMContentLoaded', function() {
     themeFileUpload.init();
 });
 
-
 $(".upload_theme_asets").on('click',function(e) {
     e.preventDefault();
     $('#modal_upload_theme_assets').modal('show');
 }); 
-
 
 $(':file').change(function() {
     var f = $(this)[0].files[0];

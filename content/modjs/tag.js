@@ -1,4 +1,3 @@
-
 $('#DataTable').DataTable({
     'language': {
         'url': datatable_lang,
@@ -61,11 +60,7 @@ $('#DataTable').DataTable({
     }
 });
 
-
-
 $(".modal_add").click(function() {
     $('#modal_add').modal('show');
     $('.input-tags').tagsinput();
 });
-
-
