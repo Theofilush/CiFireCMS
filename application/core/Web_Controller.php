@@ -58,6 +58,8 @@ class Web_Controller extends MY_Controller {
 	{
 		if ( file_exists(VIEWPATH."themes/$this->theme_folder/404.php") )
 		{
+			$this->meta_title('404 Page Not Found');
+			$this->meta_description('The page you requested was not found.');
 			$this->load->view("themes/$this->theme_folder/404");
 		}
 		else
