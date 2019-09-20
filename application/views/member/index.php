@@ -32,7 +32,7 @@
 	</script>
 </head>
 <body class="sidebar-mini">
-	<div class="wrapper">
+	<div class="wrapperX main">
 		<div class="sidebar" data-color="blue">
 			<div class="sidebar-wrapper">
 				<div class="logo">
@@ -108,6 +108,8 @@
 			<!-- End CONTENT -->
 		</div>
 	</div>
+
+	<div id="gotop" class="to-top"></div>
 	
 	<!-- JavaScript -->
 	<script src="<?=content_url('plugins/member/js/jquery.3.2.1.min.js')?>"></script>

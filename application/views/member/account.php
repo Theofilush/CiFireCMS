@@ -1,9 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
-
 <div class="container">
-
-	<?php echo $this->alert->show($this->mod); ?>
-
+	<?= $this->alert->show($this->mod); ?>
 	<div class="row">
 		<!-- left -->
 		<div class="col-md-4">
@@ -30,14 +27,13 @@
 					</p>
 					<hr class="text-center mt-4 mb-2">
 					<div class="text-center">
-						<a href="<?=member_url('account/delete');?>" class="btn btn-sm btn-danger mr-2"><i class="fa fa-user-times mr-2"></i><?=lang_line('button_delete_account')?></a>
-						<a href="<?=member_url('account/password');?>" class="btn btn-sm btn-warning"><i class="fa fa-unlock-alt mr-2"></i><?=lang_line('change_password')?></a>
+						<a href="<?=member_url('delete-account');?>" class="btn btn-sm btn-danger mr-2"><i class="fa fa-user-times mr-2"></i><?=lang_line('button_delete_account')?></a>
+						<a href="<?=member_url('change-password');?>" class="btn btn-sm btn-warning"><i class="fa fa-unlock-alt mr-2"></i><?=lang_line('change_password')?></a>
 					</div>
 				</div>
 			</div>
 		</div>
 		<!--/ left -->
-
 		<!-- right -->
 		<div class="col-md-8">
 			<form class="form" id="form_profile">
@@ -46,8 +42,16 @@
 						<h4 class="card-title"><?=lang_line('account_title');?></h4>
 					</div>
 					<div class="card-body">
-						<!-- username -->
 						<div class="row mb-3">
+							<!-- email -->
+							<div class="col-md-6">
+								<div class="form-group">
+									<label><?=lang_line('account_label_email');?> <small class="text-danger">*</small></label>
+									<input type="text" name="email" class="form-control" value="<?=$row['email'];?>" maxlength="50">
+								</div>
+							</div>
+							<!--/ email -->
+							<!-- username -->
 							<div class="col-md-6">
 								<div class="form-group">
 									<label><?=lang_line('account_label_username');?></label>
@@ -56,27 +60,18 @@
 								</div>
 							</div>
 							<!--/ username -->
-							<!-- email -->
-							<div class="col-md-6">
-								<div class="form-group">
-									<label><?=lang_line('account_label_email');?></label>
-									<input type="text" name="email" class="form-control" value="<?=$row['email'];?>" maxlength="50">
-								</div>
-							</div>
 						</div>
-						<!--/ email -->
 						<hr>
 						<!-- name -->
 						<div class="row mb-3">
 							<div class="col-md-6">
 								<div class="form-group">
-									<label><?=lang_line('account_label_name');?></label>
+									<label><?=lang_line('account_label_name');?> <small class="text-danger">*</small></label>
 									<input type="text" name="name" class="form-control" value="<?=$row['name'];?>" maxlength="20">
 								</div>
 							</div>
 						</div>
 						<!--/ name -->
-						
 						<!-- Gender -->
 						<div class="row mb-3">
 							<div class="col-md-12">
@@ -110,12 +105,11 @@
 							</div>
 						</div>
 						<!--/ Gender -->
-
 						<!-- birthday -->
 						<div class="row mb-3">
 							<div class="col-md-6">
 								<div class="form-group">
-									<label><?=lang_line('account_label_birthday');?></label>
+									<label><?=lang_line('account_label_birthday');?> <small class="text-danger">*</small></label>
 									<div class="input-group">
 										<input type="text" id="datepicker" name="birthday" class="form-control" value="<?=$row['birthday'];?>" required>
 										<div class="input-group-append">
@@ -126,12 +120,11 @@
 							</div>
 						</div>
 						<!--/ birthday -->
-
 						<!-- Phone -->
 						<div class="row mb-3">
 							<div class="col-md-6">
 								<div class="form-group">
-									<label><?=lang_line('account_label_tlpn');?></label>
+									<label><?=lang_line('account_label_tlpn');?> <small class="text-danger">*</small></label>
 									<div class="input-group">
 										<input type="text" name="tlpn" class="form-control" value="<?=$row['tlpn'];?>">
 										<div class="input-group-append">
@@ -152,7 +145,6 @@
 							</div>
 						</div>
 						<!-- About -->
-
 						<!-- Address -->
 						<div class="row mb-3">
 							<div class="col-md-12">
@@ -163,9 +155,7 @@
 							</div>
 						</div>
 						<!-- Address -->
-
 						<hr>
-
 						<button type="submit" class="btn_submit_profile btn btn-success"><i class="fa fa-save mr-2"></i><?=lang_line('button_save')?></button>
 						<div class="clearfix"></div>
 					</div>
@@ -176,7 +166,7 @@
 	</div>
 </div>
 
-<!-- modal -->
+<!-- modal edit photo -->
 <div id="modal_edit_photo" class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-dialog" role="document">
@@ -204,8 +194,8 @@
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="button" class="btn btn-danger delete_photo"><i class="fa fa-trash mr-2"></i> <?=lang_line('button_delete')?></button>
 						<button type="submit" class="btn btn-primary upload"><i class="fa fa-upload mr-2"></i> <?=lang_line('button_upload')?></button>
+						<button type="button" class="btn btn-danger delete_photo"><i class="fa fa-trash mr-2"></i> <?=lang_line('button_delete')?></button>
 						<button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-sign-out"></i>  <?=lang_line('button_cancel')?></button>
 					</div>
 				<?php echo form_close(); ?>
@@ -213,4 +203,4 @@
 		</div>
 	</div>
 </div>
-<!--/ modal -->
+<!--/ modal edit photo -->
