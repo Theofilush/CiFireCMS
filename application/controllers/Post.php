@@ -69,7 +69,7 @@ class Post extends Web_controller {
 			$this->form_validation->set_rules(array(
 				array(
 					'field' => 'name',
-					'label' => 'Nama',
+					'label' => 'Name',
 					'rules' => 'required|trim|min_length[4]|max_length[150]|regex_match[/^[a-zA-Z0-9-. ]+$/]'
 				),
 				array(
@@ -79,7 +79,7 @@ class Post extends Web_controller {
 				),
 				array(
 				    'field' => 'comment',
-					'label' => 'Komentar',
+					'label' => 'Comment',
 					'rules' => 'required|trim|max_length[500]'
 				)
 			));
