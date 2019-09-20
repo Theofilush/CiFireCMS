@@ -5,6 +5,25 @@
  *---------------------------------------
 */
 
+/*---------------------------------------
+ * Button Go to top.
+ *---------------------------------------
+*/
+$(document).scroll(function () {
+	var _sgtp = $(this).scrollTop();
+	if (_sgtp > 100) {
+		$('#gotop').show();
+	} else {
+		$('#gotop').hide();
+	}
+});
+
+// klik link to top scroll
+$('#gotop').on('click', function(e) {
+	e.preventDefault();
+	$('html, body').animate({scrollTop:0}, '100');
+	return false;
+});
 
 
 /*---------------------------------------
@@ -20,9 +39,7 @@ $('#DataTable').DataTable({
 	'responsive': true,
 	'processing': true,
 	'serverSide': true,
-	'order': [
-		//[1, 'desc']
-	],
+	'order': [],
 	'columnDefs': [
 		{'targets': 'no-sort', 'orderable': false, 'searchable': false},
 		{'targets': 'th-action', 'orderable': false, 'searchable': false},
@@ -35,7 +52,6 @@ $('#DataTable').DataTable({
 	],
 	'ajax': {
 		'type': 'POST',
-		// 'url': _MEMBER_URL + _MOD,
 		'url': window.location.href,
 	},
 	'drawCallback': function( settings ) {
@@ -58,7 +74,6 @@ $('#DataTable').DataTable({
 				this.checked = a, a == this.checked && $(this).closest('table tbody tr').removeClass('table-danger'), this.checked && $(this).closest('table tbody tr').addClass('table-danger')
 			})
 		});
-
 
 		$('.delete_single').on('click', function(i) {
 			var data_pk = [];
@@ -112,9 +127,8 @@ $('#form_post_add').on('submit',function(e){
 	var form = $('#form_post_add');
 	var formData = new FormData(this);
 	$.ajax({
-		url: _MEMBER_URL + _MOD + '/add-new',
+		url: window.location.href,
 		type: 'POST',
-		// data: form.serialize(),
 		data: formData,
 		dataType: 'json',
 		contentType: false,  
@@ -144,9 +158,8 @@ $('#form_post_update').on('submit',function(e){
 	var form = $('this');
 	var formData = new FormData(this);
 	$.ajax({
-		url: _MEMBER_URL + _MOD + '/submit-update',
+		url: window.location.href,
 		type: 'POST',
-		// data: form.serialize(),
 		data: formData,
 		dataType: 'json',
 		contentType: false,  
@@ -177,7 +190,6 @@ $('#form_profile').on('submit',function(e){
 	$.ajax({
 		url: _MEMBER_URL + _MOD,
 		type: 'POST',
-		// data: form.serialize(),
 		data: form,
 		dataType: 'json',
         cache: false,
@@ -228,7 +240,6 @@ $('.delete_photo').on('click', function(e){
 });
 
 
-
 /*---------------------------------------
  * Fiter submit from keyboard.
  *---------------------------------------
@@ -240,30 +251,6 @@ $('input:not(textarea)').keydown(function(event){
 		return false;
 	}
 });
-
-
-/*---------------------------------------
- * Select 2 for category.
- *---------------------------------------
-*/
-// $('.select-category').select2({
-// 	minimumInputLength: 0,
-// 	ajax: {
-// 		dataType: 'json',
-// 		type: 'POST',
-// 		url: _MEMBER_URL + _MOD + '/ajax-get-category',
-// 		data: function(params) {
-// 			return {
-// 				search: params.term
-// 			}
-// 		},
-// 		processResults: function (data, page) {
-// 			return {
-// 				results: data
-// 			}
-// 		},
-// 	}
-// });
 
 $('.select-2').select2();
 
@@ -303,7 +290,6 @@ $('#tagsjs').tagsinput({
 });
 
 $('.twitter-typeahead').css('display', 'inline');
-
 
 
 /*---------------------------------------
@@ -370,7 +356,6 @@ tinymce.init({
 	editor_deselector: 'mceNoEditor',
 	skin: 'lightgray',
 	branding: false,
-	// statusbar: false,
 	content_css: _CONTENT_URL+'plugins/member/css/bootstrap.min.css,'+_CONTENT_URL+'plugins/font-awesome/css/font-awesome.min.css',
 	plugins: [
 		"advlist autolink link image lists charmap print preview hr anchor pagebreak",
@@ -381,7 +366,6 @@ tinymce.init({
 	toolbar1:'undo redo | bold italic underline | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent table',
 	toolbar2:'removeformat styleselect | fontsizeselect | link unlink image media youtube codesample code | visualblocks fullscreen',
 	menubar: false,
-	// visualblocks_default_state: true,
 	relative_urls: false,
 	remove_script_host: true,
 	resize: true,
@@ -435,19 +419,7 @@ $('.tiny-visual').click(function (e) {
 
 
 
-
-
-
-
-
-
-
-
-
-/**
- * - Get json lenguage
- * Thanks to Tomi Candra https://web.facebook.com/kingtomay
-*/
+/* Get json lenguage */
 function getLangJSON(){
 	var result = $.ajax({
 		dataType: 'json',
@@ -455,7 +427,6 @@ function getLangJSON(){
 	});
 	return result;
 }
-
 
 /* js Notif */
 function cfNotif(data){
@@ -471,8 +442,6 @@ function cfNotif(data){
 		modal: true
 	}).show();
 }
-
-
 
 /* Sweet Alert 2 - fitur untuk delete datatable */
 function cfSwalDelete(pk,api_table,uri){
@@ -536,7 +505,6 @@ function cfSwalDelete(pk,api_table,uri){
 		})
 	});
 }
-
 
 /* Auto close bootstrap alert */
 $('.alert').delay(6000).slideUp(300, function() {

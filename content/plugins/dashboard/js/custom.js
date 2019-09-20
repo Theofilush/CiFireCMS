@@ -1,4 +1,3 @@
-
 var _jsDsCustoms = function () {
 	// Sidebar navigation
 	var _navigationSidebar = function() {
@@ -150,7 +149,6 @@ document.addEventListener('DOMContentLoaded', function() {
 	_jsDsCustoms.initComponents();
 });
 
-
 function cfNotif(data){
 	Noty.overrideDefaults({
 		theme: 'limitless',
@@ -165,7 +163,6 @@ function cfNotif(data){
 	}).show();
 }
 
-
 function cfAlert(data){
 	$('#alert-notif').html('<div class="alert alert-' + data['type'] + ' alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' + data['content'] + '</div>').show();
 	$('.alert').fadeTo(15353, 50).slideUp(300, function() {
@@ -173,7 +170,6 @@ function cfAlert(data){
 		$('#alert-notif').hide();
 	});
 }
-
 
 function dataTableDrawCallback() {
 	$('.dataTables_length select').select2({
@@ -195,10 +191,6 @@ function dataTableDrawCallback() {
 	});
 }
 
-
-/**
- * Code From Tomi Candra https://web.facebook.com/kingtomay
- */
 function getLangJSON(){
 	var result = $.ajax({
 		dataType: 'json',
@@ -206,7 +198,6 @@ function getLangJSON(){
 	});
 	return result;
 }
-
 
 function cfSwalDelete(pk,api_table,uri){
 	var dataPk = pk;
@@ -271,9 +262,7 @@ function cfSwalDelete(pk,api_table,uri){
 	});
 }
 
-
-function cfCompogen()
-{
+function cfCompogen(){
 	getLangJSON().done(function(lang){
 		$('.steps-validation').steps({
 		    headerTag: 'h6',
@@ -360,7 +349,6 @@ function cfCompogen()
 }
 
 
-
 function cfTnyMCE(element){
 	var selectorTnyMCE = element;
 	$('#tiny-text').click(function (e) {
@@ -411,7 +399,6 @@ function cfTnyMCE(element){
 }
 
 
-
 function setLang(lang){
 	var dataLang = lang;
 	$.ajax({
@@ -423,7 +410,7 @@ function setLang(lang){
 		},
 		cache:false,
 		success:function(response){
-			if (response['status']==true) {
+			if (response['status']==true){
 				window.location.reload();
 			}
 		}
@@ -431,7 +418,7 @@ function setLang(lang){
 }
 
 
-function responsive_filemanager_callback() {
+function responsive_filemanager_callback(){
 	var pict = $('#picture').val();
 	var url = site_url + 'content/uploads/' + pict;
 	$('#imgprv').attr('src', url).show();
@@ -440,7 +427,7 @@ function responsive_filemanager_callback() {
 }
 
 
-function str_seotitle(str) {
+function str_seotitle(str){
 	var seotitle;
 	str = str.replace(/^\s+|\s+$/g, ''); // trim
 	str = str.toLowerCase();
@@ -465,3 +452,5 @@ function str_seotitle(str) {
  * `<img src="blank.gif" data-src="my_image.png" width="600" height="400" class="lazy">`
  */
 $(function(){function e(r,s){var t=new Image,u=r.getAttribute('data-src');t.onload=function(){!r.parent?r.src=u:r.parent.replaceChild(t,r),s?s():null},t.src=u}function g(r){var s=r.getBoundingClientRect();return 0<=s.top&&0<=s.left&&s.top<=(window.innerHeight||document.documentElement.clientHeight)}for(var h=function(r,s){if(document.querySelectorAll)s=document.querySelectorAll(r);else{var t=document,u=t.styleSheets[0]||t.createStyleSheet();u.addRule(r,'f:b');for(var v=t.all,w=0,x=[],y=v.length;w<y;w++)v[w].currentStyle.f&&x.push(v[w]);u.removeRule(0),s=x}return s},j=function(r,s){window.addEventListener?this.addEventListener(r,s,!1):window.attachEvent?this.attachEvent('on'+r,s):this['on'+r]=s},m=[],n=h('img.lazy'),o=function(){for(var r=0;r<m.length;r++)g(m[r])&&e(m[r],function(){m.splice(r,r)})},p=0;p<n.length;p++)m.push(n[p]);o(),j('scroll',o)});
+
+$('.form-check-input-styled').uniform();

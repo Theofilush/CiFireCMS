@@ -1,4 +1,3 @@
-
 $('input:not(textarea)').keydown(function(event){
 	var kc = event.witch || event.keyCode;
 	if(kc == 13){
@@ -16,7 +15,6 @@ $('.input-email').on('input', function(e){
 	// limit email length char
 	if ( val.length >= maxChar ) {
 		ref.val(function() {
-			// console.log(val.substr(0, maxChar))
 			return val.substr(0, maxChar);       
 		});
 	}
