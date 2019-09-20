@@ -1,61 +1,86 @@
-<?php 
-defined('BASEPATH') OR exit('No direct script access allowed'); 
-$this->CI->render_view('header');
-?>
-<div class="cols">
-	<div class="colleft">
-		<div class="box">
-			<div class="box-caption">
-				<h2><a href="#"><i class="fa fa-tags"></i> <?=$result_tag['title'];?></a></h2>
-			</div>
-			<?php foreach ($tag_post as $row): ?>
-			<div class="list-item-category">
-				<article class="category-item">
-					<div class="row row-fix">
-						<div class="col-md-6 col-sm-6 col-xs-12 col-fix">
-							<article class="news-item-big">
-								<div class="post-thumb">
-									<a href="<?=post_url($row['post_seotitle']);?>" title="<?=$row['post_title'];?>">
-										<img alt="<?=$row['post_title'];?>" src="<?=post_images($row['picture'],'medium',TRUE);?>">
-									</a>
+<?php defined('BASEPATH') OR exit('No direct script access allowed');?>
+<!-- 
+*******************************************************
+	Include Header Template
+******************************************************* 
+-->
+<?php require_once('header.php'); ?>
+<!-- End Header -->
+
+<!-- 
+*******************************************************
+	Insert Content
+******************************************************* 
+-->
+<section id="page-title">
+	<div class="container clearfix">
+		<h1><?=$result_tag['title'];?></h1>
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a href="<?=site_url();?>">Home</a></li>
+			<li class="breadcrumb-item">Tag</li>
+			<li class="breadcrumb-item active" aria-current="page"><?=$result_tag['title'];?></li>
+		</ol>
+	</div>
+</section>
+<section id="content">
+	<div class="content-wrap">
+		<div class="container clearfix">
+			<div class="row">
+				<div class="col-lg-8 nobottommargin clearfix">
+					<div id="posts" class="small-thumbs">
+						<?php foreach ($tag_post as $res): ?>
+						<div class="entry clearfix">
+							<div class="entry-image">
+								<a href="<?=post_url($res['post_seotitle']);?>" title="<?=$res['post_title'];?>">
+									<img class="image_fade" src="<?=post_images($res['picture'],'medium',TRUE);?>" alt="<?=$res['post_title'];?>">
+								</a>
+							</div>
+							<div class="entry-c">
+								<div class="entry-title">
+									<h2>
+										<a href="<?=post_url($res['post_seotitle']);?>" title="<?=$res['post_title'];?>"><?=$res['post_title'];?></a>
+									</h2>
 								</div>
-							</article>
-						</div>
-						<div class="col-md-6 col-sm-6 col-xs-12 col-fix">
-							<div>
-								<h3 class="post-title">
-									<a href="<?=post_url($row['post_seotitle']);?>" title="<?=$row['post_title'];?>"><?=$row['post_title'];?></a>
-								</h3>
-								<div class="post-meta">
-									<span class="post-date">
-										<i class="fa fa-calendar"></i>
-										<span><?=ci_date($row['datepost'].$row['timepost'], 'l, d M Y')?></span>
-									</span>
-									<span class="post-category">
-										<i class="fa fa-folder-o"></i>
-										<span><?=$row['category_title'];?></span>
-									</span>
-								</div>
-								<div class="post-des">
-									<p><?=cut($row['content'],100);?>...</p>
+								<ul class="entry-meta clearfix">
+									<li><i class="icon-calendar3"></i> <?=ci_date($res['datepost'].$res['timepost'], 'l, d F Y');?></li>
+									<li><i class="icon-folder-open"></i> <a href="<?=site_url('category/'.$res['category_seotitle']);?>"><?=$res['category_title'];?></a></li>
+									<li><i class="icon-eye"></i> <?=$res['hits'];?> kali dilihat</li>
+								</ul>
+								<div class="entry-content">
+									<p><?=cut($res['content'],150);?>...</p>
+									<a href="<?=post_url($res['post_seotitle']);?>" title="Read More" class="more-link">Read More</a>
 								</div>
 							</div>
 						</div>
+						<?php endforeach ?>
 					</div>
-				</article>
-			</div>
-			<?php endforeach ?>
 
-			<div class="paging-outer">
-				<div class="paging">
-					<ul class="pagination"><?=$page_link;?></ul>
+					<!-- Pagination -->
+					<div class="row mb-3">
+						<div class="col-12">
+							<ul class="pagination justify-content-center">
+								<?=$page_link;?>
+							</ul>
+						</div>
+					</div>
+					<!--/ Pagination -->
 				</div>
+
+				<!-- Sidebar -->
+				<div class="col-lg-4 nobottommargin col_last clearfix">
+					<?php require_once('sidebar.php'); ?>
+				</div>
+				<!-- End Sidebar -->
 			</div>
 		</div>
 	</div>
-	<!-- sidebar -->
-	<?php $this->CI->render_view('sidebar'); ?>
-	<!--/ sidebar -->
-	<div class="clearfix"></div>
-</div>
-<?php $this->CI->render_view('footer'); ?>
+</section>
+<!-- End Content -->
+
+<!-- 
+*******************************************************
+	Include Footer Template
+******************************************************* 
+-->
+<?php require_once('footer.php'); ?>
+<!-- End Footer -->

@@ -1,19 +1,33 @@
-<?php 
-defined('BASEPATH') OR exit('No direct script access allowed'); 
-$this->CI->render_view('header');
-?>
-<div class="cols cols-full">
-    <div class="colleft">
-        <div class="page-404 box">
-            <h1>
-                <span>4</span>
-                <i class="fa fa-frown-o"></i>
-                <span>4</span>
-            </h1>
-            <p>Oops! Sorry this page doesn't exist. Back to home?</p>
-            <a href="<?=site_url()?>" class="my-btn">TAKE ME HOME</a>
-        </div>
-    </div>
-    <div class="clearfix"></div>
-</div>
-<?php $this->CI->render_view('footer'); ?>
+<?php defined('BASEPATH') OR exit('No direct script access allowed');?>
+<!-- 
+*******************************************************
+	Include Header Template
+******************************************************* 
+-->
+<?php require_once('header.php'); ?>
+<!-- End Header -->
+
+<!-- 
+*******************************************************
+	Insert Content
+******************************************************* 
+-->
+<section id="content">
+	<div class="content-wrap">
+		<div class="container clearfix">
+			<div class="error404 center">404</div>
+			<div class="text-center">
+				<h4>Ooopps.! The Page you were looking for, couldn't be found.</h4>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- End Content -->
+
+<!-- 
+*******************************************************
+	Include Footer Template
+******************************************************* 
+-->
+<?php require_once('footer.php'); ?>
+<!-- End Footer -->

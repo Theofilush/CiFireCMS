@@ -1,321 +1,275 @@
-<?php 
-defined('BASEPATH') OR exit('No direct script access allowed'); 
-$this->CI->render_view('header');
-?>
-<div class="cols">
-	<div class="colleft">
-		<!-- Headlines -->
-		<?php if ( !empty($headline) ): ?>
-		<div class="box">			
-			<div class="owl-category-wrap">
-				<div class="owl-carousel owl-headlines">
-					<?php foreach ($headline as $res_headline): ?>
-					<div>
-						<article>
-							<div class="post-thumb">
-								<a href="<?=post_url($res_headline['post_seotitle']);?>" title="<?=$res_headline['post_title'];?>">
-									<img alt="<?=$res_headline['post_title'];?>" src="<?=post_images($res_headline['picture'],'',true);?>">
-								</a>
+<?php defined('BASEPATH') OR exit('No direct script access allowed');?>
+<!-- 
+*******************************************************
+	Include Header Template
+******************************************************* 
+-->
+<?php require_once('header.php'); ?>
+<!-- End Header -->
+
+<!-- 
+*******************************************************
+	Insert Content
+******************************************************* 
+-->
+<section id="content">
+	<div class="content-wrap">
+		<div class="section header-stick bottommargin-lg clearfix" style="padding: 20px 0;">
+			<div>
+				<div class="container clearfix">
+					<span class="badge badge-danger bnews-title">Breaking News:</span>
+					<div class="fslider bnews-slider nobottommargin" data-speed="800" data-pause="6000" data-arrows="false" data-pagi="false">
+						<div class="flexslider">
+							<div class="slider-wrap">
+								<?php 
+									$header_news = $this->db
+										->select('title, seotitle, datepost, timepost')
+										->where('active', 'Y')
+										->order_by('id','DESC')
+										->limit(5)
+										->get('t_post')
+										->result_array();
+									foreach ($header_news as $row_hnews):
+								?>
+								<div class="slide">
+									<a href="<?php echo post_url($row_hnews['seotitle']);?>" title="<?php echo $row_hnews['title'];?>"><small class="text-muted"><?php echo ci_date($row_hnews['datepost'].$row_hnews['timepost'],'l, H:i A');?></small> - <strong><?php echo $row_hnews['title'];?></strong></a>
+								</div>
+								<?php endforeach ?>
 							</div>
-							<div class="owl-headlines-caption">
-								<h3 class="post-title">
-									<a href="<?=post_url($res_headline['post_seotitle']);?>" title="<?=$res_headline['post_title'];?>"><?=$res_headline['post_title'];?></a>
-								</h3>
-								<div class="post-meta">
-										<span class="label label-danger">
-									<span class="post-date">
-											
-										<i class="fa fa-calendar-o"></i>
-										<span><?=ci_date($res_headline['datepost'].$res_headline['timepost'], 'l, d M Y');?></span>
-									</span>
-									<span class="post-category">
-										<i class="fa fa-folder-o"></i>
-										<span><?=$res_headline['category_title'];?></span>
-									</span>
-										</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="container clearfix">
+			<div class="row">
+				<div class="col-lg-8 bottommargin">
+					<!-- Slider -->
+					<div class="col_full bottommargin-lg">
+						<div class="fslider flex-thumb-grid grid-6" data-animation="fade" data-arrows="true" data-thumbs="true">
+							<div class="flexslider">
+								<div class="slider-wrap">
+									<?php foreach ($headline as $res_headline): ?>
+									<!-- item -->
+									<div class="slide" data-thumb="">
+										<a href="<?php echo post_url($res_headline['post_seotitle']);?>" title="<?php echo $res_headline['post_title'];?>">
+											<img src="<?php echo post_images($res_headline['picture'],'',true);?>" alt="<?php echo $res_headline['post_title'];?>">
+											<div class="overlay">
+												<div class="text-overlay">
+													<div class="text-overlay-title">
+														<h3><?php echo $res_headline['post_title'];?></h3>
+													</div>
+													<div class="text-overlay-meta">
+														<i class="icon-calendar"></i> &nbsp;
+														<span><?php echo ci_date($res_headline['datepost'].$res_headline['timepost'], 'l, d M Y');?></span>
+													</div>
+												</div>
+											</div>
+										</a>
+									</div>
+									<!--/ item -->
+									<?php endforeach ?>
 								</div>
 							</div>
-						</article>
+						</div>
 					</div>
-					<?php endforeach ?>
-				</div>
-			</div>
-		</div>
-		<?php endif ?>
-		<!--/ Headlines -->
-
-		<!-- BOX 1 -->
-		<div class="box">
-			<?php
-				$catPost1 = $this->CI->index_model->get_category_by('seotitle', 'travel', 'row');
-			?>
-			<div class="box-caption">
-				<h2>
-					<a href="<?=site_url('category/'.$catPost1['seotitle']);?>" title="<?=$catPost1['title'];?>">
-					<i class="fa fa-folder"></i>
-					<?=$catPost1['title'];?>
-					</a>
-				</h2>
-			</div>
-			<div class="row row-fix">
-				<div class="col-md-6 col-sm-6 col-xs-12 col-fix">
-					<?php
-						$post1a = $this->CI->index_model->get_post_lmit_by_category($catPost1['id'], [1]);
-						foreach ($post1a as $res_post1a):
-					?>
-					<article class="news-item-big">
-						<div class="post-thumb">
-							<a href="<?=post_url($res_post1a['post_seotitle'])?>" title="<?=$res_post1a['post_title'];?>">
-								<img alt="<?=$res_post1a['post_title'];?>" src="<?=post_images($res_post1a['picture'], 'medium', TRUE);?>">
-							</a>
-						</div>
-						<h3 class="post-title">
-							<a href="<?=post_url($res_post1a['post_seotitle'])?>" title="<?=$res_post1a['post_title'];?>"><?=$res_post1a['post_title'];?></a>
-						</h3>
-						<div class="post-meta">
-							<span class="post-date">
-								<i class="fa fa-clock-o"></i>
-								<span><?=ci_date($res_post1a['datepost'].$res_post1a['timepost'], 'l, d F Y');?></span>
-							</span>
-							<span class="post-category">
-								<i class="fa fa-folder-o"></i>
-								<span><?=$catPost1['title'];?></span>
-							</span>
-						</div>
-						<div class="post-des">
-							<p><?=cut($res_post1a['content'], 90);?>...</p>
-						</div>
-					</article>
-					<?php endforeach ?>
-				</div>
-				<div class="col-md-6 col-sm-6 col-xs-12 col-fix">
-					<ul class="list-news list-news-right">
+					<!-- End Slider -->
+					
+					<div class="clear"></div>
+					
+					<!-- Content Box 1 -->
+					<div class="col_full bottommargin-lg clearfix">
 						<?php
-							$post1b = $this->CI->index_model->get_post_lmit_by_category($catPost1['id'], [4,1]);
-							foreach ($post1b as $res_post1b):
+							$catPost1 = $this->CI->index_model->get_category_by('seotitle', 'travel', 'row');
 						?>
-						<li>
-							<div class="post-thumb">
-								<a href="<?=post_url($res_post1b['post_seotitle']);?>" title="<?=$res_post1b['post_title'];?>">
-									<img alt="<?=$res_post1b['post_title'];?>" src="<?=post_images($res_post1b['picture'], 'thumb', TRUE);?>">
-								</a>
+						<div class="fancy-title title-border">
+							<h3><?php echo $catPost1['title'];?></h3>
+						</div>
+						<div class="ipost clearfix">
+							<!-- primary item -->
+							<?php
+								$post1a = $this->CI->index_model->get_post_lmit_by_category($catPost1['id'], [1]);
+								foreach ($post1a as $res_post1a):
+							?>
+							<div class="col_half bottommargin-sm">
+								<div class="entry-image">
+									<a href="<?php echo post_url($res_post1a['post_seotitle'])?>" title="<?php echo $res_post1a['post_title'];?>">
+										<img class="image_fade" alt="<?php echo $res_post1a['post_title'];?>" src="<?php echo post_images($res_post1a['picture'], 'medium', TRUE);?>">
+									</a>
+								</div>
+								<div class="entry-title">
+									<h3>
+										<a href="<?php echo post_url($res_post1a['post_seotitle'])?>" title="<?php echo $res_post1a['post_title'];?>"><?php echo $res_post1a['post_title'];?></a>
+									</h3>
+								</div>
+								<ul class="entry-meta clearfix">
+									<li><i class="icon-calendar3"></i> <?php echo ci_date($res_post1a['datepost'].$res_post1a['timepost'], 'l, d F Y');?></li>
+									<li><i class="icon-folder-open"></i> <a href="<?php echo site_url('category/'.$res_post1a['category_seotitle']);?>"><?php echo $res_post1a['category_title'];?></a></li>
+								</ul>
+								<div class="entry-content">
+									<p><?php echo cut($res_post1a['content'], 90);?>...</p>
+								</div>
 							</div>
-							<h3>
-								<a href="<?=post_url($res_post1b['post_seotitle']);?>" title="<?=$res_post1b['post_title'];?>"><?=$res_post1b['post_title'];?></a>
-							</h3>
-						</li>
-						<?php endforeach ?>
-					</ul>
-				</div>
-			</div>
-		</div>
-		<!--/ BOX 1 -->
+							<?php endforeach ?>
+							<!-- End primary item -->
 
-		<!-- GROUP BOX -->
-		<div class="row row-fix">
-			<!-- GROUP BOX 1 -->
-			<div class="col-md-6 col-sm-6 col-xs-12 col-fix">
-				<?php
-					$catPost2 = $this->CI->index_model->get_category_by('seotitle', 'lifestyle', 'row');
-				?>
-				<div class="box">
-					<div class="box-caption">
-						<h2>
-							<a href="<?=site_url('category/'.$catPost2['seotitle']);?>" title="<?=$catPost2['title'];?>">
-							<i class="fa fa-folder"></i>
-							<?=$catPost2['title']?>
-							</a>
-						</h2>
+							<div class="col_half nobottommargin col_last">
+								<!-- secondary item -->
+								<?php
+									$post1b = $this->CI->index_model->get_post_lmit_by_category($catPost1['id'], [4,1]);
+									foreach ($post1b as $res_post1b):
+								?>
+								<div class="spost clearfix">
+									<div class="entry-image">
+										<a href="<?php echo post_url($res_post1b['post_seotitle']);?>" title="<?php echo $res_post1b['post_title'];?>">
+											<img alt="<?php echo $res_post1b['post_title'];?>" src="<?php echo post_images($res_post1b['picture'], 'thumb', TRUE);?>">
+										</a>
+									</div>
+									<div class="entry-c">
+										<div class="entry-title">
+											<h4>
+												<a href="<?php echo post_url($res_post1b['post_seotitle']);?>" title="<?php echo $res_post1b['post_title'];?>"><?php echo $res_post1b['post_title'];?></a>
+											</h4>
+										</div>
+										<ul class="entry-meta clearfix">
+											<li><i class="icon-calendar3"></i> <?php echo ci_date($res_post1b['datepost'].$res_post1b['timepost'], 'l, d F Y');?></li>
+											<li><i class="icon-folder-open"></i> <a href="<?php echo site_url('category/'.$res_post1b['category_seotitle']);?>"><?php echo $res_post1b['category_title'];?></a></li>
+										</ul>
+									</div>
+								</div>
+								<?php endforeach ?>
+								<!-- End secondary item -->
+							</div>
+						</div>
+						<div class="clear"></div>
 					</div>
-					<?php
-						$post2a = $this->CI->index_model->get_post_lmit_by_category($catPost2['id'], [1]);
-						foreach ($post2a as $res_post2a):
-					?>
-					<article class="news-item-big">
-						<div class="post-thumb">
-							<a href="<?=post_url($res_post2a['post_seotitle']);?>" title="<?=$res_post2a['post_title'];?>">
-								<img src="<?=post_images($res_post2a['picture'], 'medium', TRUE);?>" alt="<?=$res_post2a['post_title'];?>">
-							</a>
+					<!-- End Content Box 1 -->					
+
+					<!-- Content Box 2 -->
+					<div class="col_full bottommargin-lg clearfix">
+						<?php
+							$catPost2 = $this->CI->index_model->get_category_by('seotitle', 'life', 'row');
+						?>
+						<div class="fancy-title title-border">
+							<h3><?php echo $catPost2['title']?></h3>
 						</div>
-						<h3 class="post-title">
-							<a href="<?=post_url($res_post2a['post_seotitle']);?>" title="<?=$res_post2a['post_title'];?>"><?=$res_post2a['post_title'];?></a>
-						</h3>
-						<div class="post-meta">
-							<span class="post-date">
-								<i class="fa fa-clock-o"></i>
-								<span><?=ci_date($res_post2a['datepost'].$res_post2a['timepost'], 'l, d F Y');?></span>
-							</span>
-							<span class="post-category">
-								<i class="fa fa-folder-o"></i>
-								<span><?=$catPost2['title'];?></span>
-							</span>
+						<?php
+							$post2a = $this->CI->index_model->get_post_lmit_by_category($catPost2['id'], [1]);
+							foreach ($post2a as $res_post2a):
+						?>
+						<div class="ipost clearfix bottommargin-sm">
+							<div class="col_half nobottommargin">
+								<div class="entry-image">
+									<a href="<?php echo post_url($res_post2a['post_seotitle'])?>" title="<?php echo $res_post2a['post_title'];?>">
+										<img src="<?php echo post_images($res_post2a['picture'], 'medium', TRUE);?>" alt="<?php echo $res_post2a['post_title'];?>" class="image_fade">
+									</a>	
+								</div>
+							</div>
+							<div class="col_half nobottommargin col_last">
+								<div class="entry-title">
+									<h3>
+										<a href="<?php echo post_url($res_post2a['post_seotitle'])?>" title="<?php echo $res_post2a['post_title'];?>"><?php echo $res_post2a['post_title'];?></a>
+									</h3>
+								</div>
+								<ul class="entry-meta clearfix">
+									<li><i class="icon-calendar3"></i> <?php echo ci_date($res_post2a['datepost'].$res_post2a['timepost'], 'l, d F Y');?></li>
+									<li><i class="icon-folder-open"></i> <a href="<?php echo site_url('category/'.$res_post2a['category_seotitle']);?>"><?php echo $res_post2a['category_title'];?></a></li>
+								</ul>
+								<div class="entry-content">
+									<p><?php echo cut($res_post2a['content'], 250);?>...</p>
+								</div>
+							</div>
 						</div>
-						<div class="post-des">
-							<p><?=cut($res_post2a['content'],90);?>...</p>
-						</div>
-					</article>
-					<?php endforeach ?>
-					<ul class="list-news">
+						<?php endforeach ?>
+
+						<div class="clear"></div>
+
 						<?php
 							$post2b = $this->CI->index_model->get_post_lmit_by_category($catPost2['id'], [2,1]);
 							foreach ($post2b as $res_post2b):
 						?>
-						<li>
-							<div class="post-thumb">
-								<a href="<?=post_url($res_post2b['post_seotitle']);?>" title="<?=$res_post2b['post_title'];?>">
-									<img src="<?=post_images($res_post2b['picture'],'thumb',TRUE);?>" alt="<?=$res_post2b['post_title'];?>">
-								</a>
+						<div class="col_half no-bottommargin col_last">
+							<div class="spost clearfix">
+								<div class="entry-image">
+									<a href="<?php echo post_url($res_post2b['post_seotitle']);?>" title="<?php echo $res_post2b['post_title'];?>">
+										<img alt="<?php echo $res_post2b['post_title'];?>" src="<?php echo post_images($res_post2b['picture'], 'thumb', TRUE);?>">
+									</a>
+								</div>
+								<div class="entry-c">
+									<div class="entry-title">
+										<h4><a href="<?php echo post_url($res_post2b['post_seotitle']);?>" title="<?php echo $res_post2b['post_title'];?>"><?php echo $res_post2b['post_title'];?></a></h4>
+									</div>
+									<ul class="entry-meta clearfix">
+										<li><i class="icon-calendar3"></i> <?php echo ci_date($res_post2b['datepost'].$res_post2b['timepost'], 'l, d F Y');?></li>
+										<li><i class="icon-folder-open"></i> <a href="<?php echo site_url('category/'.$res_post2b['category_seotitle']);?>"><?php echo $res_post2b['category_title'];?></a></li>
+									</ul>
+								</div>
 							</div>
-							<h3>
-								<a href="<?=post_url($res_post2b['post_seotitle']);?>" title="<?=$res_post2b['post_title'];?>"><?=$res_post2b['post_title'];?></a>
-							</h3>
-						</li>
+						</div>
 						<?php endforeach ?>
-					</ul>
-				</div>
-			</div>
-			<!-- GROUP BOX 1 -->
-
-			<!-- GROUP BOX 2 -->
-			<div class="col-md-6 col-sm-6 col-xs-12 col-fix">
-				<?php
-					$catPost3 = $this->CI->index_model->get_category_by('seotitle', 'health', 'row');
-				?>
-				<div class="box">
-					<div class="box-caption">
-						<h2>
-							<a href="<?=site_url('category/'.$catPost3['seotitle']);?>" title="<?=$catPost3['title'];?>">
-							<i class="fa fa-folder"></i>
-							<?=$catPost3['title']?>
-							</a>
-						</h2>
 					</div>
-					<?php
-						$post3a = $this->CI->index_model->get_post_lmit_by_category($catPost3['id'], [1]);
-						foreach ($post3a as $res_post3a):
-					?>
-					<article class="news-item-big">
-						<div class="post-thumb">
-							<a href="<?=post_url($res_post3a['post_seotitle']);?>" title="<?=$res_post3a['post_title'];?>">
-								<img src="<?=post_images($res_post3a['picture'], 'medium', TRUE);?>" alt="<?=$res_post3a['post_title'];?>">
-							</a>
-						</div>
-						<h3 class="post-title">
-							<a href="<?=post_url($res_post3a['post_seotitle']);?>" title="<?=$res_post3a['post_title'];?>"><?=$res_post3a['post_title'];?></a>
-						</h3>
-						<div class="post-meta">
-							<span class="post-date">
-								<i class="fa fa-clock-o"></i>
-								<span><?=ci_date($res_post3a['datepost'].$res_post3a['timepost'], 'l, d F Y');?></span>
-							</span>
-							<span class="post-category">
-								<i class="fa fa-folder-o"></i>
-								<span><?=$catPost3['title'];?></span>
-							</span>
-						</div>
-						<div class="post-des">
-							<p><?=cut($res_post3a['content'],90);?>...</p>
-						</div>
-					</article>
-					<?php endforeach ?>
-					<ul class="list-news">
+					<!-- End Content Box 2 -->
+					
+					<!-- Content Box 3 -->
+					<div class="col_full nobottommargin clearfix">
 						<?php
-							$post3b = $this->CI->index_model->get_post_lmit_by_category($catPost3['id'], [2,1]);
-							foreach ($post3b as $res_post3b):
+							$catPost3 = $this->CI->index_model->get_category_by('seotitle', 'tekno', 'row');
 						?>
-						<li>
-							<div class="post-thumb">
-								<a href="<?=post_url($res_post3b['post_seotitle']);?>" title="<?=$res_post3b['post_title'];?>">
-									<img src="<?=post_images($res_post3b['picture'],'thumb',TRUE);?>" alt="<?=$res_post3b['post_title'];?>">
-								</a>
+						<div class="fancy-title title-border">
+							<h3><?php echo $catPost3['title']?></h3>
+						</div>
+
+						<?php
+							$post3a = $this->CI->index_model->get_post_lmit_by_category($catPost3['id'], [3]);
+							$i=0;
+							foreach ($post3a as $res_post3a):
+								$i++;
+								$col_last = ( count($post3a) == $i ? 'col_last' : '' );
+						?>
+						<div class="col_one_third <?php echo $col_last?>">
+							<div class="ipost clearfix">
+								<div class="entry-image">
+									<a href="<?php echo post_url($res_post3a['post_seotitle'])?>" title="<?php echo $res_post3a['post_title'];?>">
+										<img src="<?php echo post_images($res_post3a['picture'], 'medium', TRUE);?>" alt="<?php echo $res_post3a['post_title'];?>" class="image_fade">
+									</a>
+								</div>
+								<div class="entry-title">
+									<h3>
+										<a href="<?php echo post_url($res_post3a['post_seotitle'])?>" title="<?php echo $res_post3a['post_title'];?>"><?php echo $res_post3a['post_title'];?></a>
+									</h3>
+								</div>
+								<ul class="entry-meta clearfix">
+									<li><i class="icon-calendar3"></i> <?php echo ci_date($res_post3a['datepost'].$res_post3a['timepost'], 'l, d F Y');?></li>
+									<li><i class="icon-folder-open"></i> <a href="<?php echo site_url('category/'.$res_post3a['category_seotitle']);?>"><?php echo $res_post3a['category_title'];?></a></li>
+								</ul>
+								<div class="entry-content">
+									<p><?php echo cut($res_post3a['content'], 100);?>...</p>
+								</div>
 							</div>
-							<h3>
-								<a href="<?=post_url($res_post3b['post_seotitle']);?>" title="<?=$res_post3b['post_title'];?>"><?=$res_post3b['post_title'];?></a>
-							</h3>
-						</li>
+						</div>
 						<?php endforeach ?>
-					</ul>
-				</div>
-			</div>
-			<!-- GROUP BOX 2 -->
-		</div>
-		<!--/ GROUP BOX  -->
 
-		<!-- BOX 3 -->
-		<div class="box">
-			<?php
-				$catPost4 = $this->CI->index_model->get_category_by('seotitle', 'tekno', 'row');
-			?>
-			<div class="box-caption">
-				<h2>
-					<a href="<?=site_url('category/'.$catPost4['seotitle']);?>" title="<?=$catPost4['title'];?>">
-					<i class="fa fa-folder"></i>
-					<?=$catPost4['title'];?>
-					</a>
-				</h2>
-			</div>
-			<div class="row row-fix">
-				<?php
-					$post4a = $this->CI->index_model->get_post_lmit_by_category($catPost4['id'], [1]);
-					foreach ($post4a as $res_post4a):
-				?>
-				<div class="col-md-6 col-sm-6 col-xs-12 col-fix">
-					<article class="news-item-big">
-						<div class="post-thumb">
-							<a href="<?=post_url($res_post4a['post_seotitle']);?>" title="<?=$res_post4a['post_title'];?>">
-								<img src="<?=post_images($res_post4a['picture'],'medium',TRUE);?>" alt="<?=$res_post4a['post_title'];?>">
-							</a>
-						</div>
-					</article>
-				</div>
-				<div class="col-md-6 col-sm-6 col-xs-12 col-fix">
-					<div>
-						<h3 class="post-title">
-							<a href="<?=post_url($res_post4a['post_seotitle']);?>" title="<?=$res_post4a['post_title'];?>"><?=$res_post4a['post_title'];?></a>
-						</h3>
-						<div class="post-meta">
-							<span class="post-date">
-								<i class="fa fa-clock-o"></i>
-								<span><?=ci_date($res_post4a['datepost'].$res_post4a['timepost'], 'l, d F Y');?></span>
-							</span>
-							<span class="post-category">
-								<i class="fa fa-folder-o"></i>
-								<span><?=$catPost4['title'];?></span>
-							</span>
-						</div>
-						<div class="post-des">
-							<p><?=cut($res_post4a['content'],90);?>...</p>
-						</div>
+						<div class="clear"></div>
 					</div>
+					<!-- End Content Box 3 -->
 				</div>
-				<?php endforeach ?>
+				
+				<div class="col-lg-4">
+					<!-- Include Sidebar -->
+					<?php require_once('sidebar.php'); ?>
+					<!--/ Include Sidebar -->
+				</div>
 			</div>
-			<ul class="list-news list-news-two">
-				<?php
-					$post4b = $this->CI->index_model->get_post_lmit_by_category($catPost4['id'], [2,1]);
-					foreach ($post4b as $res_post4b):
-				?>
-				<li>
-					<div class="post-thumb">
-						<a href="<?=post_url($res_post4b['post_seotitle']);?>" title="<?=$res_post4b['post_title'];?>">
-							<img src="<?=post_images($res_post4b['picture'],'thumb',TRUE);?>" alt="<?=$res_post4b['post_title'];?>">
-						</a>
-					</div>
-					<h3>
-						<a href="<?=post_url($res_post4b['post_seotitle']);?>" title="<?=$res_post4b['post_title'];?>"><?=$res_post4b['post_title'];?></a>
-					</h3>
-				</li>
-				<?php endforeach ?>
-			</ul>
-			<div class="clearfix"></div>
 		</div>
-		<!--/ BOX 3 -->
 	</div>
-	<!-- colleft -->
+</section>
+<!-- End Content -->
 
-	<!-- sidebar -->
-	<?php $this->CI->render_view('sidebar');?>
-	<!--/ sidebar -->
-	<div class="clearfix"></div>
-</div>
-<?php $this->CI->render_view('footer');?>
+<!-- 
+*******************************************************
+	Include Footer Template
+******************************************************* 
+-->
+<?php require_once('footer.php'); ?>
+<!-- End Footer -->
