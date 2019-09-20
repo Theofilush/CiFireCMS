@@ -14,13 +14,11 @@ $lang['mod_widget_5'] = 'Komentar';
 $lang['mod_widget_6'] = 'Tema';
 $lang['mod_widget_7'] = 'Mail';
 $lang['mod_widget_8'] = 'Pengguna';
-
 $lang['mod_notif_1'] = 'Pmbertahuan';
 $lang['mod_notif_2'] = 'Anda memiliki';
 $lang['mod_notif_3'] = 'baru';
 $lang['mod_notif_4'] = 'komentar';
 $lang['mod_notif_5'] = 'mail';
-
 $lang['mod_box_title_1'] = 'Posting Populer';
 $lang['mod_box_title_2'] = 'Posting Baru';
 $lang['mod_box_title_3'] = 'Pengunjung';

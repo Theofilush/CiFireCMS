@@ -28,7 +28,7 @@ $lang['menu_view_site'] = 'View Site';
 
 $lang['home_title'] = 'Dashboard';
 $lang['home1'] = 'Hello';
-$lang['home2'] = 'Welcome to the member page';
+$lang['home2'] = 'Welcome To Member Dashboard';
 $lang['home3'] = 'Post';
 $lang['home4'] = 'Account';
 
@@ -43,6 +43,8 @@ $lang['post_table_action'] = 'Action';
 
 $lang['post_label_title'] = 'Title';
 $lang['post_label_category'] = 'Category';
+$lang['post_label_comment'] = 'Comment';
+$lang['post_label_headline'] = 'Headline';
 $lang['post_label_content'] = 'Content';
 $lang['post_label_tags'] = 'Tags';
 $lang['post_label_picture'] = 'Picture';

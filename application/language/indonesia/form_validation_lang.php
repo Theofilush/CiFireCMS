@@ -30,6 +30,4 @@ $lang['form_validation_greater_than'] = '{field} harus berisi angka yang lebih b
 $lang['form_validation_greater_than_equal_to'] = '{field} harus berisi angka yang lebih besar dari atau sama dengan {param}';
 $lang['form_validation_error_message_not_set'] = 'Tidak dapat mengakses pesan kesalahan yang sesuai dengan nama bidang {field}';
 $lang['form_validation_in_list'] = '{field} harus salah satu dari: {param}.';
-
-
 $lang['form_validation_setting_required'] = 'Isian tidak boleh kosong';

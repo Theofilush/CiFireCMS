@@ -28,7 +28,7 @@ $lang['menu_view_site'] = 'Lihat Situs';
 
 $lang['home_title'] = 'Dasbor';
 $lang['home1'] = 'Halo';
-$lang['home2'] = 'Selamat datang di halaman pengguna';
+$lang['home2'] = 'Selamat Datang Di Halaman Pengguna';
 $lang['home3'] = 'Post';
 $lang['home4'] = 'Akun';
 
@@ -39,6 +39,8 @@ $lang['post_title_edit_post'] = 'Sunting Post';
 
 $lang['post_table_title'] = 'Judul';
 $lang['post_table_category'] = 'Kategori';
+$lang['post_label_comment'] = 'Komentar';
+$lang['post_label_headline'] = 'Headline';
 $lang['post_table_action'] = 'Aksi';
 
 $lang['post_label_title'] = 'Judul';
