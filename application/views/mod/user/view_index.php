@@ -16,17 +16,15 @@
 	</div>
 </div>
 <div class="content">
-	
-	<?=$this->alert->show($this->mod); ?>
-
+	<?php echo $this->alert->show($this->mod); ?>
 	<div class="block">
 		<div class="block-header">
-			<h2><?=lang_line('mod_title_all');?></h2>
+			<h2><?php echo lang_line('mod_title_all');?></h2>
 			<div class="pull-right">
-				<a href="<?=admin_url($this->mod.'/add-new');?>" class="button btn-primary btn-sm"><i class="icon-add mr-1"></i><?=lang_line('button_add_new');?></a>
+				<a href="<?php echo admin_url($this->mod.'/add-new');?>" class="button btn-primary btn-sm"><i class="icon-add mr-1"></i><?php echo lang_line('button_add_new');?></a>
 				<!-- button level -->
 				<?php if ( login_level('admin')==1 ): ?>
-				<a href="<?=admin_url($this->mod.'/level');?>" class="button btn-default btn-sm ml-2"><i class="icon-medal2 mr-1"></i><?=lang_line('button_level_user');?></a>
+				<a href="<?php echo admin_url($this->mod.'/level');?>" class="button btn-default btn-sm ml-2"><i class="icon-medal2 mr-1"></i><?php echo lang_line('button_level_user');?></a>
 				<?php endif ?>
 			</div>
 		</div>
@@ -37,20 +35,20 @@
 						<thead>
 							<tr>
 								<th class="no-sort text-center">
-									<input type="checkbox" class="select_all" data-toggle="tooltip" data-placement="top" data-title="<?=lang_line('tooltip_select_all');?>">
+									<input type="checkbox" class="select_all" data-toggle="tooltip" data-placement="top" data-title="<?php echo lang_line('tooltip_select_all');?>">
 								</th>
 								<th class="no-sort text-center"><i class="fa fa-photo"></i></th>
-								<th><?=lang_line('table_username');?></th>
-								<th><?=lang_line('table_fullname');?></th>
-								<th><?=lang_line('table_level');?></th>
+								<th><?php echo lang_line('table_username');?></th>
+								<th><?php echo lang_line('table_fullname');?></th>
+								<th><?php echo lang_line('table_level');?></th>
 								<th>Status</th>
-								<th class="th-action text-center"><?=lang_line('table_action');?></th>
+								<th class="th-action text-center"><?php echo lang_line('table_action');?></th>
 							</tr>
 						</thead>
 						<tbody></tbody>
 						<tr id="delall">
 							<td colspan="8">
-								<button type="button" class="button btn-sm btn-default text-danger delete_multi"><i class="icon-bin"></i> <?=lang_line('button_delete_selected_item');?></button>
+								<button type="button" class="button btn-sm btn-default text-danger delete_multi"><i class="icon-bin"></i> <?php echo lang_line('button_delete_selected_item');?></button>
 							</td>
 						</tr>
 					</table>

@@ -70,6 +70,62 @@ class User extends Admin_controller {
 	}
 
 
+	public function delete()
+	{
+		if ( $this->input->is_ajax_request() && $this->delete_access )
+		{
+			$act = $this->input->post('act');
+
+			if ( $act == 'level' )
+			{
+				$id_del = xss_filter($this->input->post('id') ,'sql');
+				
+				if ($id_del > 4 && $id_del != 0) 
+				{
+					$this->user_model->delete_level($id_del);
+
+					$json_output['alert_type'] = "success";
+					$json_output['alert_messages'] = lang_line('level_delete_success');
+					$json_output['status'] = TRUE;
+					$this->json_output($json_output);
+				}
+				else
+				{
+					$json_output['alert_type'] = "danger";
+					$json_output['alert_messages'] = "Oups..! ".lang_line('error_unknown');
+					$json_output['status'] = TRUE;
+					$this->json_output($json_output);
+				}
+			}
+
+			// default delete user account
+			else
+			{
+				$data_pk = $this->input->post('data');
+				foreach ($data_pk as $key)
+				{
+					$pk = xss_filter(decrypt($key),'sql');
+					$photo = $this->user_model->get_photo($pk);
+					$this->user_model->delete_user($pk);
+					// delete user photo.
+					if ( !is_null($photo) )
+					{
+						@unlink($this->path_photo.$photo);
+					}
+				}
+				$response['success'] = true;
+				$response['alert']['type'] = 'success';
+				$response['alert']['content'] = lang_line('form_message_delete_success');
+				$this->json_output($response);
+			}
+		}
+		else
+		{
+			show_404();
+		}
+	}
+
+
 	public function add_new()
 	{
 		if ( $this->write_access )
@@ -107,6 +163,11 @@ class User extends Admin_controller {
 						'label' => lang_line('form_label_birthday'),
 						'rules' => 'required',
 					),
+					array(
+						'field' => 'tlpn',
+						'label' => lang_line('form_label_tlpn'),
+						'rules' => 'required|min_length[4]|max_length[20]',
+					),
 				));
 
 				if ( $this->form_validation->run() ) 
@@ -118,7 +179,8 @@ class User extends Admin_controller {
 						'email'    => xss_filter($this->input->post('email')),
 						'password' => encrypt($this->input->post('input_password')),
 						'name'     => xss_filter($this->input->post('name'), 'xss'),
-						'gender'   => $this->input->post('gender'),
+						'gender'   => xss_filter($this->input->post('gender'), 'xss'),
+						'tlpn'     => xss_filter($this->input->post('tlpn'), 'xss'),
 						'active'   => $active,
 						'photo'    => 'user-'.random_string('numeric', 20) .".jpg",
 					);
@@ -297,11 +359,11 @@ class User extends Admin_controller {
 						'password' => $password,
 						'email'    => $email,
 						'name'     => xss_filter($this->input->post('name'), 'xss'),
-						'gender'   => xss_filter($this->input->post('name'), 'gender'),
+						'gender'   => xss_filter($this->input->post('gender'), 'gender'),
 						'birthday' => date('Y-m-d',strtotime($this->input->post('birthday'))),
 						'about'    => ( !empty($this->input->post('about')) ? cut($this->input->post('about'), 600) : '' ),
 						'address'  => ( !empty($this->input->post('address')) ? cut($this->input->post('address'), 600) : '' ),
-						'tlpn'     => xss_filter($this->input->post('name')),
+						'tlpn'     => xss_filter($this->input->post('tlpn'), 'xss'),
 						'active'   => ( !empty($this->input->post('active')) ? 'Y' : 'N' )
 					);
 
@@ -382,62 +444,6 @@ class User extends Admin_controller {
 		{
 			$pk = $this->input->post('pk');
 			$photo_pk = $this->user_model->get_photo($pk);
-		}
-		else
-		{
-			show_404();
-		}
-	}
-
-
-	public function delete()
-	{
-		if ( $this->input->is_ajax_request() && $this->delete_access )
-		{
-			$act = $this->input->post('act');
-
-			if ( $act == 'level' )
-			{
-				$id_del = xss_filter($this->input->post('id') ,'sql');
-				
-				if ($id_del > 4 && $id_del != 0) 
-				{
-					$this->user_model->delete_level($id_del);
-
-					$json_output['alert_type'] = "success";
-					$json_output['alert_messages'] = lang_line('level_delete_success');
-					$json_output['status'] = TRUE;
-					$this->json_output($json_output);
-				}
-				else
-				{
-					$json_output['alert_type'] = "danger";
-					$json_output['alert_messages'] = "Oups..! ".lang_line('error_unknown');
-					$json_output['status'] = TRUE;
-					$this->json_output($json_output);
-				}
-			}
-
-			// default delete user account
-			else
-			{
-				$data_pk = $this->input->post('data');
-				foreach ($data_pk as $key)
-				{
-					$pk = xss_filter(decrypt($key),'sql');
-					$photo = $this->user_model->get_photo($pk);
-					$this->user_model->delete_user($pk);
-					// delete user photo.
-					if ( !is_null($photo) )
-					{
-						@unlink($this->path_photo.$photo);
-					}
-				}
-				$response['success'] = true;
-				$response['alert']['type'] = 'success';
-				$response['alert']['content'] = lang_line('form_message_delete_success');
-				$this->json_output($response);
-			}
 		}
 		else
 		{

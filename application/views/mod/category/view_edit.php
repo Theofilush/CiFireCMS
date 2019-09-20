@@ -85,7 +85,7 @@
 				<!--/ Status -->
 				<hr>
 				<div class="block-actions">
-					<button type="submit" class="submit_update button btn-primary mr-2"><i class="fa fa-save mr-2"></i><?=lang_line('button_update');?></button>
+					<button type="submit" class="submit_update button btn-primary mr-2"><i class="fa fa-save mr-2"></i><?=lang_line('button_save');?></button>
 					<a href="<?=admin_url($this->mod);?>" class="button btn-default pull-right"><i class="fa fa-times mr-2"></i><?=lang_line('button_cancel');?></a>
 				</div>
 			</div>

@@ -16,11 +16,11 @@
 	</div>
 </div>
 <div class="content">
-	<?=$this->alert->show($this->mod); ?>
+	<?php echo $this->alert->show($this->mod); ?>
 	<div class="ajax_alert" style="display:none;"></div>
 	<div class="block">
 		<div class="block-header">
-			<h3><?=lang_line('mod_title_all');?></h3>
+			<h3><?php echo lang_line('mod_title_all');?></h3>
 		</div>
 		<div class="row">
 			<div class="table-responsive">
@@ -29,19 +29,19 @@
 						<thead>
 							<tr>
 								<th class="no-sort text-center">
-									<input type="checkbox" class="select_all" data-toggle="tooltip" data-placement="top" data-title="<?=lang_line('tooltip_select_all');?>">
+									<input type="checkbox" class="select_all" data-toggle="tooltip" data-placement="top" data-title="<?php echo lang_line('tooltip_select_all');?>">
 								</th>
 								<th><i class="fa fa-eye"></i></th>
-								<th><?=lang_line('table_name'); ?></th>
-								<th><?=lang_line('table_comment'); ?></th>
-								<th><?=lang_line('table_date'); ?></th>
-								<th class="th-action text-center"><?=lang_line('table_action'); ?></th>
+								<th><?php echo lang_line('table_name'); ?></th>
+								<th><?php echo lang_line('table_comment'); ?></th>
+								<th><?php echo lang_line('table_date'); ?></th>
+								<th class="th-action text-center"><?php echo lang_line('table_action'); ?></th>
 							</tr>
 						</thead>
 						<tbody></tbody>
 						<tr id="delall">
 							<td colspan="6">
-								<button type="button" class="delete_multi button btn-sm btn-default text-danger"><i class="icon-bin"></i> <?=lang_line('button_delete_selected_item');?></button>
+								<button type="button" class="delete_multi button btn-sm btn-default text-danger"><i class="icon-bin"></i> <?php echo lang_line('button_delete_selected_item');?></button>
 							</td>
 						</tr>
 					</table>
@@ -54,21 +54,21 @@
 <div id="modal_detail" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
-			<?=form_open(); ?>
+			<?php echo form_open(); ?>
 			<input type="hidden" name="id_comment" id="id_comment">
 			<input type="hidden" name="id_parent" id="id_parent">
 			<input type="hidden" name="id_post" id="id_post">
 			<div class="modal-header">
-				<h5 class="modal-title"><i class="icon-bubble-dots4  mr-2"></i><?=lang_line('mod_lang_1');?></h5>
+				<h5 class="modal-title"><i class="icon-bubble-dots4  mr-2"></i><?php echo lang_line('mod_lang_1');?></h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 			</div>
 			<div class="modal-body">
 				<div id="cdet"></div>
 			</div>
 			<div class="modal-footer">
-				<span class="button btn-sm btn-default" data-dismiss="modal" aria-hidden="true"><?=lang_line('button_close');?></span>
+				<span class="button btn-sm btn-default" data-dismiss="modal" aria-hidden="true"><?php echo lang_line('button_close');?></span>
 			</div>
-			<?=form_close(); ?>
+			<?php echo form_close(); ?>
 		</div>
 	</div>
 </div>
@@ -76,21 +76,21 @@
 <div id="modal_block" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
-			<?=form_open('','id="form_blocked" autocomplete="off"'); ?>
+			<?php echo form_open('','id="form_blocked" autocomplete="off"'); ?>
 			<input type="hidden" name="act" value="block">
 			<input type="hidden" name="id" id="idCom" >
 			<div class="modal-header">
-				<h5 class="modal-title"><i class="fa fa-ban text-danger mr-2"></i><?=lang_line('dialog_block_title');?></h5>
+				<h5 class="modal-title"><i class="fa fa-ban text-danger mr-2"></i><?php echo lang_line('dialog_block_title');?></h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 			</div>
 			<div class="modal-body" id="cdet">
-				<h4><?=lang_line('dialog_block_content');?></h4>
+				<h4><?php echo lang_line('dialog_block_content');?></h4>
 			</div>
 			<div class="modal-footer">
-				<button type="submit" class="button btn-default text-danger"><i class="fa fa-ban"></i> <?=lang_line('button_yes');?></button>
-					<button type="button" class="button btn-default" data-dismiss="modal" aria-hidden="true"><i class="fa fa-sign-out"></i> <?=lang_line('button_no');?></button>
+				<button type="submit" class="button btn-default text-danger"><i class="fa fa-ban"></i> <?php echo lang_line('button_yes');?></button>
+					<button type="button" class="button btn-default" data-dismiss="modal" aria-hidden="true"><i class="fa fa-sign-out"></i> <?php echo lang_line('button_no');?></button>
 			</div>
-			<?=form_close(); ?>
+			<?php echo form_close(); ?>
 		</div>
 	</div>
 </div>
@@ -98,21 +98,21 @@
 <div id="modal_unblock" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
-			<?=form_open('','id="form_blocked" autocomplete="off"'); ?>
+			<?php echo form_open('','id="form_blocked" autocomplete="off"'); ?>
 			<input type="hidden" name="act" value="unblock">
 			<input type="hidden" name="id" id="idComu" >
 			<div class="modal-header">
-				<h5 class="modal-title"><i class="fa fa-check-circle-o text-success mr-2"></i><?=lang_line('dialog_unblock_title');?></h5>
+				<h5 class="modal-title"><i class="fa fa-check-circle-o text-success mr-2"></i><?php echo lang_line('dialog_unblock_title');?></h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 			</div>
 			<div class="modal-body" id="cdet">
-				<h4><?=lang_line('dialog_unblock_content');?></h4>
+				<h4><?php echo lang_line('dialog_unblock_content');?></h4>
 			</div>
 			<div class="modal-footer">
-				<button type="submit" class="button btn-primary"><i class="fa fa-check"></i> <?=lang_line('button_yes');?></button>
-					<button type="button" class="button btn-default" data-dismiss="modal" aria-hidden="true"><i class="fa fa-sign-out"></i> <?=lang_line('button_no');?></button>
+				<button type="submit" class="button btn-primary"><i class="fa fa-check"></i> <?php echo lang_line('button_yes');?></button>
+					<button type="button" class="button btn-default" data-dismiss="modal" aria-hidden="true"><i class="fa fa-sign-out"></i> <?php echo lang_line('button_no');?></button>
 			</div>
-			<?=form_close(); ?>
+			<?php echo form_close(); ?>
 		</div>
 	</div>
 </div>

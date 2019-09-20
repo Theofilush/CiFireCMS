@@ -17,9 +17,7 @@
 </div>
 
 <div class="content">
-
 	<div id="alert-notif" style="display:none;"></div>
-
 	<div class="block">
 		<div class="block-header">
 			<h3><?php echo lang_line('mod_title_edit');?></h3>
@@ -76,7 +74,6 @@
 									</div>
 								</div>
 								<!--/ Status -->
-
 								<!-- Picture -->
 								<div class="card">
 									<div class="card-header" id="collapsed-picture">

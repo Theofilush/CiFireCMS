@@ -6,7 +6,6 @@
 				<span class="font-weight-semibold"><?php echo lang_line('mod_title'); ?></span>
 			</h3>
 		</div>
-
 	</div>
 	<div class="breadcrumb-line breadcrumb-line-light">
 		<div class="breadcrumb">
@@ -18,15 +17,14 @@
 </div>
 
 <div class="content">
-	<?=$this->alert->show($this->mod);?>
+	<?php echo $this->alert->show($this->mod);?>
 	<div class="block">
 		<div class="block-header">
-			<h3><?=lang_line('mod_title_all');?></h3>
+			<h3><?php echo lang_line('mod_title_all');?></h3>
 			<div class="pull-right">
-				<button type="button" class="button btn-sm btn-primary modal_add_album"><i class="icon-add"></i> <?=lang_line('button_add_album');?></button>
+				<button type="button" class="button btn-sm btn-primary modal_add_album"><i class="icon-add"></i> <?php echo lang_line('button_add_album');?></button>
 			</div>
 		</div>
-
 		<div class="row">
 			<div class="col-md-12">
 				<div class="row">
@@ -42,16 +40,16 @@
 
 							$photosrc = post_images($res['picture'],'thumb',TRUE);
 					?>
-					<div id="gallery-item<?=$res_album['id'];?>" class="col-lg-3">
+					<div id="gallery-item<?php echo $res_album['id'];?>" class="col-lg-3">
 						<div class="card">
-							<div class="galdel delete_album" data-id="<?=encrypt($res_album['id']);?>"><i class="fa fa-times"></i></div>
+							<div class="galdel delete_album" data-id="<?php echo encrypt($res_album['id']);?>"><i class="fa fa-times"></i></div>
 							<div class="card-body text-center">
 								<div class="theme-img-card mb-2">
-								<a href="<?=admin_url($this->mod.'/album/'.$res_album['id']);?>" title="<?=$res_album['title'];?>">
-									<img src="<?=content_url('images/medium_noimage.jpg');?>" data-src="<?=$photosrc;?>" class="lazy" style="width:100%;">
+								<a href="<?php echo admin_url($this->mod.'/album/'.$res_album['id']);?>" title="<?php echo $res_album['title'];?>">
+									<img src="<?php echo content_url('images/medium_noimage.jpg');?>" data-src="<?php echo $photosrc;?>" class="lazy" style="width:100%;">
 								</a>
 								</div>
-								<div><?=$res_album['title']?></div>
+								<div><?php echo $res_album['title']?></div>
 							</div>
 						</div>
 					</div>
@@ -66,23 +64,22 @@
 <div id="modal_add_album" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<?=form_open('','autocomplete="off"');?>
+			<?php echo form_open('','autocomplete="off"');?>
 			<div class="modal-header">
-				<h5><i class="fa fa-book mr-2"></i><?=lang_line('dialog_title_add_album'); ?></h5>
+				<h5><i class="fa fa-book mr-2"></i><?php echo lang_line('dialog_title_add_album'); ?></h5>
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				
 			</div>
 			<div class="modal-body">
 				<div class="form-group">
-					<label><?=lang_line('form_label_title_album'); ?></label>
+					<label><?php echo lang_line('form_label_title_album'); ?></label>
 					<input type="text" name="title" class="form-control">
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="submit" name="act" value="add_album" class="button btn-md btn-primary"><i class="fa fa-check mr-2"></i><?=lang_line('button_submit');?></button>
-				<button type="reset" class="button btn-md btn-default" data-dismiss="modal" aria-hidden="true"><?=lang_line('button_cancel');?></button>
+				<button type="submit" name="act" value="add_album" class="button btn-md btn-primary"><i class="fa fa-check mr-2"></i><?php echo lang_line('button_submit');?></button>
+				<button type="reset" class="button btn-md btn-default" data-dismiss="modal" aria-hidden="true"><?php echo lang_line('button_cancel');?></button>
 			</div>
-			<?=form_close();?>
+			<?php echo form_close();?>
 		</div>
 	</div>
 </div>
@@ -91,20 +88,20 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-			 <h5><i class="fa fa-exclamation-triangle text-danger mr-2"></i><?=lang_line('dialog_delete_title');?></h5>
+			 <h5><i class="fa fa-exclamation-triangle text-danger mr-2"></i><?php echo lang_line('dialog_delete_title');?></h5>
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 			</div>
-			<?=form_open();?>
+			<?php echo form_open();?>
 			<input type="hidden" name="act" value="delete">
 			<input id="idDelAlbum" type="hidden" name="id">
 			<div class="modal-body">
-				<?=lang_line('dialog_delete_content_album');?>
+				<?php echo lang_line('dialog_delete_content_album');?>
 			</div>
 			<div class="modal-footer">
-				<button type="submit" class="button btn-default text-danger"><i class="icon-bin mr-2"></i><?=lang_line('button_delete');?></button>
-				<button type="button" class="button btn-default" data-dismiss="modal" aria-hidden="true"><?=lang_line('button_cancel');?></button>
+				<button type="submit" class="button btn-default text-danger"><i class="icon-bin mr-2"></i><?php echo lang_line('button_delete');?></button>
+				<button type="button" class="button btn-default" data-dismiss="modal" aria-hidden="true"><?php echo lang_line('button_cancel');?></button>
 			</div>
-			<?=form_close();?>
+			<?php echo form_close();?>
 		</div>
 	</div>
 </div>

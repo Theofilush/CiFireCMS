@@ -10,7 +10,6 @@ class Post_model extends CI_Model {
 	private $_column_order = array(null, 't_post.title', 't_category.seotitle', 't_post.active');
 	private $_column_search = array('t_post.title', 't_category.seotitle');
 
-
 	public function __construct()
 	{
 		parent::__construct();
@@ -23,16 +22,16 @@ class Post_model extends CI_Model {
 	private function _datatable_query()
 	{
 		$this->db->select('
-							t_post.id as post_id,
-							t_post.title as post_title,
-							t_post.seotitle as post_seotitle,
-							t_post.headline as post_headline,
-							t_post.hits as post_hits,
-							t_post.datepost as post_datepost,
-							t_post.timepost as post_timepost,
-							t_post.active as post_active,
-							t_post.tag as post_tag,
-							t_category.title as category_title,
+							t_post.id        AS post_id,
+							t_post.title     AS post_title,
+							t_post.seotitle  AS post_seotitle,
+							t_post.headline  AS post_headline,
+							t_post.hits      AS post_hits,
+							t_post.datepost  AS post_datepost,
+							t_post.timepost  AS post_timepost,
+							t_post.active    AS post_active,
+							t_post.tag       AS post_tag,
+							t_category.title AS category_title,
 							COUNT(t_comment.id_post) AS comments
 						');
 		
@@ -85,7 +84,7 @@ class Post_model extends CI_Model {
 	{
 		$this->_datatable_query();
 
-		if ($this->input->post('length') != -1) 
+		if ( $this->input->post('length') != -1 ) 
 		{
 			$this->db->limit($this->input->post('length'), $this->input->post('start'));
 			$query = $this->db->get();
@@ -103,7 +102,6 @@ class Post_model extends CI_Model {
 	{
 		$this->_datatable_query();
 		$query = $this->db->get();
-		
 		return $query->num_rows();
 	}
 
@@ -112,7 +110,7 @@ class Post_model extends CI_Model {
 	{
 		$this->db->from($this->_table);
 	
-		if ($this->session_level != 0 && $this->session_level <= 2) 
+		if ( $this->session_level != 0 && $this->session_level <= 2 ) 
 		{
 			$this->db->join('t_category', 't_category.id = t_post.id_category', 'left');
 			$this->db->join('t_user', 't_user.id = t_post.id_user', 'left');
@@ -194,17 +192,19 @@ class Post_model extends CI_Model {
 	{
 		$query = $this->db
 			->select('
-					 t_post.id as post_id,
-					 t_post.title as post_title,
-					 t_post.content as post_content,
-					 t_post.tag as post_tag,
+					 t_post.id            AS post_id,
+					 t_post.title         AS post_title,
+					 t_post.content       AS post_content,
+					 t_post.tag           AS post_tag,
 					 t_post.picture,
 					 t_post.image_caption,
-					 t_category.id as category_id,
-					 t_category.title as category_title,
-					 t_category.seotitle as category_seotitle,
-					 t_user.id as user_id,
-					 t_user.name as user_name
+					 t_post.comment,
+					 t_post.headline,
+					 t_category.id        AS category_id,
+					 t_category.title     AS category_title,
+					 t_category.seotitle  AS category_seotitle,
+					 t_user.id            AS user_id,
+					 t_user.name          AS user_name
 					')
 			->from($this->_table)
 			->join('t_category', 't_category.id = t_post.id_category', 'left')
@@ -221,7 +221,6 @@ class Post_model extends CI_Model {
 	public function num_comment($id)
 	{
 		$query = $this->db->where('id_post', $id)->get('t_comment')->num_rows();
-		
 		return $query;
 	}
 
@@ -261,9 +260,8 @@ class Post_model extends CI_Model {
 			foreach ($arrtags as $key) {
 				$query = $this->db->select('title')->where('seotitle', $key)->get('t_tag');
 				
-				if ( $query->num_rows() > 0 ) {
+				if ( $query->num_rows() > 0 )
 					$tag .= $query->row_array()['title'].',';
-				}
 			}
 		}
 		return rtrim($tag,',');
@@ -274,12 +272,12 @@ class Post_model extends CI_Model {
 	{
 		$query = $this->db
 			->select('
-			         t_user.id    as user_id,
-				     t_user.level as user_level,
-				     t_user.name  as user_name,
+			         t_user.id    AS user_id,
+				     t_user.level AS user_level,
+				     t_user.name  AS user_name,
 
-				     t_user_level.id    as level_id,
-				     t_user_level.title as level_title
+				     t_user_level.id    AS level_id,
+				     t_user_level.title AS level_title
 				    ')
 			->where('t_user.active', 'Y')
 			->join('t_user_level', 't_user_level.id = t_user.level', 'left')
@@ -312,14 +310,10 @@ class Post_model extends CI_Model {
 		$query = $this->db->where("BINARY seotitle = '$seotitle'", NULL, FALSE)->get($this->_table);
 		$result = $query->num_rows();
 
-		if ($result == 0) 
-		{
+		if ($result == 0)
 			return TRUE;
-		}
-		else 
-		{
+		else
 			return FALSE;
-		}
 	}
 
 

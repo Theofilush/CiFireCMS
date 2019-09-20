@@ -17,13 +17,13 @@
 </div>
 <div class="content">
 
-	<?=$this->alert->show($this->mod);?>
+	<?php echo $this->alert->show($this->mod);?>
 	
 	<div class="block">
 		<div class="block-header">
-			<h3><?=lang_line('mod_title_all');?></h3>
+			<h3><?php echo lang_line('mod_title_all');?></h3>
 			<div class="pull-right">
-				<a href="<?=admin_url($this->mod.'/add-new');?>" class="button btn-primary btn-sm"><i class="icon-add"></i> <?=lang_line('button_add_new');?></a>
+				<a href="<?php echo admin_url($this->mod.'/add-new');?>" class="button btn-primary btn-sm"><i class="icon-add"></i> <?php echo lang_line('button_add_new');?></a>
 			</div>
 		</div>
 
@@ -34,18 +34,18 @@
 						<thead>
 							<tr>
 								<th class="no-sort text-center">
-									<input type="checkbox" class="select_all" data-toggle="tooltip" data-placement="top" data-title="<?=lang_line('tooltip_select_all');?>">
+									<input type="checkbox" class="select_all" data-toggle="tooltip" data-placement="top" data-title="<?php echo lang_line('tooltip_select_all');?>">
 								</th>
-								<th><?=lang_line('table_title');?></th>
-								<th><?=lang_line('table_seotitle');?></th>
-								<th><?=lang_line('table_active');?></th>
-								<th class="th-action text-center"><?=lang_line('table_action');?></th>
+								<th><?php echo lang_line('table_title');?></th>
+								<th><?php echo lang_line('table_seotitle');?></th>
+								<th><?php echo lang_line('table_active');?></th>
+								<th class="th-action text-center"><?php echo lang_line('table_action');?></th>
 							</tr>
 						</thead>
 						<tbody></tbody>
 						<tr id="delall">
 							<td colspan="5">
-								<button type="button" class="button btn-sm btn-default text-danger delete_multi"><i class="icon-bin"></i> <?=lang_line('button_delete_selected_item');?></button>
+								<button type="button" class="button btn-sm btn-default text-danger delete_multi"><i class="icon-bin"></i> <?php echo lang_line('button_delete_selected_item');?></button>
 							</td>
 						</tr>
 					</table>
@@ -62,17 +62,17 @@
 				<input type="hidden" name="act" value="delete">
 				<input type="hidden" name="id" id="id_delete">
 				<div class="modal-header">
-					<h5 class="modal-title"><i class="icon-warning22 text-danger mr-2"></i><?=lang_line('dialog_delete_title');?></h5>
+					<h5 class="modal-title"><i class="icon-warning22 text-danger mr-2"></i><?php echo lang_line('dialog_delete_title');?></h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
 				<div class="modal-body">
-					<h4><?=lang_line('dialog_delete_content');?></h4>
+					<h4><?php echo lang_line('dialog_delete_content');?></h4>
 				</div>
 				<div class="modal-footer">
-					<button type="submit" class="button btn-default text-danger submit_delete"><i class="fa fa-trash mr-2"></i><?=lang_line('button_yes');?></button>
-					<span class="button btn-default" data-dismiss="modal" aria-hidden="true"><i class="fa fa-sign-out mr-2"></i><?=lang_line('button_no');?></span>
+					<button type="submit" class="button btn-default text-danger submit_delete"><i class="fa fa-trash mr-2"></i><?php echo lang_line('button_yes');?></button>
+					<span class="button btn-default" data-dismiss="modal" aria-hidden="true"><i class="fa fa-sign-out mr-2"></i><?php echo lang_line('button_no');?></span>
 				</div>
 			</form>
 		</div>

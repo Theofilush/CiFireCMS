@@ -6,17 +6,18 @@
 	<div class="page-header-content header-elements-inline">
 		<div class="page-title">
 			<h3>
-				<span class="font-weight-semibold"><?=lang_line('mod_title');?></span>
+				<span class="font-weight-semibold"><?php echo lang_line('mod_title');?></span>
 			</h3>
 		</div>
 	</div>
 	<div class="breadcrumb-line breadcrumb-line-light">
 		<div class="breadcrumb">
-			<a href="<?=admin_url('home');?>" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> <?=lang_line('admin_link_home');?></a>
-			<span class="breadcrumb-item"><?=lang_line('mod_title');?></span>
+			<a href="<?php echo admin_url('home');?>" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> <?php echo lang_line('admin_link_home');?></a>
+			<span class="breadcrumb-item"><?php echo lang_line('mod_title');?></span>
 		</div>
 	</div>
 </div>
+
 <script type="text/javascript">
 	var current_group_id = <?php echo $get_group_id;?>;
 </script>
@@ -26,8 +27,6 @@
 		<div class="block-header">
 			<p>Drag the menu list to re-order, and click <code>Save Position</code> to save the position.</p>
 		</div>
-
-
 		<div class="col-md-12">
 			<div class="row">
 				<div class="col-md-3 mb-4">
@@ -84,16 +83,13 @@
 									<h2>Menu Group</h2>
 									<section>
 										<?php 
-											$g_title='';
-											if (!empty($this->input->get('group_id'))) 
-											{
+											$g_title = '';
+											if ( ! empty($this->input->get('group_id')) ) {
 												$g_title = $this->db
 													->where('id', $this->input->get('group_id'))
 													->get('t_menu_group')
 													->row_array();
-											}
-											else 
-											{
+											} else {
 												$g_title = $this->db
 													->order_by('id','ASC')
 													->get('t_menu_group')
@@ -124,15 +120,13 @@
 								foreach ($menugroup as $mgr) {
 							?>
 							<li id="group-<?php echo $mgr['id'];?>">
-								<a href="<?php echo admin_url('menumanager/?group_id='.$mgr['id']);?>">
-									<?php echo $mgr['title'];?>
-								</a>
+								<a href="<?php echo admin_url('menumanager/?group_id='.$mgr['id']);?>"><?php echo $mgr['title'];?></a>
 							</li>
 							<?php } ?>
 						</ul>
 					</div>
 					<div class="clearfix"></div>
-					<?=form_open(admin_url($this->mod.'/savemenuposition'), 'id="form-menu" autocomplete="off"');?>
+					<?php echo form_open(admin_url($this->mod.'/savemenuposition'), 'id="form-menu" autocomplete="off"');?>
 						<div class="ns-row" style="background:#fff;border-radius:0px;font-weight:600;">
 							<div class="ns-actions">Action</div>
 							<div class="ns-active">Active</div>
@@ -146,9 +140,8 @@
 							<button type="submit" id="btn-save-menu" class="button btn-sm btn-primary pull-left"><i class="fa fa-save"></i> Save Position</button>
 							<button type="button" class="button btn-sm btn-default pull-right" onClick="window.location.reload()"><i class="fa fa-refresh"></i> Refresh</button>
 						</div>
-					<?=form_close(); ?>
+					<?php echo form_close(); ?>
 				</div>
-
 				<div class="clearfix"></div>
 			</div>
 		</div>

@@ -31,21 +31,20 @@
 					<div class="col-md-9">
 						<!-- Title -->
 						<div class="form-group mb-4">
-							<input type="text" name="title" id="title" class="form-control post-title-input" value="<?=set_value('title');?>" placeholder="<?=lang_line('form_label_title');?>" required>
-							<!-- <input id="seotitle" type="hidden" name="seotitle" value="<?=set_value('seotitle');?>" readonly> -->
+							<input type="text" name="title" id="title" class="form-control post-title-input" value="<?php echo set_value('title');?>" placeholder="<?php echo lang_line('form_label_title');?>" required>
 						</div>
 						<!--/ Title -->
 
 						<!-- Content -->
 						<div class="form-group mb-0">
-							<label class="mb-1"><?=lang_line('form_label_content');?></label>
+							<label class="mb-1"><?php echo lang_line('form_label_content');?></label>
 							<span class="btn-group pull-right">
 								<button type="button" id="tiny-text" class="button btn-xs btn-default btn-flat">Text</button type="button">
 								<button type="button" id="tiny-visual" class="button btn-xs btn-default btn-flat">Visual</button type="button">
 							</span>
 							<div class="clearfix"></div>
-							<textarea id="Content" name="content" class="form-control" rows="11" style="border-radius:0px;"><?= set_value('content');?></textarea>
-							<div class="form-input-error"><?=form_error('content');?></div>
+							<textarea id="Content" name="content" class="form-control" rows="11" style="border-radius:0px;"><?php echo  set_value('content');?></textarea>
+							<div class="form-input-error"><?php echo form_error('content');?></div>
 						</div>
 						<!--/ Content -->
 					</div>
@@ -64,12 +63,12 @@
 												<?php if ( !empty(set_value('active')) ): ?>
 
 												<input class="form-check-input" type="checkbox" id="cActivea" name="active" value="1" checked>
-												<label class="form-check-label" for="cActivea"><?=lang_line('form_label_active');?></label>
+												<label class="form-check-label" for="cActivea"><?php echo lang_line('form_label_active');?></label>
 												
 												<?php else: ?>
 
 												<input class="form-check-input" type="checkbox" id="cActiveb" name="active" value="1">
-												<label class="form-check-label" for="cActiveb"><?=lang_line('form_label_active');?></label>
+												<label class="form-check-label" for="cActiveb"><?php echo lang_line('form_label_active');?></label>
 
 												<?php endif ?>
 											</div>
@@ -81,21 +80,21 @@
 								<div class="card">
 									<div class="card-header" id="collapsed-picture">
 										<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapsedPicture" aria-expanded="false" aria-controls="collapsedPicture">
-											<?=lang_line('form_label_picture');?>
+											<?php echo lang_line('form_label_picture');?>
 										</button>
 									</div>
 									<div id="collapsedPicture" class="collapse show" aria-labelledby="collapsed-picture" data-parent="#accordionExample">
 										<div class="card-body">
 											<!-- Picture -->
 											<div>
-												<a class="browse-files" href="<?=content_url('plugins/filemanager/dialog.php?type=1&relative_url=1&field_id=picture&sort_by=date&descending=1&akey=' . login_key('admin'));?>">
-													<img id="imgprv" class="" src="<?=base64_image(post_images(set_value('picture'), '', TRUE))?>" style="width:100%;max-width:115px;">
+												<a class="browse-files" href="<?php echo content_url('plugins/filemanager/dialog.php?type=1&relative_url=1&field_id=picture&sort_by=date&descending=1&akey=' . login_key('admin'));?>">
+													<img id="imgprv" class="" src="<?php echo base64_image(post_images(set_value('picture'), '', TRUE))?>" style="width:100%;max-width:115px;">
 
 												</a>
 												<div class="mt-2">
-													<span id="delpict" class="button btn-xs btn-default"><i class="icon-bin"></i> <?=lang_line('button_delete');?> <?=lang_line('form_label_picture');?></span>
+													<span id="delpict" class="button btn-xs btn-default"><i class="icon-bin"></i> <?php echo lang_line('button_delete');?> <?php echo lang_line('form_label_picture');?></span>
 												</div>
-												<input id="picture" type="hidden" name="picture" value="<?=set_value('picture');?>">
+												<input id="picture" type="hidden" name="picture" value="<?php echo set_value('picture');?>">
 											</div>
 											<!--/ Picture -->
 										</div>
@@ -106,7 +105,7 @@
 							<hr>
 							<div>
 								<button type="submit" class="button btn-primary submit_add"><i id="submit_icon" class="fa fa-check mr-2"></i>Submit</button>
-								<a href="<?=admin_url($this->mod);?>" class="button btn-default pull-right"><i class="fa fa-times mr-2"></i><?=lang_line('button_cancel');?></a>
+								<a href="<?php echo admin_url($this->mod);?>" class="button btn-default pull-right"><i class="fa fa-times mr-2"></i><?php echo lang_line('button_cancel');?></a>
 							</div>
 						</div>
 					</div>

@@ -16,14 +16,13 @@
 	</div>
 </div>
 
-
 <div class="content">
 
-	<?=$this->alert->show($this->mod);?>
+	<?php echo $this->alert->show($this->mod);?>
 	
 	<div class="block">
 		<div class="block-header">
-			<h2><?=lang_line('mod_title_add');?></h2>
+			<h2><?php echo lang_line('mod_title_add');?></h2>
 			<div class="pull-right">
 				<a href="<?php echo admin_url($this->mod);?>" class="button btn-sm btn-default"><i class="fa fa-arrow-circle-o-left"></i> <?php echo lang_line('mod_title');?></a>
 			</div>
@@ -37,14 +36,13 @@
 			<div class="col-md-12">
 				<!-- levell -->
 				<div class="form-group row">
-					<label class="col-form-label col-md-2"><?=lang_line('form_label_level');?></label>
+					<label class="col-form-label col-md-2"><?php echo lang_line('form_label_level');?></label>
 					<div class="col-md-4">
 						<select class="select-2-nosearch" name="level"  data-placeholder="Level">
 							<?php 
 								echo '<option value=""></option>';
 								$levels = $this->CI->user_model->select_level();
-								foreach ($levels as $res_level)
-								{
+								foreach ($levels as $res_level) {
 									echo '<option value="'. $res_level['id'] .'" '. $selected .'>'. $res_level['title'] .'</option>';
 								}
 							?>
@@ -55,7 +53,7 @@
 
 				<!-- username -->
 				<div class="form-group row">
-					<label class="col-form-label col-md-2"><?=lang_line('form_label_username');?></label>
+					<label class="col-form-label col-md-2"><?php echo lang_line('form_label_username');?></label>
 					<div class="col-md-4">
 						<input type="text" name="username" class="form-control" placeholder="ex: username">
 					</div>
@@ -64,7 +62,7 @@
 
 				<!-- email -->
 				<div class="form-group row">
-					<label class="col-form-label col-md-2"><?=lang_line('form_label_email');?></label>
+					<label class="col-form-label col-md-2"><?php echo lang_line('form_label_email');?></label>
 					<div class="col-md-4">
 						<input type="text" name="email" class="form-control" placeholder="ex: your@email.com">
 					</div>
@@ -73,7 +71,7 @@
 
 				<!-- password -->
 				<div class="form-group row">
-					<label class="col-form-label col-md-2"><?=lang_line('form_label_password');?></label>
+					<label class="col-form-label col-md-2"><?php echo lang_line('form_label_password');?></label>
 					<div class="col-md-4">
 						<input type="password" name="input_password" class="form-control input_password">
 					</div>
@@ -82,7 +80,7 @@
 
 				<!-- fullname -->
 				<div class="form-group row">
-					<label class="col-form-label col-md-2"><?=lang_line('form_label_fullname');?></label>
+					<label class="col-form-label col-md-2"><?php echo lang_line('form_label_fullname');?></label>
 					<div class="col-md-4">
 						<input type="text" name="name" class="form-control" placeholder="ex: Your Name">
 					</div>
@@ -91,13 +89,13 @@
 
 				<!-- birthday -->
 				<div class="form-group row">
-					<label class="col-form-label col-md-2"><?=lang_line('form_label_birthday');?></label>
+					<label class="col-form-label col-md-2"><?php echo lang_line('form_label_birthday');?></label>
 					<div class="col-md-4">
 						<div class="input-group">
 							<div class="input-group-prepend">
 								<span class="input-group-text" id="basic-date"><i class="fa fa-calendar"></i></span>
 							</div>
-							<input type="text" id="input-datepicker" name="birthday" class="form-control" aria-label="Date" aria-describedby="basic-date" value="<?=date('Y-m-d');?>" required>
+							<input type="text" id="input-datepicker" name="birthday" class="form-control" aria-label="Date" aria-describedby="basic-date" value="<?php echo date('Y-m-d');?>" required>
 						</div>
 					</div>
 				</div>
@@ -105,7 +103,7 @@
 
 				<!-- gender -->
 				<div class="form-group row">
-					<label class="col-form-label col-md-2"><?=lang_line('form_label_gender');?></label>
+					<label class="col-form-label col-md-2"><?php echo lang_line('form_label_gender');?></label>
 					<div class="col-md-10">
 						<div class="form-group pl-0">
 							<div class="form-group mb-3 mb-md-2">
@@ -131,7 +129,7 @@
 
 				<!-- Telephone -->
 				<div class="form-group row">
-					<label class="col-form-label col-md-2"><?=lang_line('form_label_tlpn');?></label>
+					<label class="col-form-label col-md-2"><?php echo lang_line('form_label_tlpn');?></label>
 					<div class="col-md-4">
 						<input type="text" name="tlpn" class="form-control" placeholder="+62 000-0000-0000">
 					</div>
@@ -140,7 +138,7 @@
 
 				<!-- address -->
 				<div class="form-group row">
-					<label class="col-form-label col-md-2"><?=lang_line('form_label_address');?></label>
+					<label class="col-form-label col-md-2"><?php echo lang_line('form_label_address');?></label>
 					<div class="col-md-10">
 						<textarea name="address" class="form-control"></textarea>
 					</div>
@@ -149,7 +147,7 @@
 
 				<!-- about -->
 				<div class="form-group row">
-					<label class="col-form-label col-md-2"><?=lang_line('form_label_about');?></label>
+					<label class="col-form-label col-md-2"><?php echo lang_line('form_label_about');?></label>
 					<div class="col-md-10">
 						<textarea name="about" class="form-control"></textarea>
 					</div>
@@ -162,20 +160,18 @@
 					<div class="col-md-10">
 						<div class="form-check">
 							<input class="form-check-input" type="checkbox" id="cActiveb" name="active" value="1">
-							<label class="form-check-label" for="cActiveb"><?=lang_line('form_label_active');?></label>
+							<label class="form-check-label" for="cActiveb"><?php echo lang_line('form_label_active');?></label>
 						</div>
 					</div>
 				</div>
 				<!--/ active -->	
 			</div>
 		</div>
-	
 		<hr>
 		<div class="block-actions">
 			<button type="submit" class="button btn-primary submit_add"><i id="submit_icon" class="fa fa-check mr-2"></i>Submit</button>
-
-			<a href="<?=admin_url($this->mod);?>" class="button btn-default pull-right"><i class="fa fa-times mr-2"></i><?=lang_line('button_cancel');?></a>
+			<a href="<?php echo admin_url($this->mod);?>" class="button btn-default pull-right"><i class="fa fa-times mr-2"></i><?php echo lang_line('button_cancel');?></a>
 		</div>
-		<?=form_close();?>
+		<?php echo form_close();?>
 	</div>
 </div>

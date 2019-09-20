@@ -15,7 +15,11 @@ class Account extends Member_controller {
 		$this->load->model('member/account_model');
 	}
 
-
+	/**
+	 * Fungsi untuk menampilkan halaman akun.
+	 * @access 	public
+	 * @return 	void | string
+	*/
 	public function index() 
 	{
 		if ( $this->input->is_ajax_request() )
@@ -36,6 +40,11 @@ class Account extends Member_controller {
 	}
 
 
+	/**
+	 * Fungsi untuk aksi perbaharui akun.
+	 * @access 	private
+	 * @return 	void | string | json
+	*/
 	private function _update_account()
 	{
 		if ( $this->input->is_ajax_request() )
@@ -44,7 +53,7 @@ class Account extends Member_controller {
 				array(
 					'field' => 'email',
 					'label' => lang_line('account_label_email'),
-					'rules' => 'required|trim|min_length[4]|max_length[50]|valid_email'
+					'rules' => 'required|trim|min_length[4]|max_length[80]|valid_email'
 				),
 				array(
 					'field' => 'name',
@@ -69,12 +78,12 @@ class Account extends Member_controller {
 				array(
 					'field' => 'about',
 					'label' => lang_line('account_label_about'),
-					'rules' => 'trim'
+					'rules' => 'trim|max_length[500]'
 				),
 				array(
 					'field' => 'address',
 					'label' => lang_line('account_label_address'),
-					'rules' => 'trim'
+					'rules' => 'trim|max_length[500]'
 				)
 			));
 
@@ -103,7 +112,7 @@ class Account extends Member_controller {
 						'gender'   => $gender,
 						'birthday' => xss_filter($this->input->post('birthday', TRUE), 'xss'),
 						'tlpn'     => xss_filter($this->input->post('tlpn', TRUE), 'sql'),
-						'about'    => xss_filter(cut($this->input->post('about', TRUE), 500), 'xss'),
+						'about'    => xss_filter($this->input->post('about', TRUE), 'xss'),
 						'address'  => xss_filter(cut($this->input->post('address', TRUE), 500), 'xss')
 					);
 
@@ -140,7 +149,12 @@ class Account extends Member_controller {
 		}
 	}
 
-	
+
+	/**
+	 * Fungsi untuk aksi upload foto akun.
+	 * @access 	private
+	 * @return 	void
+	*/	
 	private function _upload()
 	{
 		if ( !empty($_FILES['fupload']['tmp_name']) ) // if isset image file.
@@ -181,8 +195,44 @@ class Account extends Member_controller {
 	}
 
 
+	/**
+	 * Fungsi untuk aksi hapus foto akun.
+	 * @access 	public
+	 * @return 	void
+	*/	
+	public function delete_photo()
+	{
+		if ( $this->input->is_ajax_request() )
+		{
+			$photo = data_login('member','photo');
+			
+			if ( file_exists(CONTENTPATH."uploads/user/$photo") )
+			{
+				@unlink(CONTENTPATH."uploads/user/$photo");
+				$response['status'] = true;
+				$response['url'] = member_url($this->mod);
+			}
+			else
+			{
+				$response['status'] = false;
+			}
+
+			$this->json_output($response);
+		}
+
+		else
+			show_404();
+	}
+
+
+	/**
+	 * Fungsi untuk menampilkan halaman ubah kata sandi.
+	 * @access 	public
+	 * @return 	void | string
+	*/	
 	public function password()
 	{
+		$this->meta_title = 'Member - '.lang_line('change_password');
 		if ( $_SERVER['REQUEST_METHOD'] == 'POST' )
 		{
 			$this->form_validation->set_rules(array(
@@ -231,7 +281,13 @@ class Account extends Member_controller {
 	}
 
 
-	public function _cek_pass($pass='')
+	/**
+	 * Fungsi untuk pengecekan kata sandi.
+	 * @param 	string 	$pass
+	 * @access 	public
+	 * @return 	bool
+	*/	
+	public function _cek_pass($pass = '')
 	{
 		$in_pass = encrypt($pass);
 		$current_pass = data_login('member', 'password');
@@ -255,6 +311,11 @@ class Account extends Member_controller {
 	}
 
 
+	/**
+	 * Fungsi untuk menampilka halaman hapus akun.
+	 * @access 	public
+	 * @return 	void
+	*/	
 	public function delete()
 	{
 		if ( $_SERVER['REQUEST_METHOD'] == 'POST')
@@ -284,30 +345,5 @@ class Account extends Member_controller {
 		{
 			$this->render_view('account_delete', $this->vars);
 		}
-	}
-
-
-	public function delete_photo()
-	{
-		if ( $this->input->is_ajax_request() )
-		{
-			$photo = data_login('member','photo');
-			
-			if ( file_exists(CONTENTPATH."uploads/user/$photo") )
-			{
-				@unlink(CONTENTPATH."uploads/user/$photo");
-				$response['status'] = true;
-				$response['url'] = member_url($this->mod);
-			}
-			else
-			{
-				$response['status'] = false;
-			}
-
-			$this->json_output($response);
-		}
-
-		else
-			show_404();
 	}
 } // End class.

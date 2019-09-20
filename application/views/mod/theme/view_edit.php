@@ -3,27 +3,25 @@
 	<div class="page-header-content header-elements-inline">
 		<div class="page-title">
 			<h3>
-				<span class="font-weight-semibold"><?=lang_line('mod_title');?></span>
+				<span class="font-weight-semibold"><?php echo lang_line('mod_title');?></span>
 			</h3>
 		</div>
 	</div>
 	<div class="breadcrumb-line breadcrumb-line-light">
 		<div class="breadcrumb">
-			<a href="<?=admin_url('home');?>" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> <?=lang_line('admin_link_home');?></a>
-			<span class="breadcrumb-item"><?=lang_line('mod_title');?></span>
-			<span class="breadcrumb-item"><?=lang_line('mod_title_edit');?></span>
+			<a href="<?php echo admin_url('home');?>" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> <?php echo lang_line('admin_link_home');?></a>
+			<span class="breadcrumb-item"><?php echo lang_line('mod_title');?></span>
+			<span class="breadcrumb-item"><?php echo lang_line('mod_title_edit');?></span>
 		</div>
 	</div>
 </div>
-
 <div class="content">
-
-	<?=$this->alert->show($this->mod); ?>
+	<?php echo $this->alert->show($this->mod); ?>
 	<div class="block">
 		<div class="block-header">
-			<h3><?=lang_line('mod_title_edit'); ?> - <i><?=$res_theme['title'];?></i> </h3>
+			<h3><?php echo lang_line('mod_title_edit'); ?> - <i><?php echo $res_theme['title'];?></i> </h3>
 			<div class="pull-right">
-				<a href="<?=admin_url($this->mod);?>" class="button btn-sm btn-default"><i class="fa fa-arrow-circle-o-left"></i> <?=lang_line('mod_title');?></a>
+				<a href="<?php echo admin_url($this->mod);?>" class="button btn-sm btn-default"><i class="fa fa-arrow-circle-o-left"></i> <?php echo lang_line('mod_title');?></a>
 			</div>
 		</div>
 		<div class="row">
@@ -37,7 +35,7 @@
 						<!-- files -->
 						<ul class="nav">
 							<li class="nav-item dropdown">
-								<a href="#" class="nav-link dropdown-toggle button btn-sm btn-flat btn-default" data-toggle="dropdown"><i class="fa fa-file-text-o mr-2"></i><?=$file_layout.".php";?></a>
+								<a href="#" class="nav-link dropdown-toggle button btn-sm btn-flat btn-default" data-toggle="dropdown"><i class="fa fa-file-text-o mr-2"></i><?php echo $file_layout.".php";?></a>
 								<div class="dropdown-menu dropdown-menu-left">
 									<?php
 										$fileLayout = VIEWPATH.'themes/'.$res_theme['folder']."/$file_layout.php";
@@ -46,12 +44,10 @@
 										$data = str_replace("textarea", "textarea_CI", $data);
 										$theme_files = get_filenames(VIEWPATH.'themes/'.$res_theme['folder']);
 
-										foreach ($theme_files as $value) 
-										{
+										foreach ($theme_files as $value) {
 											$ekstensi = pathinfo($value, PATHINFO_EXTENSION);
 											$filename = pathinfo($value, PATHINFO_FILENAME);
-											if ($ekstensi === 'php')
-											{
+											if ($ekstensi === 'php') {
 												echo '<a class="dropdown-item" href="'.admin_url($this->mod.'/edit/'.$res_theme['id'].'/'.$filename).'">'.$value.'</a>';
 											}
 										}
@@ -66,20 +62,17 @@
 					</div>
 					<!-- button Editor Shortcut Key -->
 					<button type="button" class="pull-right button btn-sm btn-flat btn-default modal-helper" data-toggle="tooltip" data-placement="top" title="Editor Shortcut Key"><i class="fa fa-question-circle"></i></button>
-
 					<style type="text/css">.CodeMirror{heightX:500px;font-family:consolas;}.CodeMirror.CodeMirror-fullscreen{z-index:1060;height: 100% !important;}</style>
-					<textarea id="AreaCodemirrors" name="code_content" class="form-control mt-0"><?=$data;?></textarea>
+					<textarea id="AreaCodemirrors" name="code_content" class="form-control mt-0"><?php echo $data;?></textarea>
 				</div>
 				<div class="block-actions mt-3">
-					<button type="submit" class="button btn-md btn-primary text-b"><i class="fa fa-save mr-2"></i><?=lang_line('button_save');?></button>
+					<button type="submit" class="button btn-md btn-primary text-b"><i class="fa fa-save mr-2"></i><?php echo lang_line('button_save');?></button>
 				</div>	
-				<?=form_close();?>
+				<?php echo form_close();?>
 			</div>
 		</div>
 	</div>
 </div>
-
-
 
 <div id="modal_create_file" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog">
@@ -99,14 +92,13 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="submit" class="button btn-primary"><i class="fa fa-check mr-2"></i><?=lang_line('button_submit')?></button>
-				<span class="button btn-default" data-dismiss="modal" aria-hidden="true"><?=lang_line('button_cancel')?></span>
+				<button type="submit" class="button btn-primary"><i class="fa fa-check mr-2"></i><?php echo lang_line('button_submit')?></button>
+				<span class="button btn-default" data-dismiss="modal" aria-hidden="true"><?php echo lang_line('button_cancel')?></span>
 			</div>
-			<?=form_close();?>
+			<?php echo form_close();?>
 		</div>
 	</div>
 </div>
-
 
 <div id="modal_upload_theme_assets" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
 	<div class="modal-dialog">
@@ -129,7 +121,7 @@
 						data-browse-class="btn btn-sm btn-default" 
 						data-fouc="">
 				</div>
-				<?=form_close();?>
+				<?php echo form_close();?>
 			</div>
 		</div>
 	</div>
@@ -168,30 +160,30 @@
 </div>
 
 <script>
-$(document).ready(function(){
-    var editor = CodeMirror.fromTextArea(document.getElementById("AreaCodemirrors"), {
-       mode: "php",
-        extraKeys: {
-            "Ctrl-J": "toMatchingTag",
-            "F11": function(cm) {
-                cm.setOption("fullScreen", !cm.getOption("fullScreen"));
-            },
-            "Esc": function(cm) {
-                if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
-            },
-            "Ctrl-Space": "autocomplete"
-        },
-       	theme: "github",
-        lineWrapping: true,
-        cursorBlinkRate: 200,
-        autocorrect: true,
-        autofocus: true,
-        lineNumbers: true,
-        gutters: ["CodeMirror-linenumbers"],
-        styleActiveLine: true,
-        autoCloseBrackets: true,
-        autoCloseTags: true
-        // scrollbarStyle:"simple",
-    });
-});
+	$(document).ready(function(){
+	    var editor = CodeMirror.fromTextArea(document.getElementById("AreaCodemirrors"), {
+	       mode: "php",
+	        extraKeys: {
+	            "Ctrl-J": "toMatchingTag",
+	            "F11": function(cm) {
+	                cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+	            },
+	            "Esc": function(cm) {
+	                if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+	            },
+	            "Ctrl-Space": "autocomplete"
+	        },
+	       	theme: "github",
+	        lineWrapping: true,
+	        cursorBlinkRate: 200,
+	        autocorrect: true,
+	        autofocus: true,
+	        lineNumbers: true,
+	        gutters: ["CodeMirror-linenumbers"],
+	        styleActiveLine: true,
+	        autoCloseBrackets: true,
+	        autoCloseTags: true
+	        // scrollbarStyle:"simple",
+	    });
+	});
 </script>

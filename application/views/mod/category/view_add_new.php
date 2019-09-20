@@ -3,15 +3,15 @@
 	<div class="page-header-content header-elements-inline">
 		<div class="page-title">
 			<h3>
-				<span class="font-weight-semibold"><?=lang_line('mod_title'); ?></span>
+				<span class="font-weight-semibold"><?php echo lang_line('mod_title'); ?></span>
 			</h3>
 		</div>
 	</div>
 	<div class="breadcrumb-line breadcrumb-line-light">
 		<div class="breadcrumb">
-			<a href="<?=admin_url('home'); ?>" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> <?=lang_line('admin_link_home') ?></a>
-			<span class="breadcrumb-item"><?=lang_line('mod_title'); ?></span>
-			<span class="breadcrumb-item"><?=lang_line('mod_title_add'); ?></span>
+			<a href="<?php echo admin_url('home'); ?>" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> <?php echo lang_line('admin_link_home') ?></a>
+			<span class="breadcrumb-item"><?php echo lang_line('mod_title'); ?></span>
+			<span class="breadcrumb-item"><?php echo lang_line('mod_title_add'); ?></span>
 		</div>
 	</div>
 </div>
@@ -23,13 +23,13 @@
 	?>
 	<div class="block">
 		<div class="block-header">
-			<h3><?=lang_line('mod_title_add');?></h3>
+			<h3><?php echo lang_line('mod_title_add');?></h3>
 		</div>
 		<div class="row">
 			<div class="col-md-12">
 				<!-- title -->
 				<div class="form-group row">
-					<label class="col-form-label col-md-2"><?=lang_line('form_label_title');?></label>
+					<label class="col-form-label col-md-2"><?php echo lang_line('form_label_title');?></label>
 					<div class="col-md-10">
 						<input type="text" name="title" id="title" class="form-control" required>
 					</div>
@@ -37,9 +37,9 @@
 				<!--/ title -->
 				<!-- parent -->
 				<div class="form-group row">
-					<label class="col-form-label col-md-2"><?=lang_line('form_label_parent');?></label>
+					<label class="col-form-label col-md-2"><?php echo lang_line('form_label_parent');?></label>
 					<div class="col-md-4">
-						<select class="select-2" name="parent" data-placeholder="<?=lang_line('form_label_parent_placeholder');?>">
+						<select class="select-2" name="parent" data-placeholder="<?php echo lang_line('form_label_parent_placeholder');?>">
 								<option value="0" selected>No parent</option>
 								<?php
 									$parents = $this->CI->db
@@ -57,7 +57,7 @@
 				<!--/ parent -->
 				<!-- description -->
 				<div class="form-group row">
-					<label class="col-form-label col-md-2"><?=lang_line('form_label_description');?></label>
+					<label class="col-form-label col-md-2"><?php echo lang_line('form_label_description');?></label>
 					<div class="col-md-10">
 						<textarea name="description" class="form-control"></textarea>
 					</div>
@@ -69,18 +69,18 @@
 					<div class="col-md-4">
 						<div class="form-check">
 							<input class="form-check-input" type="checkbox" id="cActive" name="active" value="1" checked>
-							<label class="form-check-label" for="cActive"><?=lang_line('form_label_active');?></label>
+							<label class="form-check-label" for="cActive"><?php echo lang_line('form_label_active');?></label>
 						</div>
 					</div>
 				</div>
 				<!--/ Status -->
 				<hr>
 				<div class="block-actions">
-					<button type="submit" class="submit_add button btn-primary mr-2"><i class="fa fa-check mr-2"></i><?=lang_line('button_submit');?></button>
-					<a href="<?=admin_url($this->mod);?>" class="button btn-default pull-right"><i class="fa fa-times mr-2"></i><?=lang_line('button_cancel');?></a>
+					<button type="submit" class="submit_add button btn-primary mr-2"><i class="fa fa-check mr-2"></i><?php echo lang_line('button_submit');?></button>
+					<a href="<?php echo admin_url($this->mod);?>" class="button btn-default pull-right"><i class="fa fa-times mr-2"></i><?php echo lang_line('button_cancel');?></a>
 				</div>
 			</div>
 		</div>
 	</div>
-	<?=form_close();?>
+	<?php echo form_close();?>
 </div>

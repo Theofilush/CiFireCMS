@@ -198,9 +198,9 @@ class Login extends MY_Controller {
 				$this->email->initialize($this->settings->email_config());
 				$this->email->set_newline("\r\n");
 				$this->email->from(
-				                   $this->settings->website('web_email'),
-				                   $this->settings->website('web_name')
-				                   );
+				                    $this->settings->website('web_email'),
+				                    $this->settings->website('web_name')
+				                  );
 				$this->email->to($email);
 				$this->email->subject('Registration Confirmation');
 				$this->email->message('Activation link : <a href="'. $activationlink .'" target="_blank">'. $activationlink .'</a> <br> To activate your account, please click the link above.');

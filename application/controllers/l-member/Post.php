@@ -16,6 +16,11 @@ class Post extends Member_controller {
 	}
 
 
+	/**
+	 * Fungsi untuk menampilkan halaman post.
+	 * @access 	public
+	 * @return 	void | string | json
+	*/
 	public function index() 
 	{
 		if ( $this->input->is_ajax_request() )
@@ -35,7 +40,7 @@ class Post extends Member_controller {
 				$row[] = $res['category_title'];
 
 				// status
-				$row[] = ($res['post_active'] == 'Y' ? '<span class="badge badge-b badge-pill badge-primary">Active</span>' : '<span class="badge badge-b badge-pill badge-secondary">No</span>');
+				$row[] = ($res['post_active'] == 'Y' ? '<span class="badge badge-b badge-pill badge-primary">Publish</span>' : '<span class="badge badge-b badge-pill badge-secondary">Archive</span>');
 
 				// Action
 				$h = ( $res['post_headline']=='Y' ? 'hedline_off' : 'headline_on' );
@@ -65,6 +70,11 @@ class Post extends Member_controller {
 	}
 
 
+	/**
+	 * Fungsi untuk ON/OFF fitur headline.
+	 * @access 	public
+	 * @return 	void | string | json
+	*/
 	public function headline()
 	{
 		if ( $this->input->is_ajax_request() )
@@ -108,28 +118,11 @@ class Post extends Member_controller {
 	}
 
 
-	public function delete()
-	{
-		if ( $this->input->is_ajax_request() )
-		{
-			$data_pk = $this->input->post('data');
-			foreach ($data_pk as $key)
-			{
-				$pk = xss_filter(decrypt($key),'sql');
-				$this->post_model->delete($pk);
-			}
-			$response['success'] = true;
-			$response['alert']['type'] = 'success';
-			$response['alert']['content'] = lang_line('form_message_delete_success');
-			$this->json_output($response);
-		}
-		else
-		{
-			show_404();
-		}
-	}
-
-
+	/**
+	 * Fungsi untuk menampilkan halaman tambah post.
+	 * @access 	public
+	 * @return 	void | string | json
+	*/
 	public function add_new() 
 	{
 		$this->meta_title(lang_line('post_title_add_post'));
@@ -142,13 +135,16 @@ class Post extends Member_controller {
 		{		
 			$this->vars['all_category'] = $this->post_model->get_all_category();
 			$this->vars['all_tag']      = $this->post_model->get_all_tag();
-			$this->vars['all_user']     = $this->post_model->get_all_user();
-
 			$this->render_view('post_add', $this->vars);
 		}
 	}
 
 
+	/**
+	 * Fungsi aksi tambah post.
+	 * @access 	private
+	 * @return 	void | string | json
+	*/
 	private function _submit_add()
 	{
 		$this->form_validation->set_rules(array(
@@ -224,10 +220,11 @@ class Post extends Member_controller {
 			}
 			
 			// Set data post.
+			$title = xss_filter($this->input->post('title'));
 			$data_post = array(
-				'title'         => xss_filter($this->input->post('title')),
-				'seotitle'      => seotitle($this->input->post('title')),
-				'content'       => $this->input->post('content'),
+				'title'         => $title,
+				'seotitle'      => seotitle($title),
+				'content'       => xss_filter($this->input->post('content')),
 				'id_category'   => xss_filter(decrypt($this->input->post('category')),'sql'),
 				'tag'           => $tags,
 				'picture'       => $post_picture,
@@ -235,7 +232,8 @@ class Post extends Member_controller {
 				'datepost'      => date('Y-m-d'),
 				'timepost'      => date('H:i:s'),
 				'id_user'       => login_key('member'),
-				'headline'      => 'N',
+				'headline'      => ($this->input->post('headline') == '1' ? 'Y' : 'N'),
+				'comment'       => ($this->input->post('comment') == '1' ? 'Y' : 'N'),
 				'active'        => 'N'
 			);
 			
@@ -262,6 +260,11 @@ class Post extends Member_controller {
 	}
 
 
+	/**
+	 * Fungsi untuk menampilkan halaman ubah post.
+	 * @access 	public
+	 * @return 	void | string | json
+	*/
 	public function edit() 
 	{
 		$this->meta_title(lang_line('post_title_edit_post'));
@@ -272,11 +275,18 @@ class Post extends Member_controller {
 		// Check id_post
 		if ( $id_post != 0 || $this->post_model->cek_id($id_post) == 1 ) 
 		{
-			$this->vars['result_post']  = $this->post_model->get_post($id_post);
-			$this->vars['all_category'] = $this->post_model->get_all_category();
-			$this->vars['all_user']     = $this->post_model->get_all_user();
-			
-			$this->render_view('post_edit', $this->vars);
+			if ( $this->input->is_ajax_request() )
+			{
+				return $this->_submit_update();
+			}
+			else
+			{			
+				$result_post = $this->post_model->get_post($id_post);
+				$this->vars['result_post']  = $this->post_model->get_post($id_post);
+				$this->vars['cek_category'] = $this->post_model->val_cat($result_post['category_id']);
+				$this->vars['all_category'] = $this->post_model->get_all_category();			
+				$this->render_view('post_edit', $this->vars);
+			}
 		}
 		else
 		{
@@ -285,7 +295,12 @@ class Post extends Member_controller {
 	}
 
 
-	public function submit_update()
+	/**
+	 * Fungsi aksi ubah post.
+	 * @access 	private
+	 * @return 	void | string | json
+	*/
+	private function _submit_update()
 	{
 		if ( $this->input->is_ajax_request() )
 		{
@@ -371,13 +386,16 @@ class Post extends Member_controller {
 				}
 				
 				// Set data post.
+				$title = xss_filter($this->input->post('title'));
 				$data_post = array(
-					'title'         => xss_filter($this->input->post('title')),
-					'seotitle'      => seotitle($this->input->post('title')),
+					'title'         => $title,
+					'seotitle'      => seotitle($title),
 					'content'       => xss_filter($this->input->post('content')),
-					'id_category'   => xss_filter(decrypt($this->input->post('category')),'sql'),
+					'id_category'   => xss_filter(decrypt($this->input->post('category')), 'sql'),
 					'image_caption' => xss_filter($this->input->post('image_caption')),
-					'tag'           => $tags
+					'tag'           => $tags,
+					'comment'       => ($this->input->post('comment') == '1' ? 'Y' : 'N'),
+					'headline'      => ($this->input->post('headline') == '1' ? 'Y' : 'N')
 				);
 				
 				// Merge array $data_post & $data_picture.
@@ -406,6 +424,38 @@ class Post extends Member_controller {
 	}
 
 
+	/**
+	 * Fungsi aksi hapus post.
+	 * @access 	public
+	 * @return 	void | string | json
+	*/
+	public function delete()
+	{
+		if ( $this->input->is_ajax_request() )
+		{
+			$data_pk = $this->input->post('data');
+			foreach ($data_pk as $key)
+			{
+				$pk = xss_filter(decrypt($key),'sql');
+				$this->post_model->delete($pk);
+			}
+			$response['success'] = true;
+			$response['alert']['type'] = 'success';
+			$response['alert']['content'] = lang_line('form_message_delete_success');
+			$this->json_output($response);
+		}
+		else
+		{
+			show_404();
+		}
+	}
+
+
+	/**
+	 * Fungsi upload gambar pada fitur tinymce.
+	 * @access 	public
+	 * @return 	void | string | json
+	*/
 	public function tinymce_upload()
 	{
 		if ( $_SERVER['REQUEST_METHOD'] == 'POST' )
@@ -450,8 +500,13 @@ class Post extends Member_controller {
 			show_404();
 		}
 	}
-	
 
+	
+	/**
+	 * Fungsi untuk menampilkan tag saat di ketik pada inputan tags.
+	 * @access 	public
+	 * @return 	void | string | json
+	*/
 	public function ajax_tags()
 	{
 		if ( $this->input->is_ajax_request() )
@@ -467,25 +522,30 @@ class Post extends Member_controller {
 	}
 
 
+	/**
+	 * Fungsi untuk pengecekan seotitle untuk aksi tambah post.
+	 * @access 	public
+	 * @return 	void | string | json
+	*/
 	public function _cek_add_seotitle($seotitle = '') 
 	{
 		$cek = $this->post_model->cek_seotitle(seotitle($seotitle));
 		if ( $cek === FALSE ) 
-		{
 			$this->form_validation->set_message('_cek_add_seotitle', lang_line('form_message_already_exists'));
-		}
 		return $cek;
 	}
+	
 
-
+	/**
+	 * Fungsi untuk pengecekan seotitle untuk aksi ubah post.
+	 * @access 	public
+	 * @return 	void | string | json
+	*/
 	public function _cek_edit_seotitle($id, $seotitle = '') 
 	{
 		$cek = $this->post_model->cek_seotitle2($id, seotitle($seotitle));
-		
-		if ( $cek === FALSE ) 
-		{
+		if ( $cek === FALSE )
 			$this->form_validation->set_message('_cek_edit_seotitle', lang_line('form_message_already_exists'));
-		}
 		return $cek;
 	}
 } // End class.
