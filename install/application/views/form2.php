@@ -40,7 +40,7 @@
 				<tr>
 					<td>Website Email</td>
 					<td>
-						<input type="text" name="site_email" class="form-control" style="width:100%;" required/>
+						<input type="email" name="site_email" class="form-control" style="width:100%;" required/>
 						<small class="text-muted">Your site email.</small><br/>
 						<small class="text-muted">Example : site@email.here</small>
 					</td>
@@ -55,7 +55,7 @@
 				<tr>
 					<td>Admin Username</td>
 					<td>
-						<input type="text" name="adm_user" class="form-control" style="width:100%;"/>
+						<input type="text" name="adm_user" class="form-control" style="width:100%;" required/>
 						<small class="text-muted">Username for login to office page, please just write letters and numbers (lowercase).</small><br/>
 						<small class="text-muted">Example : admin123</small>
 					</td>
@@ -63,7 +63,7 @@
 				<tr>
 					<td>Admin Email</td>
 					<td>
-						<input type="email" name="adm_email" class="form-control" style="width:100%;"/>
+						<input type="email" name="adm_email" class="form-control" style="width:100%;" required/>
 						<small class="text-muted">Your admin email.</small><br/>
 						<small class="text-muted">Example : your@email.here</small>
 					</td>
@@ -71,7 +71,7 @@
 				<tr>
 					<td>Admin Password</td>
 					<td>
-						<input type="text" name="adm_pass" class="form-control" style="width:100%;"/>
+						<input type="text" name="adm_pass" class="form-control" style="width:100%;" required/>
 						<small class="text-muted">Password for login to office page, please enter character more than 6 characters.</small><br/>
 						<small class="text-muted">Example : admin123</small>
 					</td>
@@ -86,7 +86,7 @@
 					<td>Default Timezone</td>
 					<td>
 						<div class="row col-sm-6">
-                        <select class="form-control col-sm-5" name="timezone">
+                        <select class="form-control col-sm-5" name="timezone" required>
                             <option value="Asia/Jakarta">Asia/Jakarta</option>
                             <?php
                             	$arr_timez_id_lst3 = DateTimeZone::listIdentifiers();
