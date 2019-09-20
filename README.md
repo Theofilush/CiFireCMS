@@ -112,11 +112,12 @@ define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'producti
 2. Semua rekan-rekan yang berkontribusi untuk CiFireCMS.
 3. Codeigniter3 sebagai inti engine CiFireCMS.
 4. Cizthemes (greeky) sebagai pembuat template frontend.
-5. Kopyov (Limitless) sebagai pembuat template backend.
-5. Creative-tim (Light Bootstrap Dashboard) sebagai pembuat template dasbor member.
-6. Easy Menu Manager sebagai pembuat component menu manager.
-7. Jquery, Bootstrap dan semua plugins jquery yang dipakai pada CiFireCMS.
-8. DwiraSurvivor PopojiCMS untuk inspirasi, saran serta rekomendasi sehingga engine CiFireCMS bisa rilis.
+5. SemiColonWeb (Canvas) sebagai pembuat template frontend.
+6. Kopyov (Limitless) sebagai pembuat template backend.
+7. Creative-tim (Light Bootstrap Dashboard) sebagai pembuat template dasbor member.
+8. Easy Menu Manager sebagai pembuat component menu manager.
+9. Jquery, Bootstrap dan semua plugins jquery yang dipakai pada CiFireCMS.
+10. DwiraSurvivor PopojiCMS untuk inspirasi, saran serta rekomendasi sehingga engine CiFireCMS bisa rilis.
 
 
 # Lisensi
