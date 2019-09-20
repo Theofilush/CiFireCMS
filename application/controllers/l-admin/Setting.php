@@ -27,17 +27,12 @@ class Setting extends Admin_controller {
 
 	public function index()
 	{
-		if ($this->input->is_ajax_request() == TRUE) 
+		if ( $this->input->is_ajax_request() ) 
 		{
 			$path = VIEWPATH.'meta_social.php'; 
 			$data_content = $_POST['meta_content'];
 			fopen($path, "r") or die("Could not open file!");
 			write_file($path, $data_content);
-
-			// $json_output['alert_type'] = 'success';
-			// $json_output['messages'] = lang_line('mod_lang_metasocial').'&nbsp;'.lang_line('update_success');
-			// echo json_encode($json_output);
-			
 			$response['success'] = TRUE;
 			$response['alert']['type'] = 'success';
 			$response['alert']['content'] = lang_line('mod_lang_metasocial').'&nbsp;'.lang_line('update_success');
@@ -55,51 +50,51 @@ class Setting extends Admin_controller {
 	{
 		$act = (!empty($_POST) ? $_POST['pk'] : "");
 
-		if ($this->input->is_ajax_request() == TRUE) 
+		if ( $this->input->is_ajax_request() ) 
 		{
-			if ($act == 'website_name')
+			if ( $act == 'website_name' )
 			{
 				$value = trim($this->input->post('value'));
 				$this->setting_model->update('web_name', array('value' => $value));
 			}
 
-			elseif ($act == 'website_url')
+			elseif ( $act == 'website_url' )
 			{
 				$value = trim($this->input->post('value'));
 				$this->setting_model->update('web_url', array('value' => $value));
 			}
 
-			elseif ($act == 'meta_description')
+			elseif ( $act == 'meta_description' )
 			{
 				$value = trim($this->input->post('value'));
 				$this->setting_model->update('meta_description', array('value' => $value));
 			}
 
-			elseif ($act == 'meta_keyword')
+			elseif ( $act == 'meta_keyword' )
 			{
 				$value = trim($this->input->post('value'));
 				$this->setting_model->update('meta_keyword', array('value' => $value));
 			}
 
-			elseif ($act == 'web_email')
+			elseif ( $act == 'web_email' )
 			{
 				$value = trim($this->input->post('value'));
 				$this->setting_model->update('web_email', array('value' => $value));
 			}
 
-			elseif ($act == 'tlpn')
+			elseif ( $act == 'tlpn' )
 			{
 				$value = trim($this->input->post('value'));
 				$this->setting_model->update('tlpn', array('value' => $value));
 			}
 
-			elseif ($act == 'fax')
+			elseif ( $act == 'fax' )
 			{
 				$value = trim($this->input->post('value'));
 				$this->setting_model->update('fax', array('value' => $value));
 			}
 
-			elseif ($act == 'address')
+			elseif ( $act == 'address' )
 			{
 				$val_address = trim($this->input->post('value'));
 				$value = xss_filter($val_address);
@@ -107,92 +102,92 @@ class Setting extends Admin_controller {
 			}
 
 
-			elseif ($act == 'visitors')
+			elseif ( $act == 'visitors' )
 			{
 				$value = trim($this->input->post('value'));
 				$this->setting_model->update('visitors', array('value' => $value));
 			}
 			
-			elseif ($act == 'maintenance')
+			elseif ( $act == 'maintenance' )
 			{
 				$value = trim($this->input->post('value'));
 				$this->setting_model->update('maintenance', array('value' => $value));
 			}
 
 
-			elseif ($act == 'member_registration')
+			elseif ( $act == 'member_registration' )
 			{
 				$value = trim($this->input->post('value'));
 				$this->setting_model->update('member_registration', array('value' => $value));
 			}
 
-			elseif ($act == 'country')
+			elseif ( $act == 'country' )
 			{
 				$value = trim($this->input->post('value'));
 				$this->setting_model->update('country', array('value' => $value));
 			}
 
-			elseif ($act == 'timezone')
+			elseif ( $act == 'timezone' )
 			{
 				$value = trim($this->input->post('value'));
 				$this->setting_model->update('timezone', array('value' => $value));
 			}
 
-			elseif ($act == 'slug_url')
+			elseif ( $act == 'slug_url' )
 			{
 				$value = trim($this->input->post('value'));
 				$this->setting_model->update('slug_url', array('value' => $value));
 			}
 
-			elseif ($act == 'slug_title')
+			elseif ( $act == 'slug_title' )
 			{
 				$value = trim($this->input->post('value'));
 				$this->setting_model->update('slug_title', array('value' => $value));
 			}
 
-			elseif ($act == 'page_item')
+			elseif ( $act == 'page_item' )
 			{
 				$value = xss_filter(trim($this->input->post('value')),'sql');
 				$this->setting_model->update('page_item', array('value' => $value));
 			}
 
-			elseif ($act == 'recaptcha_site_key')
+			elseif ( $act == 'recaptcha_site_key' )
 			{
 				$value = trim($this->input->post('value'));
 				$this->setting_model->update('recaptcha_site_key', array('value' => $value));
 			}
 
-			elseif ($act == 'recaptcha_secret_key')
+			elseif ( $act == 'recaptcha_secret_key' )
 			{
 				$value = trim($this->input->post('value'));
 				$this->setting_model->update('recaptcha_secret_key', array('value' => $value));
 			}
 
-			elseif ($act == 'mail_protocol')
+			elseif ( $act == 'mail_protocol' )
 			{
 				$value = trim($this->input->post('value'));
 				$this->setting_model->update('protocol', array('value' => $value));
 			}
 
-			elseif ($act == 'mail_hostname')
+			elseif ( $act == 'mail_hostname' )
 			{
 				$value = trim($this->input->post('value'));
 				$this->setting_model->update('hostname', array('value' => $value));
 			}
 
-			elseif ($act == 'mail_username')
+			elseif ( $act == 'mail_username' )
 			{
 				$value = trim($this->input->post('value'));
 				$this->setting_model->update('username', array('value' => $value));
 			}
 
-			elseif ($act == 'mail_password')
+			elseif ( $act == 'mail_password' )
 			{
 				$value = trim($this->input->post('value'));
 				$this->setting_model->update('password', array('value' => encrypt($value)));
 			}
 
-			elseif ($act == 'mail_port')
+			elseif ( $act == 'mail_port' )
 			{
 				$value = trim($this->input->post('value'));
 				$this->setting_model->update('port', array('value' => $value));
@@ -200,7 +195,7 @@ class Setting extends Admin_controller {
 		}
 		else
 		{
-			if ($act == 'language')
+			if ( $act == 'language' )
 			{
 				$value = trim($this->input->post('lang'));
 				$this->setting_model->update('language', array('value' => $value));
@@ -211,7 +206,7 @@ class Setting extends Admin_controller {
 				redirect(admin_url($this->mod), 'refresh');
 			}
 
-			if ($act == 'cache')
+			if ( $act == 'cache' )
 			{
 				$cache = trim($this->input->post('cache'));
 				$this->setting_model->update('cache', array('value' => $cache));
@@ -220,14 +215,14 @@ class Setting extends Admin_controller {
 				redirect(admin_url($this->mod), 'refresh');
 			}
 
-			if ($act == 'del_cache')
+			if ( $act == 'del_cache' )
 			{
 				$this->output->delete_cache();
 				$this->clear_all_cache();
 				redirect(admin_url($this->mod), 'refresh');
 			}			
 
-			if ($act == 'favicon')
+			if ( $act == 'favicon' )
 			{
 				$file_name = "favicon.png";
 				$file_path = CONTENTPATH."favicon/";
@@ -241,7 +236,7 @@ class Setting extends Admin_controller {
 					'overwrite'     => TRUE
 				));
 
-				if ($this->upload->do_upload('fupload')) 
+				if ( $this->upload->do_upload('fupload') ) 
 				{
 					$this->load->library('image_lib', array(
 						'image_library'  => 'gd2',
@@ -264,7 +259,7 @@ class Setting extends Admin_controller {
 				redirect(admin_url($this->mod),'refresh');
 			}
 
-			if ($act == 'web_logo')
+			if ( $act == 'web_logo' )
 			{
 				$tmp_file   = $_FILES['fupload']['tmp_name'];
 				$file_extension = pathinfo($_FILES['fupload']['name'], PATHINFO_EXTENSION);
@@ -279,7 +274,7 @@ class Setting extends Admin_controller {
 					'overwrite'     => TRUE
 				));
 
-				if ($this->upload->do_upload('fupload')) 
+				if ( $this->upload->do_upload('fupload') ) 
 				{
 					if ($file_name != $this->settings->website('logo')) 
 					{
@@ -315,8 +310,6 @@ class Setting extends Admin_controller {
 
 				$changefreq  = $this->input->post('changefreq');
 				$priority    = $this->input->post('priority');
-
-				//$this->sitemap->setDomain($website_url);
 				$this->sitemap->setDomain('');
 				$this->sitemap->setPath(FCPATH);
 
@@ -329,7 +322,7 @@ class Setting extends Admin_controller {
 					->get('t_pages')
 					->result_array();
 					
-				foreach($pages as $res_pages)
+				foreach ($pages as $res_pages)
 				{
 					$this->sitemap->addItem(site_url('pages/'.$res_pages['seotitle']), $priority, $changefreq, date('Y-m-d'));
 				}
@@ -341,7 +334,7 @@ class Setting extends Admin_controller {
 					->get('t_category')
 					->result_array();
 
-				foreach($categorys as $res_category)
+				foreach ($categorys as $res_category)
 				{
 					$this->sitemap->addItem(site_url('category/'.$res_category['seotitle']), $priority, $changefreq, date('Y-m-d'));
 				}
@@ -353,7 +346,7 @@ class Setting extends Admin_controller {
 					->get('t_post')
 					->result_array();
 					
-				foreach($posts as $res_post)
+				foreach ($posts as $res_post)
 				{
 					$this->sitemap->addItem(post_url($res_post['seotitle']), $priority, $changefreq, $res_post['datepost']);
 				}
@@ -373,12 +366,10 @@ class Setting extends Admin_controller {
 	    $cache_path = ($path == '') ? APPPATH.'cache/' : $path;
 	    $handle     = opendir($cache_path);
 
-	    while (($file = readdir($handle))!== FALSE) 
+	    while ( ($file = readdir($handle)) !== FALSE ) 
 	    {
 	        if ($file != '.htaccess' && $file != 'index.html' && $file != 'routes.php')
-	        {
 	           @unlink($cache_path.'/'.$file);
-	        }
 	    }
 	    closedir($handle);       
 	}
@@ -386,7 +377,7 @@ class Setting extends Admin_controller {
 	
 	public function get_lang()
 	{
-		if ($this->read_access == TRUE)
+		if ( $this->read_access )
 		{			
 			$lang = $this->CI->db
 				->select("id,title")
@@ -400,12 +391,9 @@ class Setting extends Admin_controller {
 
 	public function get_slug_url()
 	{
-		if ($this->read_access == TRUE)
+		if ( $this->read_access )
 		{			
-			$query = $this->CI->db
-				->get('t_slug')
-				->result_array();
-
+			$query = $this->CI->db->get('t_slug')->result_array();
 			$this->json_output($query);
 		}
 	}
