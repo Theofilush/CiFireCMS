@@ -9,7 +9,7 @@ $route['translate_uri_dashes'] = TRUE;
 $route[FADMIN] = FADMIN.'/login';
 $route[FADMIN.'/logout'] = FADMIN.'/login/logout';
 $route[FADMIN.'/forgot'] = FADMIN.'/login/forgot';
-$route[FADMIN.'/profile'] = FADMIN.'/user/profile';
+// $route[FADMIN.'/profile'] = FADMIN.'/user/profile';
 
 // MEMBER.
 $route['l-member'] = 'l-member/login';
@@ -17,6 +17,8 @@ $route['l-member/logout'] = 'l-member/login/logout';
 $route['l-member/forgot'] = 'l-member/login/forgot';
 $route['l-member/register'] = 'l-member/login/register';
 $route['l-member/activation'] = 'l-member/login/activation';
+$route['l-member/change-password'] = 'l-member/account/password';
+$route['l-member/delete-account'] = 'l-member/account/delete';
 
 // WEB.
 $route['index/([0-9-]+)'] = 'index/index/$1';
