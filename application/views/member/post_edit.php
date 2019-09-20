@@ -2,6 +2,9 @@
 <div class="card">
 	<div class="card-header">
 		<h5 class="card-title"><?=lang_line('post_title_edit_post');?></h5>
+		<div class="pull-right">
+			<a href="<?=member_url($this->mod)?>" class="btn btn-sm btn-default"><i class="fa fa-arrow-circle-o-left mr-2"></i>Post</a>
+		</div>
 	</div>
 	<div class="card-body">
 		<?php
@@ -31,6 +34,41 @@
 			<div class="col-lg-3" style="min-width:120px;">
 				<div id="sticky">
 					<div class="accordion post-setting" id="accordionPostX">
+						<!-- Publish -->
+						<div class="card">
+							<div class="card-header" id="collapse-publish">
+								<button class="btn btn-link" type="button" data-toggle="collapse" aria-expanded="true" data-target="#collapsePublish" aria-controls="collapsePublish">Publish</button>
+							</div>
+							<div id="collapsePublish" class="collapse show" aria-labelledby="collapse-publish" data-parent="#accordionPost">
+								<div class="card-body">
+									<div>
+										<?php if ($result_post['headline'] == 'Y'): ?>
+										<input id="c-headline-y" type="checkbox" name="headline" class="mr-2" value="1" checked>
+										<label for="c-headline-y"><?=lang_line('post_label_headline')?></label>
+										<?php else: ?>
+										<input id="c-headline-n" type="checkbox" name="headline" class="mr-2" value="1">
+										<label for="c-headline-n"><?=lang_line('post_label_headline')?></label>
+										<?php endif ?>
+									</div>
+									<div class="mb-2">
+										<?php if ($result_post['comment'] == 'Y'): ?>
+										<input id="c-comment-y" type="checkbox" name="comment" class="mr-2" value="1" checked>
+										<label for="c-comment-y"><?=lang_line('post_label_comment')?></label>
+										<?php else: ?>
+										<input id="c-comment-n" type="checkbox" name="comment" class="mr-2" value="1">
+										<label for="c-comment-n"><?=lang_line('post_label_comment')?></label>
+										<?php endif ?>
+									</div>
+									
+									<div class="mb-1">
+										<button type="submit" class="btn_submit_post btn btn-sm btn-primary mr-2"><i class="fa fa-save mr-2"></i> <?=lang_line('button_save')?></button>
+										<button type="button" class="btn btn-sm btn-danger" onclick="location=href='<?=member_url($this->mod)?>'"><i class="fa fa-times"></i> <?=lang_line('button_cancel')?></button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--/ Publish -->
+
 						<!-- Category -->
 						<div class="card">
 							<div class="card-header" id="collapse-category">
@@ -39,17 +77,17 @@
 							<div id="collapseCategory" class="collapse" aria-labelledby="collapse-category" data-parent="#accordionPost">
 								<div class="card-body">
 									<div id="select-category"></div>
-									<select name="category" class="select-2" data-placeholder="- Category -">
+									<select name="category" class="select-2" data-placeholder="- <?=lang_line('post_label_category');?> -">
+										<?php if (!$cek_category): ?>
+											<option value=""></option>
+										<?php else: ?>
 										<?php
-											$categorys = $this->CI->db
-												->where('active', 'Y')
-												->get('t_category')
-												->result_array();
-											foreach ($categorys as $category):
-												$selected = ( $result_post['category_id'] == $category['id'] ? 'selected' : '');
+											foreach ($all_category as $res_cat):
+												$selected = ( $result_post['category_id'] == $res_cat['id'] ? 'selected' : '');
 										?>
-										<option value="<?=encrypt($category['id'])?>" <?=$selected?>><?=$category['title']?></option>
+										<option value="<?=encrypt($res_cat['id'])?>" <?=$selected?>><?=$res_cat['title']?></option>
 										<?php endforeach ?>
+										<?php endif ?>
 									</select>
 								</div>
 							</div>
@@ -77,7 +115,7 @@
 							<div class="card-header" id="collapsed-picture">
 								<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapsedPicture" aria-expanded="false" aria-controls="collapsedPicture"><?=lang_line('post_label_picture');?></button>
 							</div>
-							<div id="collapsedPicture" class="collapse show" aria-labelledby="collapsed-picture" data-parent="#accordionPost">
+							<div id="collapsedPicture" class="collapse" aria-labelledby="collapsed-picture" data-parent="#accordionPost">
 								<div class="card-body">
 									<!-- Picture -->
 									<div class="text-center mb-2">
@@ -105,20 +143,6 @@
 							</div>
 						</div>
 						<!--/ Picture -->
-
-						<!-- Publish -->
-						<div class="card">
-							<div class="card-header" id="collapse-publish">
-								<button class="btn btn-link" type="button" data-toggle="collapse" aria-expanded="true" data-target="#collapsePublish" aria-controls="collapsePublish">Publish</button>
-							</div>
-							<div id="collapsePublish" class="collapse show" aria-labelledby="collapse-publish" data-parent="#accordionPost">
-								<div class="card-body">
-									<button type="submit" class="btn_submit_post btn btn-primary"><i class="fa fa-save mr-2"></i> <?=lang_line('button_save')?></button>
-									<button type="button" class="btn btn-danger pull-right" onclick="location=href='<?=member_url($this->mod)?>'"><i class="fa fa-times"></i> <?=lang_line('button_cancel')?></button>
-								</div>
-							</div>
-						</div>
-						<!--/ Publish -->
 					</div>
 				</div>
 			</div>

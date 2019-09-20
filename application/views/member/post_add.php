@@ -2,6 +2,9 @@
 <div class="card">
 	<div class="card-header">
 		<h5 class="card-title"><?=lang_line('post_title_add_post')?></h5>
+		<div class="pull-right">
+			<a href="<?=member_url($this->mod)?>" class="btn btn-sm btn-default"><i class="fa fa-arrow-circle-o-left mr-2"></i>Post</a>
+		</div>
 	</div>
 	<div class="card-body">
 		<?=form_open_multipart('','id="form_post_add" autocomplete="off"');?>
@@ -28,24 +31,44 @@
 			<div class="col-lg-3" style="min-width:120px;">
 				<div id="sticky">
 					<div class="accordion post-setting" id="accordionPostX">
+						<!-- Publish -->
+						<div class="card">
+							<div class="card-header" id="collapse-publish">
+								<button class="btn btn-link" type="button" data-toggle="collapse" aria-expanded="true" data-target="#collapsePublish" aria-controls="collapsePublish">Publish</button>
+							</div>
+							<div id="collapsePublish" class="collapse show" aria-labelledby="collapse-publish" data-parent="#accordionPost">
+								<div class="card-body">
+									<div>
+										<input id="c-headline" type="checkbox" name="headline" class="mr-2" value="1">
+										<label for="c-headline"><?=lang_line('post_label_headline')?></label>
+									</div>
+									<div class="mb-2">
+										<input id="c-comment" type="checkbox" name="comment" class="mr-2" value="1" checked>
+										<label for="c-comment"><?=lang_line('post_label_comment')?></label>
+									</div>
+									<div class="mb-1">
+										<button type="submit" class="btn_submit_post btn btn-sm btn-primary mr-2"><i class="fa fa-check"></i> <?=lang_line('button_submit')?></button>
+										<button type="button" class="btn btn-sm btn-danger" onclick="location=href='<?=member_url($this->mod)?>'"><i class="fa fa-times"></i> <?=lang_line('button_cancel')?></button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!--/ Publish -->
+
 						<!-- Category -->
 						<div class="card">
 							<div class="card-header" id="collapse-category">
-								<button class="btn btn-link" type="button" data-toggle="collapse" aria-expanded="true" data-target="#collapseCategory" aria-controls="collapseCategory"><?=lang_line('post_label_category')?></button>
+								<button class="btn btn-link" type="button" data-toggle="collapse" aria-expanded="true" data-target="#collapseCategory" aria-controls="collapseCategory"><?=lang_line('post_label_category');?></button>
 							</div>
 							<div id="collapseCategory" class="collapse" aria-labelledby="collapse-category" data-parent="#accordionPost">
 								<div class="card-body">
 									<div id="select-category"></div>
-									<select name="category" class="select-2" data-placeholder="- Category -">
+									<select name="category" class="select-2" data-placeholder="- <?=lang_line('post_label_category');?> -">
 										<option value=""></option>
 										<?php
-											$categorys = $this->CI->db
-												->where('active', 'Y')
-												->get('t_category')
-												->result_array();
-											foreach ($categorys as $category):
+											foreach ($all_category as $res_cat):
 										?>
-										<option value="<?=encrypt($category['id'])?>"><?=$category['title']?></option>
+										<option value="<?=encrypt($res_cat['id'])?>"><?=$res_cat['title']?></option>
 										<?php endforeach ?>
 									</select>
 								</div>
@@ -95,22 +118,6 @@
 							</div>
 						</div>
 						<!--/ Picture -->
-
-						<!-- Publish -->
-						<div class="card">
-							<div class="card-header" id="collapse-publish">
-								<button class="btn btn-link" type="button" data-toggle="collapse" aria-expanded="true" data-target="#collapsePublish" aria-controls="collapsePublish">Publish</button>
-							</div>
-							<div id="collapsePublish" class="collapse show" aria-labelledby="collapse-publish" data-parent="#accordionPost">
-								<div class="card-body">
-									<div>
-										<button type="submit" class="btn_submit_post btn btn-primary"><i class="fa fa-check"></i> <?=lang_line('button_submit')?></button>
-										<button type="button" class="btn btn-danger pull-right" onclick="location=href='<?=member_url($this->mod)?>'"><i class="fa fa-times"></i> <?=lang_line('button_cancel')?></button>
-									</div>
-								</div>
-							</div>
-						</div>
-						<!--/ Publish -->
 					</div>
 				</div>
 			</div>
