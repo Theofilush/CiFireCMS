@@ -16,5 +16,5 @@
 			<div class="input-password"></div>
 		</div>
 	</div>
-	<p class="mt-3 text-center login-copyright">Copyright &copy; CiFireCMS 2019. MIT License</p>
+	<p class="mt-3 text-center login-copyright">Copyright &copy; <a href="https://alweak.com" target="_blank">CiFireCMS</a> <?=date('Y');?>. <a href="https://opensource.org/licenses/MIT" target="_blank">MIT License</a></p>
 <?=form_close();?>

@@ -117,6 +117,7 @@
 					</a>
 					<div class="dropdown-menu dropdown-menu-right">
 						<a href="<?=site_url();?>" target="_blank" class="dropdown-item"><i class="icon-display"></i> <?=lang_line('menu_tofront');?></a>
+						<a href="<?=admin_url('profile');?>" class="dropdown-item"><i class="icon-user"></i> Profile</a>
 						<a href="<?=admin_url('mail');?>" class="dropdown-item"><i class="icon-envelop2"></i> <?=lang_line('menu_mail');?></a></a>
 						<a href="<?=admin_url('setting'); ?>" class="dropdown-item"><i class="fa fa-cog"></i> <?=lang_line('menu_setting');?></a>
 						<a href="<?=admin_url('logout'); ?>" class="dropdown-item"><i class="icon-switch"></i> <?=lang_line('menu_logout');?></a>
