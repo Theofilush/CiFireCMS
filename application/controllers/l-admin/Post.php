@@ -178,9 +178,12 @@ class Post extends Admin_controller {
 					$active = ($this->input->post('active') == '1' ? 'Y' : 'N');
 					$comment = ($this->input->post('comment') == '1' ? 'Y' : 'N');
 
+					$title = xss_filter($this->input->post('title'));
+					$seotitle = seotitle($title);
+
 					$data_post = array(
-						'title'         => xss_filter($this->input->post('title')),
-						'seotitle'      => seotitle($this->input->post('title')),
+						'title'         => $title,
+						'seotitle'      => $seotitle,
 						'content'       => xss_filter($this->input->post('content')),
 						'id_category'   => xss_filter(decrypt($this->input->post('category')),'sql'),
 						'tag'           => $tags,
@@ -276,11 +279,14 @@ class Post extends Admin_controller {
 						$comment = ($this->input->post('comment') == '1' ? 'Y' : 'N');
 						$active = ($this->input->post('active') == '1' ? 'Y' : 'N');
 
+						$title = xss_filter($this->input->post('title'));
+						$seotitle = seotitle($title);
+
 						if ( user_level('level') == 'super-admin' || user_level('level') == 'admin' )
 						{
 							$data = array(
-								'title'        => xss_filter($this->input->post('title')),
-								'seotitle'     => seotitle($this->input->post('title')),
+								'title'        => $title,
+								'seotitle'     => $seotitle,
 								'content'      => xss_filter($this->input->post('content')),
 								'id_category'  => $id_category,
 								'tag'          => $tags,
@@ -297,15 +303,13 @@ class Post extends Admin_controller {
 						else
 						{
 							$data = array(
-								'title'         => xss_filter($this->input->post('title')),
-								'seotitle'      => seotitle($this->input->post('title')),
+								'title'        => $title,
+								'seotitle'     => $seotitle,
 								'content'       => xss_filter($this->input->post('content')),
 								'id_category'   => $id_category,
 								'tag'           => $tags,
 								'picture'       => xss_filter($this->input->post('picture')),
 								'image_caption' => xss_filter($this->input->post('image_caption')),
-								// 'datepost'      => date('Y-m-d', strtotime($this->input->post('datepost'))),
-								// 'timepost'      => $this->input->post('timepost') . ':' . date('s'),
 								'headline'     => $headline,
 								'comment'     => $comment,
 								'active'       => $active,
