@@ -17,17 +17,20 @@ class Profile extends Admin_controller {
 		$this->data = $this->profile_model->get_data();
 	}
 
+
 	public function index()
 	{
 		$this->vars['gender'] = ($this->data['user_gender']=='M' ? lang_line('label_male') : lang_line('label_female'));
 		$this->render_view('view_index', $this->vars);
 	}
 
+
 	public function edit()
 	{
 		$this->vars['res'] = $this->profile_model->get_data();
 		$this->render_view('view_edit', $this->vars);
 	}
+
 
 	public function submit_update()
 	{

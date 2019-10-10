@@ -28,23 +28,21 @@ class User extends Admin_controller {
 
 				foreach ($users as $res) 
 				{
+					if ($res['user_username']==data_login('admin', 'username')) {
+						continue;
+					}
 					$row = [];
-
 					$row[] = '<div class="text-center"><input type="checkbox" class="row_data" value="'. encrypt($res['user_id']) .'"></div>';
-
 					$row[] = '<div class="text-center"><a href="'.user_photo($res['user_photo']).'" class="fancybox"><img src="'.user_photo($res['user_photo']).'" style="background:#fff;padding:2px;width:40px;border-radius:50%;border:1px solid #ddd;"></a></div>';
-
 					$row[] = $res['user_username'];
 					$row[] = $res['user_name'];
 					$row[] = $res['level_title'];
 					// status
 					$row[] = ($res['user_active'] == 'Y' ? '<span class="badge badge-b badge-pill badge-primary">Active</span>' : '<span class="badge badge-b badge-pill badge-secondary">No</span>');
-
 					$row[] = '<div class="text-center"><div class="btn-group">
-					<a href="'. admin_url($this->mod.'/edit/'.$res['user_id']) .'" class="button btn-xs btn-default" data-toggle="tooltip" data-placement="top" data-title="'. lang_line('button_edit') .'"><i class="icon-pencil3"></i></a>
+					<a href="'. admin_url($this->mod.'/edit/'.$res['user_username']) .'" class="button btn-xs btn-default" data-toggle="tooltip" data-placement="top" data-title="'. lang_line('button_edit') .'"><i class="icon-pencil3"></i></a>
 					<button type="button" class="button btn-xs btn-default delete_single" data-toggle="tooltip" data-placement="top" data-title="'. lang_line('button_delete') .'" data-pk="'. encrypt($res['user_id']) .'"><i class="icon-bin"></i></button>
 					</div></div>';
-
 					$data_output[] = $row;
 				}
 
@@ -98,21 +96,21 @@ class User extends Admin_controller {
 				}
 			}
 
-			// default delete user account
-			else
+			else // default delete user account
 			{
 				$data_pk = $this->input->post('data');
+
 				foreach ($data_pk as $key)
 				{
 					$pk = xss_filter(decrypt($key),'sql');
 					$photo = $this->user_model->get_photo($pk);
 					$this->user_model->delete_user($pk);
+					
 					// delete user photo.
 					if ( !is_null($photo) )
-					{
 						@unlink($this->path_photo.$photo);
-					}
 				}
+
 				$response['success'] = true;
 				$response['alert']['type'] = 'success';
 				$response['alert']['content'] = lang_line('form_message_delete_success');
@@ -151,7 +149,7 @@ class User extends Admin_controller {
 					array(
 						'field' => 'input_password',
 						'label' => lang_line('form_label_password'),
-						'rules' => 'required|min_length[6]',
+						'rules' => 'required|min_length[6]|max_length[20]',
 					),
 					array(
 						'field' => 'name',
@@ -176,11 +174,13 @@ class User extends Admin_controller {
 					$data = array(
 						'level'    => xss_filter($this->input->post('level'), 'sql'),
 						'username' => xss_filter($this->input->post('username')),
-						'email'    => xss_filter($this->input->post('email')),
+						'email'    => $this->input->post('email', TRUE),
 						'password' => encrypt($this->input->post('input_password')),
 						'name'     => xss_filter($this->input->post('name'), 'xss'),
 						'gender'   => xss_filter($this->input->post('gender'), 'xss'),
 						'tlpn'     => xss_filter($this->input->post('tlpn'), 'xss'),
+						'address'  => xss_filter($this->input->post('address')),
+						'about'    => xss_filter($this->input->post('about'), 'xss'),
 						'active'   => $active,
 						'photo'    => 'user-'.random_string('numeric', 20) .".jpg",
 					);
@@ -209,29 +209,31 @@ class User extends Admin_controller {
 	}
 
 
-	public function edit($id = 0)
+	public function edit($val = '')
 	{
 		if ( $this->modify_access )
 		{
-			$id = xss_filter($id,'sql');
-			if ( empty($id) || $id == 0)
+			$uname = xss_filter($val,'xss');
+			$cek_uname = $this->user_model->cek_username($uname);
+
+			if ( $cek_uname == TRUE )
 			{
-				$this->render_404();
+				return $this->render_404();
 			}
 			else
 			{
+				$id = $this->user_model->get_id($uname);
+
 				$id_level = $this->user_model->get_level_by($id);
 
 				if ( $id == 1 && login_level('admin', TRUE) != 'super-admin' )
 				{
 					$this->render_404();
 				}
-
 				elseif (empty($id) || $this->user_model->cek_id($id) != 1 ) 
 				{
 					$this->render_404();
 				}
-
 				elseif ( $id != login_key('admin') && login_level('admin',TRUE) == 'admin' && $id_level <= 2 )
 				{
 					$this->render_404();
@@ -240,14 +242,13 @@ class User extends Admin_controller {
 				{			
 					$this->vars['res_user'] = $this->user_model->get_user($id);
 					$this->vars['select_levels'] = $this->user_model->select_level();
-
 					$this->render_view('view_edit', $this->vars);
 				}
 			}
 		}
 		else
 		{
-			$this->render_403();
+			return $this->render_403();
 		}
 	}
 
@@ -274,7 +275,7 @@ class User extends Admin_controller {
 			$this->form_validation->set_rules(array(array(
 				'field' => 'input_password',
 				'label' => lang_line('form_label_password'),
-				'rules' => 'min_length[6]',
+				'rules' => 'min_length[6]|max_length[20]',
 			)));
 			
 			$this->form_validation->set_rules(array(array(
@@ -297,6 +298,7 @@ class User extends Admin_controller {
 					'rules' => 'required',
 				)));
 			}
+
 			elseif ($id == login_key('admin') && login_level('admin',TRUE) == "admin")
 			{
 				$this->form_validation->set_rules(array(array(
@@ -308,6 +310,7 @@ class User extends Admin_controller {
 					)
 				)));
 			}
+
 			else
 			{
 				$this->form_validation->set_rules(array(array(
@@ -328,7 +331,7 @@ class User extends Admin_controller {
 
 			if ( $this->form_validation->run() ) 
 			{
-				$email = xss_filter($this->input->post('email', TRUE), 'xss');
+				$email = $this->input->post('email', TRUE);
 
 				$cek_email = $this->db
 					->select('email')
@@ -361,8 +364,8 @@ class User extends Admin_controller {
 						'name'     => xss_filter($this->input->post('name'), 'xss'),
 						'gender'   => xss_filter($this->input->post('gender'), 'gender'),
 						'birthday' => date('Y-m-d',strtotime($this->input->post('birthday'))),
-						'about'    => ( !empty($this->input->post('about')) ? cut($this->input->post('about'), 600) : '' ),
-						'address'  => ( !empty($this->input->post('address')) ? cut($this->input->post('address'), 600) : '' ),
+						'address'  => xss_filter($this->input->post('address')),
+						'about'    => xss_filter($this->input->post('about'), 'xss'),
 						'tlpn'     => xss_filter($this->input->post('tlpn'), 'xss'),
 						'active'   => ( !empty($this->input->post('active')) ? 'Y' : 'N' )
 					);
@@ -405,6 +408,7 @@ class User extends Admin_controller {
 							$response['alert']['content'] = lang_line('form_message_update_success');
 							$this->json_output($response);
 						}
+
 						else
 						{
 							$response['success'] = false;
@@ -414,6 +418,7 @@ class User extends Admin_controller {
 						}
 					}
 				}
+
 				else
 				{
 					$response['success'] = false;
@@ -431,6 +436,7 @@ class User extends Admin_controller {
 				$this->json_output($response);
 			}
 		}
+
 		else
 		{
 			show_404();
@@ -461,6 +467,7 @@ class User extends Admin_controller {
 			$this->form_validation->set_message('_cek_addusername', lang_line('form_message_already_exists'));
 			return FALSE;
 		}
+
 		return $cek;
 	}
 
@@ -468,11 +475,13 @@ class User extends Admin_controller {
 	public function _cek_addemail($email = '') 
 	{
 		$cek = $this->user_model->cek_email($email);
+
 		if ($cek == FALSE) 
 		{
 			$this->form_validation->set_message('_cek_addemail', lang_line('form_message_already_exists'));
 			return FALSE;
 		}
+
 		return $cek;
 	}
 
@@ -571,6 +580,7 @@ class User extends Admin_controller {
 					{
 						$this->alert->set($this->mod, 'danger', 'Ivalid Level');
 					}
+
 					else
 					{
 						$this->user_model->insert_level(array(
@@ -581,10 +591,12 @@ class User extends Admin_controller {
 						$this->alert->set($this->mod, 'success', lang_line('level_add_success'));
 					}
 				}
+
 				else
 				{
 					$this->alert->set($this->mod, 'danger', validation_errors());
 				}
+
 				redirect(uri_string());
 			}
 
@@ -623,6 +635,7 @@ class User extends Admin_controller {
 
 				$action = '<div class="text-centerd"><div class="btn-group">';
 				$level = $this->user_model->get_level($val['level']);
+
 				if ($val['level_id'] != 1) 
 				{
 					$action .= '
@@ -637,7 +650,6 @@ class User extends Admin_controller {
 				
 				$action .= '</div></div>';
 				$row[] = $action;
-
 				$data_output[] = $row;
 			}
 
@@ -667,16 +679,19 @@ class User extends Admin_controller {
 		    )
 		{
 			$data_pk = $this->input->post('data');
+
 			foreach ($data_pk as $key)
 			{
 				$pk = xss_filter($key,'sql');
 				$this->user_model->delete_level($pk);
 			}
+
 			$response['success'] = true;
 			$response['alert']['type'] = 'success';
 			$response['alert']['content'] = lang_line('level_delete_success');
 			$this->json_output($response);
 		}
+
 		else
 		{
 			show_404();
@@ -719,24 +734,29 @@ class User extends Admin_controller {
 						);
 						$this->user_model->insert_role($data_role);
 					}
+
 					else 
 					{
 						$this->alert->set($this->mod, 'warning', 'No data');
 					}
+
 					redirect(uri_string());
 				}
 				
 				elseif ($this->_act == 'update-module-access') 
 				{
 					$id_module = $this->input->post('id');
+
 					$data_role = array(
 						'read_access' => empty($this->input->post('read')) ? "N": "Y",
 						'write_access' => empty($this->input->post('write')) ? "N": "Y",
 						'modify_access' => empty($this->input->post('modify')) ? "N": "Y",
 						'delete_access' => empty($this->input->post('delete')) ? "N": "Y"
 					);
+
 					$this->user_model->update_module($id_module, $data_role);
 					$this->alert->set($this->mod,'success', lang_line('mod_lang_2').' '.lang_line('form_message_update_success'));
+
 					redirect(uri_string());
 				}
 
@@ -744,6 +764,7 @@ class User extends Admin_controller {
 				{
 					$id_module = $this->input->post('id');
 					$this->user_model->delete_module($id_module);
+					
 					redirect(uri_string());
 				}
 

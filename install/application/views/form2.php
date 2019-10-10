@@ -9,7 +9,6 @@
 			<input type="hidden" name="db_name" value="<?php echo DB_NAME;?>"/>
 			<input type="hidden" name="db_user" value="<?php echo DB_USER;?>"/>
 			<input type="hidden" name="db_pass" value="<?php echo DB_PASS;?>"/>
-
 			<div class="text-center"><p><small><b>Website Informations</b></small></p></div>
 
 			<table class="table table-striped">
@@ -55,8 +54,8 @@
 				<tr>
 					<td>Admin Username</td>
 					<td>
-						<input type="text" name="adm_user" class="form-control" style="width:100%;" required/>
-						<small class="text-muted">Username for login to office page, please just write letters and numbers (lowercase).</small><br/>
+						<input type="text" name="adm_user" class="form-control" style="width:100%;" maxlength="15" minlength="5" required/>
+						<small class="text-muted">Username for login to administrator page, please just write letters and numbers (lowercase).</small><br/>
 						<small class="text-muted">Example : admin123</small>
 					</td>
 				</tr>
@@ -71,8 +70,8 @@
 				<tr>
 					<td>Admin Password</td>
 					<td>
-						<input type="text" name="adm_pass" class="form-control" style="width:100%;" required/>
-						<small class="text-muted">Password for login to office page, please enter character more than 6 characters.</small><br/>
+						<input type="text" name="adm_pass" class="form-control" style="width:100%;" maxlength="20" minlength="6" required/>
+						<small class="text-muted">Password for login to administrator page, please enter character more than 6 characters.</small><br/>
 						<small class="text-muted">Example : admin123</small>
 					</td>
 				</tr>

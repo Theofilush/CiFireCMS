@@ -6,7 +6,7 @@
 	$('input:not(textarea)').keydown(function(event){
 		var kc = event.witch || event.keyCode;
 		if(kc == 13){
-		event.preventDefault();
+			event.preventDefault();
 			return false;
 		}
 	});
@@ -40,7 +40,6 @@
 				};
 			}
 		});
-
 	});
 </script>
 </body>

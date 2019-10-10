@@ -67,7 +67,7 @@
 					<div class="col-md-12">
 						<div class="form-group">
 							<label><?php echo lang_line('form_label_title'); ?></label>
-							<input type="text" name="title" class="form-control">
+							<input type="text" name="title" class="form-control" required>
 						</div>
 						<div class="form-group">
 							<label><?php echo lang_line('form_label_picture'); ?></label>

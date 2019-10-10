@@ -1,5 +1,4 @@
-<?php 
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Admin_Controller extends MY_Controller {
 	
@@ -41,12 +40,10 @@ class Admin_Controller extends MY_Controller {
 		{
 			$this->load->view('admin/error_404');
 		}
-
 		elseif ($this->mod_view && file_exists(VIEWPATH."mod/$this->mod/$this->mod_view.php"))
 		{
 			$this->load->view('mod/'.$this->mod.'/'.$this->mod_view);
 		}
-
 		else
 		{
 			$this->load->view('admin/error_404');

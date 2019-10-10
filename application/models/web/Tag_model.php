@@ -1,5 +1,4 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Tag_model extends CI_Model {
 
@@ -33,20 +32,20 @@ class Tag_model extends CI_Model {
 	public function get_post($tag, $batas, $posisi) 
 	{
 		$query = $this->db->select('
-			t_post.id       AS post_id,
-			t_post.title    AS post_title,
-			t_post.seotitle AS post_seotitle,
-			t_post.active   AS post_active,
+			t_post.id            AS  post_id,
+			t_post.title         AS  post_title,
+			t_post.seotitle      AS  post_seotitle,
+			t_post.active        AS  post_active,
 			t_post.content,
 			t_post.picture,
 			t_post.datepost,
 			t_post.timepost,
 			t_post.tag,
 			t_post.hits,
-			t_category.id       AS category_id,
-			t_category.title    AS category_title,
-			t_category.seotitle AS category_seotitle,
-			t_user.name         AS user_name
+			t_category.id        AS  category_id,
+			t_category.title     AS  category_title,
+			t_category.seotitle  AS  category_seotitle,
+			t_user.name          AS  user_name
 		');
 		$query = $this->db->join('t_category', 't_category.id = t_post.id_category', 'LEFT');
 		$query = $this->db->join('t_user', 't_user.id = t_post.id_user', 'LEFT');
@@ -55,7 +54,6 @@ class Tag_model extends CI_Model {
 		$query = $this->db->order_by('t_post.id', 'DESC');
 		$query = $this->db->limit($batas, $posisi);
 		$query = $this->db->get('t_post');
-		
 		$result = $query->result_array();
 
 		return $result;
@@ -72,4 +70,4 @@ class Tag_model extends CI_Model {
 
 		return $result;
 	}
-} // End Class
+} // End class.

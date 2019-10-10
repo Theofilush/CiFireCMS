@@ -1,5 +1,4 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Theme_model extends CI_Model {
 	
@@ -10,21 +9,13 @@ class Theme_model extends CI_Model {
 		parent::__construct();
 	}
 
-	/**
-	 * @param 	array 	$data
-	 * @return 	void
-	*/
+
 	public function insert(array $data)
 	{
 		$this->db->insert($this->table, $data);
 	}
 
 
-	/**
-	 * @param 	int|string 	$id
-	 * @param 	array 		$data
-	 * @return 	bool
-	*/
 	public function update($id = 0, array $data)
 	{
 		if ( $this->cek_id($id) == 1 )
@@ -32,16 +23,13 @@ class Theme_model extends CI_Model {
 			$this->db->where('id', $id)->update($this->table, $data);
 			return TRUE;
 		}
-		else
+		else 
+		{
 			return FALSE;
+		}
 	}
 
 
-	/**
-	 * delete()
-	 * @param 	int|string 	$id
-	 * @return 	bool
-	*/
 	public function delete($id = 0)
 	{
 		if ( $this->cek_id($id) == 1 ) 
@@ -50,15 +38,12 @@ class Theme_model extends CI_Model {
 			return TRUE;
 		}
 		else
+		{
 			return FALSE;
+		}
 	}
 
 
-	/**
-	 * active_theme()
-	 * @param 	int|string 	$id
-	 * @return 	bool
-	*/
 	public function active_theme($id = 0)
 	{
 		if ( $this->cek_id($id) == 1 ) 
@@ -71,17 +56,18 @@ class Theme_model extends CI_Model {
 				$this->update($id, array('active'=>'Y'));
 				return TRUE;
 			}
-			else 
+			else
+			{
 				return FALSE;
+			}
 		}
-		else 
+		else
+		{
 			return FALSE;
+		}
 	}
 
 
-	/**
-	 * @return 	array
-	*/
 	public function all_themes() 
 	{
 		$query = $this->db->order_by('id', 'DESC');
@@ -90,10 +76,7 @@ class Theme_model extends CI_Model {
 		return $result;
 	}
 
-	/**
-	 * @param 	int|string 	$id
-	 * @return 	array|NULL
-	*/
+
 	public function get_theme($id = 0) 
 	{
 		if ( $this->cek_id($id) == 1 )
@@ -108,10 +91,6 @@ class Theme_model extends CI_Model {
 	}
 
 
-	/**
-	 * @param 	int|string 	$id
-	 * @return 	int
-	*/
 	public function cek_id($id = 0)
 	{
 		if ( empty($id) || $id==0 )
@@ -143,9 +122,6 @@ class Theme_model extends CI_Model {
 	}
 
 
-	/**
-	 * @return bool
-	*/
 	public function cek_seotitle($seotitle = '')
 	{
 		if ( !empty($seotitle) )
@@ -161,12 +137,12 @@ class Theme_model extends CI_Model {
 				return FALSE;
 		}
 		else
+		{
 			return FALSE;
+		}
 	}
 
-	/**
-	 * @return bool
-	*/
+
 	public function cek_seotitle2($id = 0, $seotitle = '')
 	{
 		if ( $id != 0 && !empty($id) && !empty($seotitle) )
@@ -182,11 +158,15 @@ class Theme_model extends CI_Model {
 			   ) 
 			{
 				return TRUE;
-			}
+			} 
 			else
+			{
 				return FALSE;
+			}
 		}
 		else
+		{
 			return FALSE;
+		}
 	}
 } // End class.

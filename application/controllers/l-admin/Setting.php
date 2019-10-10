@@ -16,13 +16,11 @@ class Setting extends Admin_controller {
 	}
 
 
-
 	public function general()
 	{
 		$this->vars['res'] = $this->db->where('groups','general')->get('t_setting')->result_array();
 		$this->render_view('general');
 	}
-
 
 
 	public function index()
@@ -101,7 +99,6 @@ class Setting extends Admin_controller {
 				$this->setting_model->update('address', array('value' => $value));
 			}
 
-
 			elseif ( $act == 'visitors' )
 			{
 				$value = trim($this->input->post('value'));
@@ -113,7 +110,6 @@ class Setting extends Admin_controller {
 				$value = trim($this->input->post('value'));
 				$this->setting_model->update('maintenance', array('value' => $value));
 			}
-
 
 			elseif ( $act == 'member_registration' )
 			{
@@ -149,6 +145,12 @@ class Setting extends Admin_controller {
 			{
 				$value = xss_filter(trim($this->input->post('value')),'sql');
 				$this->setting_model->update('page_item', array('value' => $value));
+			}
+
+			elseif ( $act == 'captcha' )
+			{
+				$value = trim($this->input->post('value'));
+				$this->setting_model->update('captcha', array('value' => $value));
 			}
 
 			elseif ( $act == 'recaptcha_site_key' )
@@ -193,6 +195,7 @@ class Setting extends Admin_controller {
 				$this->setting_model->update('port', array('value' => $value));
 			}
 		}
+
 		else
 		{
 			if ( $act == 'language' )
@@ -304,6 +307,51 @@ class Setting extends Admin_controller {
 				redirect(admin_url($this->mod), 'refresh');
 			}
 
+			if ( $act == 'web_image' )
+			{
+				$tmp_file   = $_FILES['fupload']['tmp_name'];
+				$file_extension = pathinfo($_FILES['fupload']['name'], PATHINFO_EXTENSION);
+				$file_name = "web.png";
+				$file_path = CONTENTPATH."favicon/";
+
+				$this->load->library('upload', array(
+					'upload_path'   => $file_path,
+					'allowed_types' => 'jpg|png|jpeg',
+					'file_name'     => $file_name,
+					'max_size'      => 1024 * 5, // 5Mb
+					'overwrite'     => TRUE
+				));
+
+				if ( $this->upload->do_upload('fupload') ) 
+				{
+					if ($file_name != $this->settings->website('web_image')) 
+					{
+						@unlink(CONTENTPATH . "favicon/" . $this->settings->website('web_image'));
+					}
+					
+					$this->setting_model->update('web_image',array('value' => $file_name));
+
+					$this->load->library('image_lib', array(
+						'image_library'  => 'gd2',
+						'source_image'   => $file_path.$file_name,
+						'maintain_ratio' => TRUE,
+						// 'width'          => 16,
+						// 'height'         => 16,
+					));
+					
+					$this->image_lib->resize();
+
+					$this->alert->set($this->mod, 'success', lang_line('table_web_image')."&nbsp;".lang_line('update_success'));
+				}
+				else
+				{
+					$error_content = $this->upload->display_errors();
+					$this->alert->set($this->mod, 'danger', $error_content);
+				}
+
+				redirect(admin_url($this->mod), 'refresh');
+			}
+
 			if ($act == 'sitemap')
 			{
 				$this->load->library('sitemap');
@@ -388,6 +436,7 @@ class Setting extends Admin_controller {
 			$this->json_output($lang);
 		}
 	}
+
 
 	public function get_slug_url()
 	{

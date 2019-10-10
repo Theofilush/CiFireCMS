@@ -6,7 +6,6 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	<title><?=$this->CI->meta_title;?></title>
 	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no" name="viewport"/>
-
 	<link href="<?=content_url('plugins/member/css/bootstrap.min.css')?>" rel="stylesheet"/>
 	<link href="<?=content_url('plugins/font-awesome/font-awesome.min.css')?>" rel="stylesheet"/>
 	<link href="<?=content_url('plugins/member/css/pe-icon-7-stroke.css')?>" rel="stylesheet"/>
@@ -39,7 +38,7 @@
 					<a href="#" class="simple-text logo-mini">
 						<img src="<?=content_url('images/logo.png')?>" style="height:27px;">
 					</a>
-					<a href="#" class="simple-text logo-normal">CifireCMS</a>
+					<a href="#" class="simple-text logo-normal">MEMBER</a>
 				</div>
 				<!-- Sidebar menu -->
 				<ul class="nav">
@@ -80,7 +79,6 @@
 						<a href="#" class="navbar-brand ci-icon mr-3"> 
 							<img src="<?=content_url('images/logo.png')?>" style="height:27px;">
 						</a>
-
 						<a href="<?=member_url('post/add-new')?>" class="navbar-brand nav-tools"> <i class="pe-7s-pen"></i><span><?=lang_line('menu_write_post')?></span></a>
 						<a href="<?=site_url()?>" target="_blank" class="navbar-brand nav-tools"> <i class="pe-7s-global"></i><span><?=lang_line('menu_view_site')?></span></a>
 					</div>

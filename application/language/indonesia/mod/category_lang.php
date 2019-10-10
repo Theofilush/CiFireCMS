@@ -1,5 +1,4 @@
-<?php 
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 $lang['mod_title'] = 'Kategori';
 $lang['mod_title_all'] = 'Semua Kategori';

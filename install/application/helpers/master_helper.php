@@ -1,12 +1,20 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-function delete_folder($path) {
-	if (!file_exists($path))
-		return false;
+function build_version($ver = '1.1.0')
+{
+	return $ver;
+}
 
-	if (is_file($path) || is_link($path))
+
+function delete_folder($path) {
+	if (!file_exists($path)) {
+		return false;
+	}
+
+	if (is_file($path) || is_link($path)) {
 		return unlink($path);
+	}
 
 	$stack = array($path);
 
@@ -16,23 +24,30 @@ function delete_folder($path) {
 			continue;
 		}
 
-		if (@rmdir($entry)) continue;
+		if (@rmdir($entry)) {
+			continue;
+		}
 
 		$stack[] = $entry;
 		$dh = opendir($entry);
 
 		while(false !== $child = readdir($dh)) {
-			if ($child === '.' || $child === '..') continue;
+			if ($child === '.' || $child === '..') {
+				continue;
+			}
 
 			$child = $entry . DIRECTORY_SEPARATOR . $child;
 			
-			if (is_dir($child) && !is_link($child))
+			if (is_dir($child) && !is_link($child)){
 				$stack[] = $child;
-			else
+			} else {
 				unlink($child);
+			}
 		}
+
 		closedir($dh);
 	}
+
 	return true;
 }
 
@@ -44,9 +59,7 @@ function cdb($conf) {
 	$db_pass  = $conf['db_pass'];
 
 $content = <<<EOS
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
-
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 /*
   | -------------------------------------------------------------------
   | DATABASE CONNECTIVITY SETTINGS
@@ -164,9 +177,7 @@ function cfile($data) {
 	$db_user  = $data['db_user'];
 	$db_pass  = $data['db_pass'];
 $content = <<<EOS
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
-
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 /*
 |--------------------------------------------------------------------------
 | Base Site URL
@@ -391,7 +402,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | your log files will fill up very fast.
 |
 */
-\$config['log_threshold'] = 0;
+\$config['log_threshold'] = 1;
 
 /*
 |--------------------------------------------------------------------------
@@ -695,45 +706,9 @@ return $content;
 
 
 function cindex() {
+	$build_version = build_version();
 $content = <<< EOS
 <?php
-/**
- * CodeIgniter
- *
- * An open source application development framework for PHP
- *
- * This content is released under the MIT License (MIT)
- *
- * Copyright (c) 2014 - 2019, British Columbia Institute of Technology
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * @package	CodeIgniter
- * @author	EllisLab Dev Team
- * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2019, British Columbia Institute of Technology (https://bcit.ca/)
- * @license	https://opensource.org/licenses/MIT	MIT License
- * @link	https://codeigniter.com
- * @since	Version 1.0.0
- * @filesource
-*/
-
 /**
  * MIT License
  * 
@@ -761,7 +736,7 @@ $content = <<< EOS
  * @author	Alweak
  * @license	https://opensource.org/licenses/MIT	MIT License
  * @link	https://www.alweak.com
- * @since	Version 1.0.0 Beta.1
+ * @since	Version {$build_version}
 */
 
 
@@ -798,7 +773,6 @@ switch (ENVIRONMENT)
 		error_reporting(-1);
 		error_reporting(E_ALL ^ E_DEPRECATED);
 		ini_set('display_errors', 1);
-
 	break;
 
 	case 'testing':

@@ -1,5 +1,4 @@
-<?php 
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 // title, link
 $lang['admin_link_home'] = 'Home Dashboard';

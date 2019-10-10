@@ -1,5 +1,4 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 $lang['mod_title'] = 'Setting';
 $lang['mod_lang_date'] = 'Date';
@@ -18,6 +17,7 @@ $lang['table_Web_slogan'] = 'Website Slogan';
 $lang['table_web_desc'] = 'Meta Description';
 $lang['table_web_keyword'] = 'Meta Keyword';
 $lang['table_web_logo'] = 'Webiste Logo';
+$lang['table_web_image'] = 'Webiste Image';
 $lang['table_favicon'] = 'Favicon';
 $lang['table_email'] = 'Email';
 $lang['table_tlpn'] = 'Telephone';

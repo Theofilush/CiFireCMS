@@ -1,7 +1,8 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Index_model extends CI_Model {
+
+	public $vars;
 
 	public function __construct()
 	{
@@ -12,22 +13,21 @@ class Index_model extends CI_Model {
 	{
 		$query = $this->db
 			->select('
-					 t_post.id       as post_id,
-					 t_post.title    as post_title,
-					 t_post.seotitle as post_seotitle,
-					 t_post.active   as post_active,
+					 t_post.id            AS  post_id,
+					 t_post.title         AS  post_title,
+					 t_post.seotitle      AS  post_seotitle,
+					 t_post.active        AS  post_active,
 					 t_post.content,
 					 t_post.picture,
 			         t_post.datepost,
 			         t_post.timepost,
 			         t_post.tag,
 			         t_post.hits,
-
-					 t_category.id       as category_id,
-					 t_category.title    as category_title,
-					 t_category.seotitle as category_seotitle,
-					 t_user.id as user_id,
-					 t_user.name as user_name,
+					 t_category.id        AS  category_id,
+					 t_category.title     AS  category_title,
+					 t_category.seotitle  AS  category_seotitle,
+					 t_user.id            AS  user_id,
+					 t_user.name          AS  user_name,
 					')
 			->join('t_category', 't_category.id = t_post.id_category', 'left')
 			->join('t_user', 't_user.id = t_post.id_user', 'left')
@@ -39,12 +39,12 @@ class Index_model extends CI_Model {
 		return $query->result_array();
 	}
 
+
 	public function total_post()
 	{
 		$query = $this->db->select('id');
 		$query = $this->db->where('active', 'Y');
 		$query = $this->db->get('t_post');
-
 		return $query->num_rows();
 	}
 
@@ -53,16 +53,15 @@ class Index_model extends CI_Model {
 	{
 		$query = $this->db
 			->select('
-			         t_post.title AS post_title,
-			         t_post.seotitle AS post_seotitle,
+			         t_post.title         AS  post_title,
+			         t_post.seotitle      AS  post_seotitle,
 			         t_post.picture,
 			         t_post.datepost,
 			         t_post.timepost,
 			         t_post.content,
-
-			         t_category.id AS category_id,
-			         t_category.title AS category_title,
-			         t_category.seotitle AS category_seotitle
+			         t_category.id        AS  category_id,
+			         t_category.title     AS  category_title,
+			         t_category.seotitle  AS  category_seotitle
 			         ')
 			->from('t_post')
 			->join('t_category', 't_category.id=t_post.id_category', 'LEFT')
@@ -72,9 +71,13 @@ class Index_model extends CI_Model {
 			->order_by('t_post.id','DESC');
 
 		if ( count($limit) == 1 )
+		{
 			$query = $this->db->limit($limit[0]);
-		else
+		}
+		else 
+		{
 			$query = $this->db->limit($limit[0], $limit[1]);
+		}
 
 		$query = $this->db->get();
 		$result = $query->result_array();
@@ -90,9 +93,14 @@ class Index_model extends CI_Model {
 		$query = $this->db->get('t_category');
 
 		if ( $param == 'result' )
+		{
 			$result = $query->result_array();
+		}
+		
 		if ( $param == 'row' )
+		{
 			$result = $query->row_array();
+		}
 
 		return $result;
 	}

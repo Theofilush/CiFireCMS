@@ -1,24 +1,34 @@
-<?php 
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * Class Menu
  * Original script from PopojiCMS
  * Edited by Adiman
 */
 
-defined('BASEPATH') OR exit('No direct script access allowed');
-
 class Menu {
 
 	var $vardata;
-
+	private $langMenu;
 
 	public function __construct()
 	{		
 		$this->CI =& get_instance();
 		$this->_url = site_url();
 		$this->admin_url = admin_url();
-	}
 
+		if ( isset($_SESSION['lang_active']) )
+		{
+			$lang_file = $_SESSION['lang_active'];
+			require (APPPATH.'language/'.$lang_file.'/main_lang.php');
+		}
+		else
+		{
+			$lang_file = $this->CI->settings->website('language');
+			require (APPPATH.'language/'.$lang_file.'/main_lang.php');
+		}
+		
+		$this->langMenu = $lang;
+	}
 
 
 	public function front_menu($group_id, $ul_attr = '', $li_attrs = '', $a_attr ='', $li_ul_attr = '', $ul_li_a_ul_li = '')
@@ -42,7 +52,7 @@ class Menu {
 			{
 				$pecah = explode('||', $row['class']);
 
-				if (count($pecah) < 2) 
+				if (count($pecah) < 2)
 					continue;
 
 				$a_class = 'class="'.trim($pecah[0]).'"';
@@ -111,6 +121,7 @@ class Menu {
 		return $this->ul(0, $attr, $attrs, $attrss);
 	}
 
+
 	public function ul($parent = 0, $attr = '', $attrs = '', $attrss = '')
 	{
 		static $i = 1;
@@ -120,19 +131,13 @@ class Menu {
 		if (isset($this->vardata[$parent])) 
 		{
 			if ($attr)
-			{
 				$attr = $attr;
-			}
 
 			if ($attrs)
-			{
 				$attrs = $attrs;
-			}
 
 			if ($attrss)
-			{
 				$attrss = $attrss;
-			}
 
 			$html = "\n$indent";
 			$html .= "<ul ".$attr.">";
@@ -145,14 +150,9 @@ class Menu {
 				$html .= "\n\t$indent";
 
 				if ($child) 
-				{
 					$html .= '<li '.$attrs.'>';
-				}
 				else 
-				{
 					$html .= '<li>';
-				}
-
 
 				$html .= $row['label'];
 
@@ -177,8 +177,6 @@ class Menu {
 	}
 
 
-
-
 	public function dashboard_menu($group_id, $ul_attr = '', $li_attrs = '', $a_attr ='', $li_ul_attr = '', $ul_li_a_ul_li = '')
 	{
 		global $_;
@@ -193,20 +191,20 @@ class Menu {
 
 		foreach ($get_menu as $row) 
 		{
-			$lang_title = lang_line('menu_'.seotitle($row['title']));
-			$title = $lang_title ? $lang_title : $row['title'];
+			$mLine = 'menu_'.seotitle($row['title']);
+			$title = isset($this->langMenu[$mLine]) ? lang_line($mLine) : $row['title'];
 			$a_url ='javascript:void(0)';
-			$st = seotitle($row['title']);
-			if ($st == 'file-manager') {
-				$a_url = site_url('content/vendor/filemanager/dialog.php?type=0');
-			}
+
+			// $st = seotitle($row['title']);
+			// if ($st == 'file-manager') {
+			// 	$a_url = site_url('content/vendor/filemanager/dialog.php?type=0');
+			// }
 			
 			if (!empty($row['url'])) 
 			{
 				$a_url = admin_url($row['url']);
 			}
 
-			
 			$classes = explode("||", $row['class']);
 
 			if (count($classes) >= 2) 
@@ -249,10 +247,12 @@ class Menu {
 		return $this->generate_list_dasboard($ul_attr, $li_attrs, $li_ul_attr, $ul_li_a_ul_li);
 	}
 
+
 	public function generate_list_dasboard($attr = '', $attrs = '', $attrss = '')
 	{
 		return $this->ul_dasboard(0, $attr, $attrs, $attrss);
 	}
+
 
 	public function ul_dasboard($parent = 0, $attr = '', $attrs = '', $attrss = '')
 	{
@@ -263,20 +263,14 @@ class Menu {
 		if (isset($this->vardata[$parent])) 
 		{
 			if ($attr)
-			{
 				$attr = $attr;
-			}
 
 			if ($attrs)
-			{
 				$attrs = $attrs;
-			}
 
 			if ($attrss)
-			{
 				$attrss = $attrss;
-			}
-			// var_dump($this->vardata[$parent]);
+
 			$html = "\n$indent";
 			$html .= '<ul '.$attr.' data-submenu-title="'.humanize($this->vardata[$parent][0]['ultitle']).'">';
 
@@ -284,18 +278,13 @@ class Menu {
 
 			foreach ($this->vardata[$parent] as $row) 
 			{
-				// var_dump($row);
 				$child = $this->ul_dasboard($row['id'], 'class="nav nav-group-sub li-'.$row['liblock'].'" ');
 				$html .= "\n\t$indent";
 
 				if ($child) 
-				{
 					$html .= '<li class="nav-item nav-item-submenu " >';
-				}
 				else 
-				{
 					$html .= '<li '. $row['li_attr'] .' >';
-				}
 
 				$html .= $row['label'];
 
@@ -310,7 +299,6 @@ class Menu {
 			}
 
 			$html .= "\n$indent</ul>";
-
 			return $html;
 		} 
 		else 
@@ -319,12 +307,12 @@ class Menu {
 		}
 	}
 
+
 	public function add_row_dasboard($id = '', $parent = '', $li_attr = '', $label = '', $liblock = '',$ultitle = '')
 	{
-		$this->vardata[$parent][] = array('id' => $id, 'li_attr' => $li_attr, 'label' => $label, 'liblock'=>$liblock, 'ultitle'=>$ultitle);
+		$this->vardata[$parent][] = array('id' => $id, 'li_attr' => $li_attr, 'label' => $label, 'liblock'=>$liblock, 'ultitle' => $ultitle);
 		return $this;
 	}
-
 
 
 	public function clear()

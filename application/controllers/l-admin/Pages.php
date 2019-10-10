@@ -241,7 +241,6 @@ class Pages extends Admin_controller {
 			$this->form_validation->set_message('_cek_add_seotitle', lang_line('form_message_already_exists'));
 			return FALSE;
 		}
-
 		else
 			return TRUE;
 	}

@@ -140,7 +140,7 @@ class Post extends Admin_controller {
 	{
 		if ( $this->write_access ) 
 		{
-			if ( $this->input->is_ajax_request() ) 
+			if ( $this->input->is_ajax_request() ) // submit add new post.
 			{
 				$this->form_validation->set_rules(array(
 					array(
@@ -175,10 +175,9 @@ class Post extends Admin_controller {
 					
 					$date_post = (empty($this->input->post('datepost')) ? date('Y-m-d') : date('Y-m-d', strtotime($this->input->post('datepost'))));
 					$headline = ($this->input->post('headline') == '1' ? 'Y' : 'N');
-					$active = ($this->input->post('active') == '1' ? 'Y' : 'N');
-					$comment = ($this->input->post('comment') == '1' ? 'Y' : 'N');
-
-					$title = xss_filter($this->input->post('title'));
+					$active   = ($this->input->post('active') == '1' ? 'Y' : 'N');
+					$comment  = ($this->input->post('comment') == '1' ? 'Y' : 'N');
+					$title    = xss_filter($this->input->post('title'));
 					$seotitle = seotitle($title);
 
 					$data_post = array(
@@ -210,12 +209,12 @@ class Post extends Admin_controller {
 
 				$this->json_output($response);
 			}
+
 			else
 			{
 				$this->vars['all_category'] = $this->post_model->get_all_category();
 				$this->vars['all_tag'] = $this->post_model->get_all_tag();
 				$this->vars['all_user'] = $this->post_model->get_all_user();
-
 				$this->render_view('view_add_new', $this->vars);
 			}
 		}
@@ -234,8 +233,7 @@ class Post extends Admin_controller {
 
 			if ( !empty($id_post) || $this->post_model->cek_id($id_post) == 1 ) 
 			{
-				// submit update.
-				if ( $this->input->is_ajax_request() ) 
+				if ( $this->input->is_ajax_request() )  // submit update.
 				{
 					$this->form_validation->set_rules(array(
 						array(
@@ -274,11 +272,9 @@ class Post extends Admin_controller {
 						
 						$input_category = decrypt($this->input->post('category'));
 						$id_category = (!empty($input_category) ? $input_category : '1');
-
 						$headline = ($this->input->post('headline') == '1' ? 'Y' : 'N');
 						$comment = ($this->input->post('comment') == '1' ? 'Y' : 'N');
 						$active = ($this->input->post('active') == '1' ? 'Y' : 'N');
-
 						$title = xss_filter($this->input->post('title'));
 						$seotitle = seotitle($title);
 
@@ -303,16 +299,16 @@ class Post extends Admin_controller {
 						else
 						{
 							$data = array(
-								'title'        => $title,
-								'seotitle'     => $seotitle,
+								'title'         => $title,
+								'seotitle'      => $seotitle,
 								'content'       => xss_filter($this->input->post('content')),
 								'id_category'   => $id_category,
 								'tag'           => $tags,
 								'picture'       => xss_filter($this->input->post('picture')),
 								'image_caption' => xss_filter($this->input->post('image_caption')),
-								'headline'     => $headline,
-								'comment'     => $comment,
-								'active'       => $active,
+								'headline'      => $headline,
+								'comment'       => $comment,
+								'active'        => $active,
 							);	
 						}
 
@@ -337,8 +333,6 @@ class Post extends Admin_controller {
 					$this->vars['result_post']  = $this->post_model->get_post($id_post);
 					$this->vars['all_category'] = $this->post_model->get_all_category();
 					$this->vars['all_user']     = $this->post_model->get_all_user();
-					
-					// Load view
 					$this->render_view('view_edit', $this->vars);
 				}
 			}
@@ -423,10 +417,12 @@ class Post extends Admin_controller {
 	public function _cek_add_seotitle($seotitle = '') 
 	{
 		$cek = $this->post_model->cek_seotitle(seotitle($seotitle));
+
 		if ( $cek === FALSE ) 
 		{
 			$this->form_validation->set_message('_cek_add_seotitle', lang_line('form_message_already_exists'));
 		}
+		
 		return $cek;
 	}
 

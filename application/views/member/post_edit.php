@@ -20,13 +20,7 @@
 				<br>
 				<div class="form-group">
 					<label for="Content"><?=lang_line('post_label_content');?></label>
-					<div class="pull-right">
-						<div class="btn-group">
-							<button type="button" class="tiny-text btn btn-sm btn-default">Text</button>
-							<button type="button" class="tiny-visual btn btn-sm btn-default">Visual</button>
-						</div>
-					</div>
-					<textarea name="content" id="Content" class="form-control post-content" cols="30" rows="10"><?=$result_post['post_content'];?></textarea>
+					<input name="content" id="Content" class="form-control post-content" value="<?=$result_post['post_content'];?>">
 				</div>
 			</div>
 			<!--/ Left -->

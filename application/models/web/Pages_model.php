@@ -1,7 +1,8 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Pages_model extends CI_Model {
+
+	public $vars;
 
 	public function __construct()
 	{
@@ -15,7 +16,7 @@ class Pages_model extends CI_Model {
 
 		$query = $this->db
 			->select('id')
-			->where("BINARY seotitle='$seotitle'", NULL, FALSE)
+			->where("BINARY seotitle = '$seotitle'", NULL, FALSE)
 			->where('active','Y')
 			->get('t_pages')
 			->num_rows();
@@ -31,7 +32,7 @@ class Pages_model extends CI_Model {
 	{
 		$query = $this->db
 			->select('title,content,picture')
-			->where("BINARY seotitle='$seotitle'", NULL, FALSE)
+			->where("BINARY seotitle = '$seotitle'", NULL, FALSE)
 			->where('active', 'Y')
 			->get('t_pages')
 			->row_array();

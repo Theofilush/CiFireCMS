@@ -1,9 +1,6 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Tag extends Web_controller {
-	
-	public $vars;
 
 	public function __construct()
 	{
@@ -48,4 +45,4 @@ class Tag extends Web_controller {
 			$this->render_404();
 		}
 	}
-} // end class
+} // End class.

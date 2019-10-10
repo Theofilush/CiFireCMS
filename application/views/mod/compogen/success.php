@@ -3,7 +3,7 @@
 	<div class="compogen-heading text-center">
 		<i class="icon-cup2"></i>
 		<h2>CompoGen</h2>
-		<p>Component Generator (Beta)</p>
+		<p>Component Generator</p>
 	</div>
 	<div class="text-center">
 		<h4><?php echo lang_line('mod_success1')?></h4>

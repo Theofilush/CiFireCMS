@@ -272,16 +272,20 @@ class Component extends Admin_controller {
 				if ( $this->component_model->delete($id_component, $component['table_name']) )
 				{
 					// delete views views_dir
-					if ( is_dir($views_dir) ) delete_folder($views_dir);
+					if ( is_dir($views_dir) )
+						delete_folder($views_dir);
 
 					// delete views controllers_file
-					if ( file_exists($controllers_file) ) @unlink($controllers_file);
+					if ( file_exists($controllers_file) )
+						@unlink($controllers_file);
 
 					// delete views models_file
-					if ( file_exists($models_file) ) @unlink($models_file);
+					if ( file_exists($models_file) )
+						@unlink($models_file);
 
 					// delete views modjs
-					if ( file_exists($modjs) ) @unlink($modjs);
+					if ( file_exists($modjs) )
+						@unlink($modjs);
 
 					$response['success']          = true;
 					$response['alert']['type']    = 'success';
@@ -392,7 +396,6 @@ class Component extends Admin_controller {
 			if ( file_exists($path_app_views) )
 				copy_folder($path_app_views, $path_temp_views);
 
-
 			// Copy modjs.
 			$file_modjs       = strtolower($c_class).'.js';
 			$path_app_modjs   = $this->_path['modjs'].$file_modjs;
@@ -400,7 +403,6 @@ class Component extends Admin_controller {
 
 			if ( file_exists($path_app_modjs) )
 				r_copy($path_app_modjs, $path_temp_modjs);
-
 
 			// backup table database.
 			$sql_name      = $c_table.'.sql';

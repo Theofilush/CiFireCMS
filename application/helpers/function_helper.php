@@ -225,6 +225,8 @@ function favicon($param = '')
 	
 	if ($param === 'logo') 
 		$favicon = content_url('favicon/logo.png');
+	if ($param === 'web_image') 
+		$favicon = content_url('favicon/web.png');
 	
 	return $favicon;
 }
@@ -240,7 +242,7 @@ function favicon($param = '')
  * 
  * @param   string  $filename
  * @param   string  $mode
- * @param   bool     $noimage
+ * @param   bool    $noimage
  * @return  string
 */
 function post_images($filename = '', $mode = NULL, $noimage = FALSE)
@@ -341,7 +343,8 @@ function user_photo($photo = '')
 	else
 		$user_photo = content_url('images/avatar.jpg');
 
-	return $user_photo."?".strtotime(date('YmdHis'));
+	$photo = $user_photo."?".strtotime(date('YmdHis'));
+	return $photo;
 }
 
 
@@ -368,7 +371,7 @@ function base64_image($img_url='')
  * 
  * @param   string      $data
  * @param   string|int  $long
- * @param   bool         $option
+ * @param   bool        $option
  * @return  string
 */
 function cut($data = '', $long = '', $option = FALSE)
@@ -410,8 +413,10 @@ function text_highlight($words = '', $text = '', $style = '')
 	
 	preg_match_all('~[A-Za-z0-9_äöüÄÖÜ]+~', $words, $m);
 	
-	if ( !$m ) 
+	if ( !$m )
+	{
 		$highlight = $text;
+	}
 
 	$re = '~(' . implode('|', $m[0]) . ')~i';
 	$highlight = preg_replace($re, '<font style="'. $font_style .'">$0</font>', $text);
@@ -456,7 +461,9 @@ function arrays_to_string(array $ar, $sep = ',')
 function json_to_array($data)
 {
 	if (is_object($data))
+	{
 		$data = get_object_vars($data);
+	}
 
 	$jdata = is_array($data) ? array_map(__FUNCTION__, $data) : $data;
 	return json_decode($jdata);
@@ -478,7 +485,7 @@ function seotitle($str = '', $sp = '-')
 {
 	$seotitle = '';
 
-	if (!empty($str))
+	if ( !empty($str) )
 	{	
 		$q_separator = preg_quote($sp, '#');
 
@@ -498,7 +505,6 @@ function seotitle($str = '', $sp = '-')
 		}
 		
 		$str = strtolower($str);
-		
 		$seotitle = trim(trim($str, $sp));
 	}
 
@@ -536,7 +542,6 @@ function xss_filter($str, $type = '')
 
 		case 'xss':
 			$x = array ('\\','#',';','\'','"','[',']','{','}',')','(','|','`','~','!','%','$','^','*','=','?','+');
-
 			$str = str_replace($x, '', $str);
 			$str = stripcslashes($str);	
 			$str = htmlspecialchars($str);
@@ -589,15 +594,6 @@ function clean_tag($str = '')
 }
 
 
-
-
-
-
-
-
-
-
-
 /**
  * - Fungsi untuk memisahkan kata dalam kalimat.
  * 
@@ -639,14 +635,6 @@ function pecah_kata($delimiter = NULL, $kata, $link = FALSE, $href = '#', $separ
 }
 
 
-
-
-
-
-
-
-
-
 /**
  * - Fungsi untuk menyalin (copy) folder beserta isinya.
  * 
@@ -676,7 +664,6 @@ function r_copy($src, $dst)
 		copy($src, $dst);
 	}
 }
-
 
 
 /**
@@ -751,15 +738,19 @@ function copy_folder($source, $destination, $permissions = 0755, $delete_source 
 */
 function delete_folder($path = '')
 {
-	if (!file_exists($path))
-		return false;
+	if ( !file_exists($path) )
+	{
+		return FALSE;
+	}
 
-	if (is_file($path) || is_link($path))
+	if ( is_file($path) || is_link($path) )
+	{
 		return unlink($path);
+	}
 
 	$stack = array($path);
 
-	while ($entry = array_pop($stack)) 
+	while ( $entry = array_pop($stack) )
 	{
 		if (is_link($entry)) 
 		{
@@ -768,22 +759,30 @@ function delete_folder($path = '')
 		}
 
 		if (@rmdir($entry))
+		{
 			continue;
+		}
 
 		$stack[] = $entry;
 		$dh = opendir($entry);
 
-		while(false !== $child = readdir($dh)) 
+		while( FALSE !== $child = readdir($dh) )
 		{
-			if ($child === '.' || $child === '..')
+			if ( $child === '.' || $child === '..' )
+			{
 				continue;
+			}
 
 			$child = $entry . DIRECTORY_SEPARATOR . $child;
 			
 			if (is_dir($child) && !is_link($child))
+			{
 				$stack[] = $child;
+			}
 			else
+			{
 				unlink($child);
+			}
 
 		}
 
@@ -806,6 +805,7 @@ function url_decode($param = 'nourl')
 {
 	return urldecode(rawurldecode($param));
 }
+
 
 /**
  * - Fungsi untuk encode url.
@@ -835,6 +835,7 @@ function encrypt($str = '')
 	$CI->load->library('encryption');
 	return $CI->encryption->encrypt($str);
 }
+
 
 /**
  * - Fungsi untuk decrypt string.
@@ -886,15 +887,20 @@ function login_status($mode = '')
 		$find   = $CI->db->where('id',$key_id)->get('t_user')->num_rows();
 
 		if ( $find == 0 )
+		{
 			return FALSE;
+		}
 		else
+		{
 			return TRUE;
+		}
 	}
 	else
 	{
 		return FALSE;
 	}
 }
+
 
 function login_key($mode = 'null') 
 {
@@ -951,7 +957,6 @@ function user_level($param = 'id')
 	$CI->load->database();
 	
 	$id_session = $_SESSION['log_admin']['level'];
-
 	$query  = $CI->db->where('id', $id_session);
 	$query  = $CI->db->get('t_user_level');
 	$query  = $query->row_array();
@@ -981,7 +986,6 @@ function data_login($mode, $field)
 }
 
 
-
 /**
  * @param 	string 	$level
  * @return 	string	
@@ -1003,22 +1007,36 @@ function dashboard_menu_active($level = null)
 	return $menu;
 }
 
+
 /**
- * @return 	void|string	
+ * @return 	bool
 */
 function googleCaptcha() 
 {
-	$CI =& get_instance();
-	$key = $CI->settings->website('recaptcha_secret_key');
-	$get = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$key.'&response='.$_POST['g-recaptcha-response'].'&remoteip='.$_SERVER['REMOTE_ADDR']);
-	if ($get)
-		return json_decode($get);
+	$sock =  @fsockopen('www.google.com', 80);
+	if ( $sock )
+	{
+		$CI =& get_instance();
+		$key = $CI->settings->website('recaptcha_secret_key');
+		$get = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$key.'&response='.$_POST['g-recaptcha-response'].'&remoteip='.$_SERVER['REMOTE_ADDR']);
+		if ($get) {
+			return json_decode($get);
+		}
+		else {
+			return FALSE;
+		}
+	}
 	else
+	{
 		return FALSE;
+	}
 }
 
 
-
+/**
+ * Fungsi untuk menampilkan konten halaman 400	
+ * @return 	void
+*/
 function show_400($page = '', $log_error = TRUE)
 {
 	if (is_cli())
@@ -1037,7 +1055,7 @@ function show_400($page = '', $log_error = TRUE)
 	{
 		$CI =& get_instance();
 		$page = base_url().$CI->uri->uri_string();
-		log_message('error', $heading.': '.$page);
+		// log_message('error', $heading.': '.$page);
 	}
 
 	$_error =& load_class('Exceptions', 'core');
@@ -1045,7 +1063,10 @@ function show_400($page = '', $log_error = TRUE)
 	exit(4); // EXIT_UNKNOWN_FILE
 }
 
-
+/**
+ * Fungsi untuk menampilkan konten halaman 403	
+ * @return 	void
+*/
 function show_403($page = '', $log_error = TRUE)
 {
 	if ( is_cli() )
@@ -1064,7 +1085,7 @@ function show_403($page = '', $log_error = TRUE)
 	{
 		$CI =& get_instance();
 		$page = base_url().$CI->uri->uri_string();
-		log_message('error', $heading.': '.$page);
+		// log_message('error', $heading.': '.$page);
 	}
 
 	$_error =& load_class('Exceptions', 'core');

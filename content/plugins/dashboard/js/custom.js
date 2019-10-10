@@ -145,6 +145,7 @@ var _jsDsCustoms = function () {
 		}
 	}
 }();
+
 document.addEventListener('DOMContentLoaded', function() {
 	_jsDsCustoms.initComponents();
 });
@@ -177,9 +178,7 @@ function dataTableDrawCallback() {
 		dropdownAutoWidth: true,
 		width: 'auto'
 	});
-
 	$('[data-toggle="tooltip"]').tooltip();
-
 	$('.row_data:checkbox').on('click', function(a) { 
 		$(this).is('.row_data:checked') ? $(this).closest('table tbody tr').addClass('table-danger') : $(this).closest('table tbody tr').removeClass('table-danger') 
 	});

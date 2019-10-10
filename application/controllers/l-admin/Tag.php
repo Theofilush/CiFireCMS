@@ -48,13 +48,9 @@ class Tag extends Admin_controller {
 				{
 					$row = [];
 					$row[] = '<div class="text-center"><input type="checkbox" class="row_data" value="'. encrypt($val['id']) .'"></div>';
-
 					$row[] = $val['title'];
-
 					$row[] = $val['tag_count'];
-
 					$row[] = '<div class="text-center"><button type="button" class="button btn-xs btn-default delete_single" data-toggle="tooltip" data-placement="top" data-title="'. lang_line('button_delete') .'" data-pk="'. encrypt($val['id']) .'"><i class="icon-bin"></i></button></div>';
-
 					$data_output[] = $row;
 				}
 

@@ -1,5 +1,4 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 $lang['mod_lang_1'] = 'Comment';
 $lang['mod_title'] = 'Comment';

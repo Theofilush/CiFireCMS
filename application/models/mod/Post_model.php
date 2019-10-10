@@ -1,5 +1,4 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Post_model extends CI_Model {
 
@@ -22,22 +21,19 @@ class Post_model extends CI_Model {
 	private function _datatable_query()
 	{
 		$this->db->select('
-							t_post.id as post_id,
-							t_post.title as post_title,
-							t_post.seotitle as post_seotitle,
-							
-							t_post.headline as post_headline,
-							t_post.hits as post_hits,
-							t_post.datepost as post_datepost,
-							t_post.timepost as post_timepost,
-							t_post.active as post_active,
-							t_post.tag as post_tag,
-
-							t_category.title as category_title,
-
-							t_user.id as user_id,
-							t_user.name as user_name,
-							t_user.level as user_level,
+							t_post.id        AS post_id,
+							t_post.title     AS post_title,
+							t_post.seotitle  AS post_seotitle,
+							t_post.headline  AS post_headline,
+							t_post.hits      AS post_hits,
+							t_post.datepost  AS post_datepost,
+							t_post.timepost  AS post_timepost,
+							t_post.active    AS post_active,
+							t_post.tag       AS post_tag,
+							t_category.title AS category_title,
+							t_user.id        AS user_id,
+							t_user.name      AS user_name,
+							t_user.level     AS user_level,
 
 							COUNT(t_comment.id_post) AS comments
 						');
@@ -215,21 +211,21 @@ class Post_model extends CI_Model {
 		{
 			$query = $this->db->select('
 			         *,
-                     t_post.id as post_id,
-			         t_post.title as post_title,
-			         t_post.seotitle as post_seotitle,
-			         t_post.content as post_content,
-			         t_post.headline as post_headline,
-			         t_post.active as post_active,
-			         t_post.tag as post_tag,
-			         t_post.picture as post_picture,
-			         t_post.image_caption as image_caption,
-			         t_category.id as category_id,
-			         t_category.title as category_title,
-			         t_category.seotitle as category_seotitle,
-			         t_user.id as user_id,
-			         t_user.name as user_name,
-			         t_user.level as user_level
+                     t_post.id            AS post_id,
+			         t_post.title         AS post_title,
+			         t_post.seotitle      AS post_seotitle,
+			         t_post.content       AS post_content,
+			         t_post.headline      AS post_headline,
+			         t_post.active        AS post_active,
+			         t_post.tag           AS post_tag,
+			         t_post.picture       AS post_picture,
+			         t_post.image_caption AS image_caption,
+			         t_category.id        AS category_id,
+			         t_category.title     AS category_title,
+			         t_category.seotitle  AS category_seotitle,
+			         t_user.id            AS user_id,
+			         t_user.name          AS user_name,
+			         t_user.level         AS user_level
 					');
 			$query = $this->db->join('t_category', 't_category.id = t_post.id_category', 'left');
 			$query = $this->db->join('t_user', 't_user.id = t_post.id_user', 'left');
@@ -243,20 +239,20 @@ class Post_model extends CI_Model {
 			$query = $this->db
 				->select('
 				         *, 
-						 t_post.id as post_id,
-						 t_post.title as post_title,
-						 t_post.seotitle as post_seotitle,
-						 t_post.content as post_content,
-						 t_post.headline as post_headline,
-						 t_post.active as post_active,
-						 t_post.tag as post_tag,
-						 t_post.picture as post_picture,
-						 t_category.id as category_id,
-						 t_category.title as category_title,
-						 t_category.seotitle as category_seotitle,
-						 t_user.id as user_id,
-						 t_user.name as user_name,
-						 t_user.level as user_level 
+						 t_post.id           AS post_id,
+						 t_post.title        AS post_title,
+						 t_post.seotitle     AS post_seotitle,
+						 t_post.content      AS post_content,
+						 t_post.headline     AS post_headline,
+						 t_post.active       AS post_active,
+						 t_post.tag          AS post_tag,
+						 t_post.picture      AS post_picture,
+						 t_category.id       AS category_id,
+						 t_category.title    AS category_title,
+						 t_category.seotitle AS category_seotitle,
+						 t_user.id           AS user_id,
+						 t_user.name         AS user_name,
+						 t_user.level        AS user_level 
 						')
 				->from($this->_table)
 				->join('t_category', 't_category.id = t_post.id_category', 'left')

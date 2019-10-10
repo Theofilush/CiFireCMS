@@ -20,6 +20,9 @@
 	<div class="block">
 		<div class="block-header">
 			<h3><?php echo lang_line('mod_title_edit');?></h3>
+			<div class="pull-right">
+				<a href="<?php echo admin_url($this->mod);?>" class="button btn-default btn-sm"><i class="icon-arrow-left7 "></i> <?php echo lang_line('button_back');?></a>
+			</div>
 		</div>
 		<div class="box-content">
 			<?php
@@ -91,7 +94,6 @@
 										<!--/ comment -->
 										<div class="mt-2">
 											<button type="submit" class="button btn-sm btn-primary submit_update mr-2"><i id="submit_icon" class="fa fa-save mr-2"></i><?php echo lang_line('button_save');?></button>
-											<a href="<?php echo admin_url($this->mod);?>" class="button btn-sm btn-default"><i class="fa fa-times mr-2"></i><?php echo lang_line('button_cancel');?></a>
 										</div>
 									</div>
 								</div>

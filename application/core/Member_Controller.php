@@ -1,5 +1,4 @@
-<?php 
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Member_Controller extends MY_Controller {
 	
@@ -41,7 +40,6 @@ class Member_Controller extends MY_Controller {
 	}
 	
 
-
 	public function meta_title($param = '')
 	{
 		$title = !empty($param) ? lang_line('ci_member').' - '.$param : lang_line('ci_member');
@@ -56,7 +54,6 @@ class Member_Controller extends MY_Controller {
 		{
 			$this->load->view('member/'.$this->mod_view);
 		}
-
 		else
 		{
 			show_404();
@@ -101,6 +98,7 @@ class Member_Controller extends MY_Controller {
 			 ->_display();
 		exit();
 	}
+
 
 	public function menu_class($mod='home')
 	{

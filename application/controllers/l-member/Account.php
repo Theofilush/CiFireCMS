@@ -1,5 +1,4 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Account extends Member_controller {
 
@@ -15,10 +14,11 @@ class Account extends Member_controller {
 		$this->load->model('member/account_model');
 	}
 
+
 	/**
-	 * Fungsi untuk menampilkan halaman akun.
+	 * Fungsi untuk menampilkan halaman index account.
 	 * @access 	public
-	 * @return 	void | string
+	 * @return 	void
 	*/
 	public function index() 
 	{
@@ -39,11 +39,10 @@ class Account extends Member_controller {
 		}
 	}
 
-
 	/**
-	 * Fungsi untuk aksi perbaharui akun.
+	 * Fungsi submit update account.
 	 * @access 	private
-	 * @return 	void | string | json
+	 * @return 	void
 	*/
 	private function _update_account()
 	{
@@ -112,8 +111,8 @@ class Account extends Member_controller {
 						'gender'   => $gender,
 						'birthday' => xss_filter($this->input->post('birthday', TRUE), 'xss'),
 						'tlpn'     => xss_filter($this->input->post('tlpn', TRUE), 'sql'),
-						'about'    => xss_filter($this->input->post('about', TRUE), 'xss'),
-						'address'  => xss_filter(cut($this->input->post('address', TRUE), 500), 'xss')
+						'about'    => xss_filter($this->input->post('about'), 'xss'),
+						'address'  => xss_filter($this->input->post('address'), 'xss')
 					);
 
 					$this->account_model->update_profile($data);
@@ -124,8 +123,7 @@ class Account extends Member_controller {
 					$this->json_output($response);
 				}
 
-				// Email has been registered.
-				else
+				else // Email has been registered.
 				{
 					$response['success'] = false;
 					$response['alert']['type'] = 'error';
@@ -149,12 +147,11 @@ class Account extends Member_controller {
 		}
 	}
 
-
 	/**
-	 * Fungsi untuk aksi upload foto akun.
+	 * Fungsi submit upload photo.
 	 * @access 	private
 	 * @return 	void
-	*/	
+	*/
 	private function _upload()
 	{
 		if ( !empty($_FILES['fupload']['tmp_name']) ) // if isset image file.
@@ -167,7 +164,7 @@ class Account extends Member_controller {
 				'upload_path'   => CONTENTPATH.'uploads/user/',
 				'allowed_types' => "jpg|jpeg|png",
 				'file_name'     => $img_name,
-				'max_size'      => 1024 * 10,
+				'max_size'      => 1024 * 10, // 10mb
 				'overwrite'     => TRUE
 			));
 
@@ -191,15 +188,15 @@ class Account extends Member_controller {
 		{
 			$this->alert->set($this->mod, 'danger', 'File not found');
 		}
+		
 		redirect(uri_string());
 	}
 
-
 	/**
-	 * Fungsi untuk aksi hapus foto akun.
+	 * Fungsi submit delete photo.
 	 * @access 	public
 	 * @return 	void
-	*/	
+	*/
 	public function delete_photo()
 	{
 		if ( $this->input->is_ajax_request() )
@@ -221,15 +218,16 @@ class Account extends Member_controller {
 		}
 
 		else
+		{
 			show_404();
+		}
 	}
 
-
 	/**
-	 * Fungsi untuk menampilkan halaman ubah kata sandi.
+	 * Fungsi untuk menampikan halaman uba password.
 	 * @access 	public
-	 * @return 	void | string
-	*/	
+	 * @return 	void
+	*/
 	public function password()
 	{
 		$this->meta_title = 'Member - '.lang_line('change_password');
@@ -239,17 +237,17 @@ class Account extends Member_controller {
 				array(
 					'field' => 'old-pass',
 					'label' => lang_line('old_password'),
-					'rules' => 'required|trim|min_length[4]|max_length[18]|callback__cek_pass'
+					'rules' => 'required|trim|min_length[4]|max_length[20]|callback__cek_pass'
 				),
 				array(
 					'field' => 'new-pass1',
 					'label' => lang_line('new_password1'),
-					'rules' => 'required|trim|min_length[4]|max_length[18]'
+					'rules' => 'required|trim|min_length[4]|max_length[20]'
 				),
 				array(
 					'field' => 'new-pass2',
 					'label' => lang_line('new_password2'),
-					'rules' => 'required|trim|min_length[4]|max_length[18]|matches[new-pass1]',
+					'rules' => 'required|trim|min_length[4]|max_length[20]|matches[new-pass1]',
 					'errors' => array(
 						// 'matches' => '%s '
 						'matches' => lang_line('err_match')
@@ -280,13 +278,11 @@ class Account extends Member_controller {
 		}
 	}
 
-
 	/**
-	 * Fungsi untuk pengecekan kata sandi.
-	 * @param 	string 	$pass
+	 * Fungsi untuk valifasi password.
 	 * @access 	public
-	 * @return 	bool
-	*/	
+	 * @return 	void
+	*/
 	public function _cek_pass($pass = '')
 	{
 		$in_pass = encrypt($pass);
@@ -310,12 +306,11 @@ class Account extends Member_controller {
 		}
 	}
 
-
 	/**
-	 * Fungsi untuk menampilka halaman hapus akun.
+	 * Fungsi untuk delete account.
 	 * @access 	public
 	 * @return 	void
-	*/	
+	*/
 	public function delete()
 	{
 		if ( $_SERVER['REQUEST_METHOD'] == 'POST')
@@ -324,7 +319,7 @@ class Account extends Member_controller {
 				array(
 					'field' => 'confirm',
 					'label' => lang_line('your_password'),
-					'rules' => 'required|trim|min_length[4]|max_length[18]|callback__cek_pass'
+					'rules' => 'required|trim|min_length[4]|max_length[20]|callback__cek_pass'
 				)
 			));
 			
@@ -334,6 +329,7 @@ class Account extends Member_controller {
 				$this->account_model->delete();
 				redirect(member_url('logout'));
 			}
+
 			else
 			{
 				$error_content = validation_errors();
@@ -341,6 +337,7 @@ class Account extends Member_controller {
 				redirect(uri_string());
 			}
 		}
+		
 		else 
 		{
 			$this->render_view('account_delete', $this->vars);

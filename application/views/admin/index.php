@@ -6,9 +6,6 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<title><?=$this->CI->meta_title;?></title>
-	<!-- favicon -->
-	<link rel="shortcut icon" href="<?=favicon()?>">
-
 	<link rel="stylesheet" href="<?=content_url('plugins/font-awesome/font-awesome.min.css')?>" type="text/css">
 	<link rel="stylesheet" href="<?=content_url('plugins/icomoon/styles.css')?>" type="text/css">
 	<link rel="stylesheet" href="<?=content_url('plugins/dashboard/css/bootstrap_limitless.css')?>" type="text/css">
@@ -28,7 +25,6 @@
 	<link rel="stylesheet" href="<?=content_url('plugins/fancybox-2.1.7/jquery.fancybox.css');?>" type="text/css" media="screen">
 
 	<?php if ($this->mod === 'setting' || $this->mod == 'theme'): ?>
-	<!-- codemirror -->
 	<link rel="stylesheet" href="<?=content_url('plugins/codemirror/lib/codemirror.css');?>"  type="text/css">
 	<link rel="stylesheet" href="<?=content_url('plugins/codemirror/theme/github.css');?>" type="text/css">
 	<link rel="stylesheet" href="<?=content_url('plugins/codemirror/addon/display/fullscreen.css');?>" type="text/css">
@@ -37,10 +33,11 @@
 	<link rel="stylesheet" href="<?=content_url('plugins/codemirror/addon/scroll/simplescrollbars.css');?>" type="text/css">
 	<?php endif ?>
 
-	<!-- menumanager -->
 	<?php if ($this->uri->segment(2) == 'menumanager'): ?>
 	<link rel="stylesheet" href="<?=content_url('plugins/menumanager/menu.css');?>" type="text/css">
 	<?php endif ?>
+
+	<link rel="shortcut icon" href="<?=favicon()?>">
 
 	<script type="text/javascript">
 		<?php 
@@ -62,7 +59,6 @@
 		var a_act = "<?=$a_act;?>";
 		var datatable_lang = "<?=$a_datatable_lang;?>";
 		var lang_active = "<?=$this->_language;?>";
-		
 	    var csrfName = '<?=$this->CI->security->get_csrf_token_name();?>';
 	    var csrfToken = '<?=$this->CI->security->get_csrf_hash();?>';
 	    var csrfData = {};
@@ -79,11 +75,11 @@
 			<a href="<?=admin_url('home')?>" class="d-inline-block adm-title">administrator</a>
 		</div>
 		<div class="d-md-none">
-			<!-- to frondend mobile link -->
+			<!-- to frondend link -->
 			<a href="<?=site_url();?>" class="navbar-toggler nav-btn-mobile-link"><i class="icon-display"></i></a>
-			<!-- user menu button mobile -->
+			<!-- user menu button -->
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-mobile"><i class="icon-tree5"></i></button>
-			<!-- sidebar menu button mobile -->
+			<!-- sidebar menu button -->
 			<button class="navbar-toggler sidebar-mobile-main-toggle" type="button"><i class="icon-paragraph-justify3"></i></button>
 		</div>
 

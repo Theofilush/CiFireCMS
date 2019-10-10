@@ -46,6 +46,7 @@ class Theme extends Admin_controller {
 				$this->render_view('view_index', $this->vars);
 			}
 		}
+
 		else
 		{
 			$this->render_403();
@@ -63,10 +64,8 @@ class Theme extends Admin_controller {
 			
 			if ( $this->theme_model->delete($idTheme) )
 			{
-				// delete theme views dir.
-				@delete_folder(VIEWPATH.'themes/'.$folderTheme); 
-				// delete theme asset dir.
-			    @delete_folder(CONTENTPATH.'themes/'.$folderTheme);
+				@delete_folder(VIEWPATH.'themes/'.$folderTheme); // delete theme views dir.
+			    @delete_folder(CONTENTPATH.'themes/'.$folderTheme); // delete theme asset dir.
 				
 				$response['success'] = true;
 				$response['dataDelete'] = $idTheme;
@@ -148,7 +147,7 @@ class Theme extends Admin_controller {
 				else
 				{
 					$this->theme_model->insert([
- 						'title' => $theme_title,
+ 						'title'  => $theme_title,
  						'folder' => $theme_folder,
  						'active' => 'N'
 					]);
@@ -156,18 +155,19 @@ class Theme extends Admin_controller {
 					$zip_name = md5(date('Ymdhis'));
 
 					$this->load->library('upload', array(
-						'upload_path' => CONTENTPATH."temp/",
+						'upload_path'   => CONTENTPATH."temp/",
 						'allowed_types' => "zip",
-						'file_name' => $zip_name.".zip",
-						'max_size' => 1024 * 30, // 30mb
-						// 'overwrite' => TRUE
+						'file_name'     => $zip_name.".zip",
+						'max_size'      => 1024 * 30, // 30mb
+						// 'overwrite'  => TRUE
 					));
 
 					if ($this->upload->do_upload('fupload')) // upload
 					{
 						// Extract zip file.
 						$unzip_path = CONTENTPATH."temp/$zip_name";
-						$zip_file  = CONTENTPATH."temp/$zip_name.zip";
+						$zip_file   = CONTENTPATH."temp/$zip_name.zip";
+
 						$this->load->library('unzip', array($zip_file));
 						$this->unzip->extract($unzip_path); // run extract.
 						
@@ -231,6 +231,7 @@ class Theme extends Admin_controller {
 					$code_content = $this->input->post('code_content');
 					$data_content = str_replace("textarea_CI", "textarea", $code_content);
 					$path = VIEWPATH.'themes/'.$theme['folder'].'/'.$file.'.php';
+
 					write_file($path, $data_content);
 
 					// alert
@@ -247,7 +248,6 @@ class Theme extends Admin_controller {
 					if (! file_exists($path)) 
 					{
 						write_file($path, '');
-						// redirect(admin_url($this->mod."/edit/$id/$file_name"),'refresh');
 						redirect(uri_string());
 					}
 					else
@@ -266,7 +266,7 @@ class Theme extends Admin_controller {
 						'allowed_types' => "zip",
 						'file_name'     => $zip_name,
 						'max_size'      => 1024 * 20, // 20Mb
-						'overwrite'     => false
+						'overwrite'     => FALSE
 					));
 
 					if ( $this->upload->do_upload('fupload') )
@@ -314,16 +314,16 @@ class Theme extends Admin_controller {
 		}
 	}
 
+
 	public function backup()
 	{
 		if ( $this->input->is_ajax_request() && $this->read_access && $this->write_access ) 
 		{
-			$theme_id     = decrypt($this->input->post('id'));
-			$theme_folder = decrypt($this->input->post('folder'));
-			$theme_title  = decrypt($this->input->post('title'));
-			$path_views   = $this->_path['themes'].$theme_folder;
-			$path_assets  = $this->_path['assets'].$theme_folder;
-
+			$theme_id       = decrypt($this->input->post('id'));
+			$theme_folder   = decrypt($this->input->post('folder'));
+			$theme_title    = decrypt($this->input->post('title'));
+			$path_views     = $this->_path['themes'].$theme_folder;
+			$path_assets    = $this->_path['assets'].$theme_folder;
 			$dir_temp_theme = "backup-theme-".seotitle($theme_title)."-".md5(date('YmdHis'));
 			$path_dir_temp  = $this->_path['temp'].$dir_temp_theme;
 

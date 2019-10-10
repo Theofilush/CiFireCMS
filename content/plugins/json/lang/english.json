@@ -12,7 +12,7 @@
   
   "modal":
   {
-    "delete_title"   : "Confirmation Deletion",
+    "delete_title"   : "Delete Confirmation",
     "delete_content" : "Are you sure want to delete this data ?"
   },
   
@@ -27,9 +27,9 @@
   {
     "button" :
     {
-        "next"     : "Next",
-        "prev"     : "Previous",
-        "generate" : "Generate Component Now"
+      "next"     : "Next",
+      "prev"     : "Previous",
+      "generate" : "Generate Component Now"
     }
   },
   

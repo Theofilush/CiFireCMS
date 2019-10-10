@@ -23,7 +23,7 @@
 	</div>
 </section>
 <section id="content">
-	<div class="content-wrap">
+	<div class="content-wrap" style="padding-bottom:0;">
 		<div class="container clearfix">
 			<div class="row">
 				<div class="col-lg-8 nobottommargin clearfix">

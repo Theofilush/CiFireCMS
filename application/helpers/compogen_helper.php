@@ -1,16 +1,12 @@
-<?php
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 /**
  * - CompoGen Helper
- *
- *   file    : compogen_helper.php
- *   author  : Adiman
- *   website : https://www.alweak.com 
- *
  * - Helper ini di gunakan pada komponen CompGen.
  *
+ *   File    : compogen_helper.php
+ *   Author  : Adiman 
+ *   License : MIT License
 */
-
-defined('BASEPATH') OR exit('No direct script access allowed');
 
 
 /**
@@ -657,9 +653,10 @@ $write = <<<EOS
 /**
  * - This file was created using CompoGen
  * 
- * - File   : javascript.js
- * - Date   : {$rdate}
- * - Author : CompoGen
+ * - File         : javascript.js
+ * - Date created : {$rdate}
+ * - Author       : CompoGen
+ * - License      : MIT License
 */
 
 // DataTable
@@ -847,9 +844,10 @@ $write .= <<<EOS
 /**
  * - This file was created using CompoGen
  * 
- * - File   : {$class_name}.php
- * - Date   : {$rdate}
- * - Author : CompoGen
+ * - File         : {$class_name}.php
+ * - Date created : {$rdate}
+ * - Author       : CompoGen
+ * - License      : MIT License
 */
 
 defined('BASEPATH') OR exit('No direct script access allowed');
@@ -862,11 +860,7 @@ class {$class_name} extends Admin_controller {
 	{
 		parent::__construct();
 		
-		// Load language.
-		// \$this->lang->load('mod/'.\$this->mod, \$this->_language);
-		// Load model.
 		\$this->load->model("mod/{$class_mod}_model");
-		// Load set meta title.
 		\$this->meta_title("{$component_name}");
 	}
 
@@ -1176,7 +1170,6 @@ $write .= <<< EOS
 						if (\$this->{$model_name}->update(\$id_edit, \$data_update))
 						{
 							\$this->alert->set(\$this->mod, 'success', lang_line('form_message_update_success'));
-							// redirect(admin_url(\$this->mod),'refresh');
 						}
 						else
 						{
@@ -1294,10 +1287,12 @@ $write .= <<<EOS
 /**
  * - This file was created using CompoGen
  * 
- * - File   : {$class_name}_model.php
- * - Date   : {$rdate}
- * - Author : CompoGen
+ * - File         : {$class_name}.php
+ * - Date created : {$rdate}
+ * - Author       : CompoGen
+ * - License      : MIT License
 */
+
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class {$class_name} extends CI_Model {
@@ -1438,7 +1433,6 @@ $write .= <<< EOS
 		if (\$this->cek_id(\$val) == 1) 
 		{
 			\$this->db->where('{$data_field_1}', \$val)->delete(\$this->_table);
-			
 			return TRUE;
 		}
 		else
@@ -1463,12 +1457,9 @@ $write .= <<< EOS
 		\$query = \$this->db->where('{$data_field_1}', \$val);
 		\$query = \$this->db->get(\$this->_table);
 		\$query = \$query->num_rows();
-
 		\$int = (int)\$query;
-
 		return \$int;
 	}
-
 } // End class.
 EOS;
 return $write;
@@ -1508,14 +1499,14 @@ value="<?=\$data_row['{$field_name}'];?>"
 EOS;
 }
 $content = <<< EOS
-					<!-- input text -->
+					<!-- input text | {$input_label} -->
 					<div class="form-group row">
 						<label class="col-form-label col-md-2">{$input_label}</label>
 						<div class="col-md-10">
-							<input type="text" name="{$field_name}" {$value} class="form-control">
+							<input type="text" name="{$field_name}" {$value} class="form-control" required>
 						</div>
 					</div>
-					<!--/ input text -->\n
+					<!--/ input text | {$input_label} -->\n
 EOS;
 return $content;
 } //---------> End function write_input_text.
@@ -1543,14 +1534,14 @@ value="<?=\$data_row['{$field_name}'];?>"
 EOS;
 }
 $content = <<< EOS
-					<!-- input number -->
+					<!-- input number | {$input_label} -->
 					<div class="form-group row">
 						<label class="col-form-label col-md-2">{$input_label}</label>
 						<div class="col-md-10">
-							<input type="number" name="{$field_name}" {$value} class="form-control">
+							<input type="number" name="{$field_name}" {$value} class="form-control" required>
 						</div>
 					</div>
-					<!--/ input number -->\n
+					<!--/ input number | {$input_label} -->\n
 EOS;
 return $content;
 } //---------> End function write_input_number.
@@ -1588,7 +1579,7 @@ foreach ($options as $key => $ov) {
 	$option .= '<option value="'.$ov.'">'.$ov.'</option>';
 }
 $content = <<<EOS
-					<!-- input select -->
+					<!-- input select | {$input_label} -->
 					<div class="form-group row">
 						<label class="col-form-label col-md-2">{$input_label}</label>
 						<div class="col-md-10">
@@ -1597,7 +1588,7 @@ $content = <<<EOS
 							</select>
 						</div>
 					</div>
-					<!--/ input select -->\n
+					<!--/ input select | {$input_label} -->\n
 EOS;
 return $content;
 } //---------> End Function write_input_select.
@@ -1642,7 +1633,7 @@ EOS;
 }
 
 $content = <<<EOS
-					<!-- input select ENUM -->
+					<!-- input select ENUM | {$input_label} -->
 					<div class="form-group row">
 						<label class="col-form-label col-md-2">{$input_label}</label>
 						<div class="col-md-10">
@@ -1651,7 +1642,7 @@ $content = <<<EOS
 							</select>
 						</div>
 					</div>
-					<!--/ input select ENUM -->\n
+					<!--/ input select ENUM | {$input_label} -->\n
 EOS;
 return $content;
 } //---------> End Function write_input_enum.
@@ -1676,14 +1667,14 @@ $value .= <<< EOS
 EOS;
 }
 $content = <<< EOS
-					<!-- textarea -->
+					<!-- textarea | {$input_label} -->
 					<div class="form-group row">
 						<label class="col-form-label col-md-2">{$input_label}</label>
 						<div class="col-md-10">
 							<textarea name="{$field_name}" class="form-control">{$value}</textarea>
 						</div>
 					</div>
-					<!--/ textarea -->\n
+					<!--/ textarea | {$input_label} -->\n
 EOS;
 return $content;
 } //---------> End function write_input_textarea.
@@ -1710,14 +1701,14 @@ $value .= <<< EOS
 EOS;
 }
 $content = <<< EOS
-					<!-- textarea TinyMCE -->
+					<!-- textarea TinyMCE | {$input_label} -->
 					<div class="form-group row">
 						<label class="col-form-label col-md-2">{$input_label}</label>
 						<div class="col-md-10">
 							<textarea id="textarea-tinymce" name="{$field_name}" class="form-control">{$value}</textarea>
 						</div>
 					</div>
-					<!--/ textarea TinyMCE -->\n
+					<!--/ textarea TinyMCE | {$input_label} -->\n
 EOS;
 return $content;
 } //---------> End function write_input_tinymce.
@@ -1749,7 +1740,7 @@ value="<?=date('Y-m-d');?>"
 EOS;
 }
 $content = <<<EOS
-					<!-- input date -->
+					<!-- input date | {$input_label} -->
 					<div class="form-group row">
 						<label class="col-form-label col-md-2">{$input_label}</label>
 						<div class="col-md-10">
@@ -1761,7 +1752,7 @@ $content = <<<EOS
 							</div>
 						</div>
 					</div>
-					<!--/ input date -->\n
+					<!--/ input date | {$input_label} -->\n
 EOS;
 return $content;
 } //---------> End function write_input_date.
@@ -1793,7 +1784,7 @@ value="<?=date('HH:ii:ss');?>"
 EOS;
 }
 $content = <<<EOS
-					<!-- input time -->
+					<!-- input time | {$input_label} -->
 					<div class="form-group row">
 						<label class="col-form-label col-md-2">{$input_label}</label>
 						<div class="col-md-10">
@@ -1805,7 +1796,7 @@ $content = <<<EOS
 							</div>
 						</div>
 					</div>
-					<!--/ input time -->\n
+					<!--/ input time | {$input_label} -->\n
 EOS;
 return $content;
 } //---------> End function write_input_time.
@@ -1837,7 +1828,7 @@ value="<?=date('Y-m-d HH:ii:ss');?>"
 EOS;
 }
 $content = <<<EOS
-					<!-- input datetime -->
+					<!-- input datetime | {$input_label} -->
 					<div class="form-group row">
 						<label class="col-form-label col-md-2">{$input_label}</label>
 						<div class="col-md-10">
@@ -1849,7 +1840,7 @@ $content = <<<EOS
 							</div>
 						</div>
 					</div>
-					<!--/ input datetime -->\n
+					<!--/ input datetime | {$input_label} -->\n
 EOS;
 return $content;
 } //---------> End function write_input_datetime.
@@ -1876,7 +1867,7 @@ value="<?=\$data_row['{$field_name}'];?>"
 EOS;
 }
 $content = <<< EOS
-					<!-- input browse filemanager -->
+					<!-- input browse filemanager | {$input_label} -->
 					<div class="form-group row">
 						<label class="col-form-label col-md-2">{$input_label}</label>
 						<div class="col-md-10">
@@ -1889,7 +1880,7 @@ $content = <<< EOS
 							</div>
 						</div>
 					</div>
-					<!-- input browse filemanager -->\n
+					<!-- input browse filemanager | {$input_label} -->\n
 EOS;
 return $content;
 } //---------> End function write_input_filemanager.

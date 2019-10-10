@@ -4,7 +4,7 @@
 		<div class="content d-flex justify-content-center align-items-center">
 			<div class="col-md-8 login-form">
 				<div class="text-center">
-					<img src="<?=favicon('logo');?>" class="logo mb-3" style="width:70px;"/>
+					<img src="<?=favicon('logo');?>" class="logo mb-3" style="height:50px;"/>
 				</div>
 				<div class="text-center mb-3">
 					<h5 class="mb-0"><?=lang_line('login_activation')?></h5>
@@ -16,7 +16,7 @@
 					</div>
 				</div>
 				<hr>
-				<p class="mt-3 text-center login-copyright">Copyright &copy; <a href="https://alweak.com" target="_blank">CiFireCMS</a> <?=date('Y');?>. <a href="https://opensource.org/licenses/MIT" target="_blank">MIT License</a></p>
+				<p class="mt-3 text-center login-copyright">Copyright &copy; <?=date('Y');?> <?=$this->CI->settings->website('web_name'); ?></p>
 			</div>
 		</div>
 	</div>

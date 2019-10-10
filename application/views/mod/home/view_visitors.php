@@ -50,20 +50,22 @@
 				<div class="stats-desc">
 					<canvas id="canvas-stats"></canvas>
 				</div>
-				<?php if ($this->CI->input->get('from') && $this->CI->input->get('to')) { ?>
+				<?php if ($this->CI->input->get('from') && $this->CI->input->get('to')) : ?>
 				<?php
 					$label_stats = array();
 					$visitor_stats = array();
 					$hits_stats = array();
 					$start_stats = $current_stats = strtotime($this->CI->input->get('from'));
-					$end_stats = strtotime($_GET['to']);
+					$end_stats = strtotime($this->CI->input->get('to'));
 
 					while ($current_stats <= $end_stats) 
 					{
 						$label_stats[] = date('d M', $current_stats);
 
 						$visitor_stats[] = $this->db
+							->select('ip, COUNT(ip) AS num_ip')
 							->where('date', date('Y-m-d', $current_stats))
+							->group_by('ip')
 							->get('t_visitor')
 							->num_rows();
 
@@ -76,7 +78,6 @@
 						$current_stats = strtotime('+1 days', $current_stats);
 					}
 				?>
-
 				<script type="text/javascript">
 					var datastats = {
 						labels: <?=$this->CI->_js_array($label_stats);?>,
@@ -104,9 +105,7 @@
 						]
 					};
 				</script>
-
-
-				<?php } else { ?>
+				<?php else: ?>
 				<?php
 					$visitor1 = $this->db
 						->where('date', date('Y-m-d', strtotime('-6 days')))
@@ -249,9 +248,8 @@
 							}
 						]
 					};
-
 				</script>
-				<?php } ?>
+				<?php endif ?>
 			</div>
 		</div>
 
@@ -288,9 +286,8 @@
 								->get('t_visitor')
 								->result_array();
 						}
-
-						foreach ($browsers as $browser):
 					?>
+					<?php foreach ($browsers as $browser): ?>
 					<tr>
 						<td class="text-center"><?=($browser['browser'] == '' ? '-' : $browser['browser']);?></td>
 						<td class="text-center"><span class="label label-success"><?=$browser['hitstoday'];?></span></td>
@@ -330,9 +327,8 @@
 								->get('t_visitor')
 								->result_array();
 						}
-
-						foreach($platforms as $platform):
 					?>
+					<?php foreach($platforms as $platform): ?>
 					<tr>
 						<td class="text-center"><?=($platform['platform'] == '' ? $GLOBALS['_']['home_others'] : $platform['platform']);?></td>
 						<td class="text-center"><span class="label label-danger"><?=$platform['hitstoday'];?></span></td>
@@ -378,9 +374,8 @@
 									->get('t_visitor')
 									->result_array();
 							}
-
-							foreach ($visitors as $visitor):						
 						?>
+						<?php foreach ($visitors as $visitor): ?>
 						<tr>
 							<td class="text-center"><?=($visitor['ip'] == '' ? '-' : $visitor['ip']);?></td>
 							<td class="text-center"><?=($visitor['browser'] == '' ? "-" : $visitor['browser']);?></td>

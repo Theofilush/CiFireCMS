@@ -24,7 +24,7 @@
 		<div class="block-header">
 			<h3><?php echo lang_line('mod_title_all');?></h3>
 			<div class="pull-right">
-				<a href="<?php echo admin_url($this->mod.'/add-new');?>" class="button btn-primary btn-sm"><i class="icon-add"></i> <?php echo lang_line('button_add_new');?></a>
+				<a href="<?php echo admin_url($this->mod.'/add-new');?>" class="button btn-primary btn-sm"><i class="icon-add mr-1"></i><?php echo lang_line('button_add_new');?></a>
 			</div>
 		</div>
 		<div class="row">

@@ -9,15 +9,20 @@ class Install extends CI_Controller {
 	{
 		parent::__construct();
 		$this->CI =& get_instance();
+
 		$this->load->model('install_model');
+
 		date_default_timezone_set('Asia/Jakarta');
+
 		$this->load->helper(array('url', 'master_helper', 'file'));
 		$this->load->library(array('encryption', 'session'));
+
 		$this->key = md5(date('dmYhis'));
 		$this->encryption->initialize(array(
 			'key' => hex2bin($this->key)
 		));
 	}
+
 
 	public function index() 
 	{
@@ -39,15 +44,23 @@ class Install extends CI_Controller {
 			$db_obj = $this->load->database($dbconfig, TRUE);
 			
 			if (! $db_obj->conn_id)
+			{
 			    return show_error('Unable to connect to your database server using the provided settings.',500,'A Database Error Occurred');
+			}
 			else
+			{
 				$this->load->database();
+			}
 
 			// import database.sql.
 			if ($this->install_model->import_tables(FCPATH."install/sql/database.sql") == TRUE)
+			{
 				$this->_view('form2');
+			}
 			else
+			{
 				$this->_view('form1');
+			}
 			
 			$this->db->close(); // close connection
 		}
@@ -58,8 +71,10 @@ class Install extends CI_Controller {
 			$dbconfig = $this->_dbconfig($_POST);
 			$db_obj = $this->load->database($dbconfig, TRUE);
 			
-			if (! $db_obj->conn_id)
+			if (!$db_obj->conn_id)
+			{
 			    return show_error('Unable to connect to your database server using the provided settings.',500,'A Database Error Occurred');
+			}
 			else
 			{
 				$this->load->database();
@@ -160,6 +175,11 @@ class Install extends CI_Controller {
 				'options' => 'logo',
 				'value'   => 'logo.png'
 			));
+			$this->install_model->insert_setting(array(
+				'groups'  => 'image',
+				'options' => 'web_image',
+				'value'   => 'web.png'
+			));
 			
 			// config
 			$this->install_model->insert_setting(array(
@@ -206,6 +226,11 @@ class Install extends CI_Controller {
 				'groups'  => 'config',
 				'options' => 'page_item',
 				'value'   => '5'
+			));
+			$this->install_model->insert_setting(array(
+				'groups'  => 'config',
+				'options' => 'captcha',
+				'value'   => 'N'
 			));
 			$this->install_model->insert_setting(array(
 				'groups'  => 'config',
@@ -279,7 +304,7 @@ class Install extends CI_Controller {
 	}
 
 
-	public function _view($var='')
+	public function _view($var = '')
 	{
 		$this->load->view('inc_head');
 		$this->load->view($var);

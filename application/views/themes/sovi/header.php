@@ -44,15 +44,17 @@
 						<ul>
 							<li><a href="<?php echo site_url('about-us');?>">About Us</a></li>
 							<li><a href="<?php echo site_url('contact');?>">Contact</a></li>
-							<li>
+							<!-- <li>
 								<?php
+									/*
 									if ( login_status('member') == TRUE ) {
 										echo '<a href="'. member_url() .'"><i class="icon-user"></i> '. data_login('member', 'name') .'</a>';
 									} else {
 										echo '<a href="'. member_url() .'"><i class="icon-user"></i> Login</a>';
 									}
+									*/
 								?>
-							</li>
+							</li> -->
 						</ul>
 					</div>
 				</div>

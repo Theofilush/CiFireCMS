@@ -124,7 +124,15 @@ function tabactive($tabactive, $tab = '') {
 									<td><?php echo lang_line('table_web_logo');?></td>
 									<td>
 										<div class="mb-2">
-											<img src="<?php echo favicon('logo');?>" class="f2_edit" style="max-width:150px;">
+											<img src="<?php echo favicon('logo');?>" class="f2_edit" style="max-height:100px;">
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td><?php echo lang_line('table_web_image');?></td>
+									<td>
+										<div class="mb-2">
+											<img src="<?php echo favicon('web_image');?>" class="f3_edit" style="max-height:130px;">
 										</div>
 									</td>
 								</tr>
@@ -151,7 +159,7 @@ function tabactive($tabactive, $tab = '') {
 										<a href="javascript:void(0)" id="timezone" data-type="select2" data-pk="timezone" data-url="<?php echo admin_url('setting/submit');?>" data-value="<?php echo $this->settings->website('timezone');?>"><?php echo $this->settings->website('timezone');?><br/>
 											<div>
 												<?php echo lang_line('mod_lang_date');?> : 
-												<?php echo date('Y-m-d');?> ~ 
+												<?php echo date('Y-m-d');?> | 
 												<?php echo lang_line('mod_lang_time');?> : 
 												<?php echo date('h:i:s');?>
 											</div>
@@ -348,6 +356,14 @@ function tabactive($tabactive, $tab = '') {
 										<a href="javascript:void(0)" id="page_item" data-type="text" data-pk="page_item" data-url="<?php echo admin_url('setting/submit');?>" data-msg="<?php echo lang_line('form_message_required');?>"><?php echo $this->settings->website('page_item');?></a>
 									</td>
 								</tr>
+
+								<tr>
+									<td>Captcha</td>
+									<td class="link-setting">
+										<a href="javascript:void(0)" id="captcha" data-type="select" data-pk="captcha" data-url="<?php echo admin_url('setting/submit');?>" data-value="<?php echo $this->settings->website('captcha');?>"><?php echo $this->settings->website('captcha');?></a>
+									</td>
+								</tr>
+								
 								<tr>
 									<td><?php echo lang_line('table_site_key');?></td>
 									<td class="link-setting">
@@ -389,6 +405,7 @@ function tabactive($tabactive, $tab = '') {
 	</div>
 </div>
 
+<!-- Modal upload image -->
 <div id="modal_fedit" class="modal fade" id="modal-1">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">

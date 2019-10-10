@@ -42,8 +42,8 @@ class Comment extends Admin_controller {
 					{
 						$valactive = '<i id="active'.$val['id'].'" class="fa fa-ban text-danger"></i>';
 					}
+
 					$row[] = $valactive;
-					
 					$row[] = $val['name'];
 
 					$post = $this->db
@@ -68,7 +68,6 @@ class Comment extends Admin_controller {
 					 <span class="button btn-xs btn-default modal_detail" data-toggle="tooltip" data-placement="top" data-title="'.lang_line('button_view').'" idDet="'.$val['id'].'"><i class="fa fa-eye"></i></span> 
 
 					'.$btn_block.'
-
 
 					<button type="button" class="button btn-xs btn-default delete_single" data-toggle="tooltip" data-placement="top" data-title="'. lang_line('button_delete') .'" data-pk="'. encrypt($val['id']) .'"><i class="icon-bin"></i></button>
 					 </div> </div>';

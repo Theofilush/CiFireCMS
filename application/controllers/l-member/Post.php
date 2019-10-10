@@ -1,5 +1,4 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Post extends Member_controller {
 
@@ -17,7 +16,7 @@ class Post extends Member_controller {
 
 
 	/**
-	 * Fungsi untuk menampilkan halaman post.
+	 * Fungsi untuk menampilkan halaman index post.
 	 * @access 	public
 	 * @return 	void | string | json
 	*/
@@ -71,7 +70,7 @@ class Post extends Member_controller {
 
 
 	/**
-	 * Fungsi untuk ON/OFF fitur headline.
+	 * Fungsi untuk ON/OFF headline post.
 	 * @access 	public
 	 * @return 	void | string | json
 	*/
@@ -119,9 +118,9 @@ class Post extends Member_controller {
 
 
 	/**
-	 * Fungsi untuk menampilkan halaman tambah post.
+	 * Fungsi untuk tambah post baru.
 	 * @access 	public
-	 * @return 	void | string | json
+	 * @return 	void
 	*/
 	public function add_new() 
 	{
@@ -141,7 +140,7 @@ class Post extends Member_controller {
 
 
 	/**
-	 * Fungsi aksi tambah post.
+	 * Fungsi aksi submit tambah post.
 	 * @access 	private
 	 * @return 	void | string | json
 	*/
@@ -224,7 +223,7 @@ class Post extends Member_controller {
 			$data_post = array(
 				'title'         => $title,
 				'seotitle'      => seotitle($title),
-				'content'       => xss_filter($this->input->post('content')),
+				'content'       => xss_filter($this->input->post('content', TRUE)),
 				'id_category'   => xss_filter(decrypt($this->input->post('category')),'sql'),
 				'tag'           => $tags,
 				'picture'       => $post_picture,
@@ -261,9 +260,9 @@ class Post extends Member_controller {
 
 
 	/**
-	 * Fungsi untuk menampilkan halaman ubah post.
+	 * Fungsi untuk ubah post.
 	 * @access 	public
-	 * @return 	void | string | json
+	 * @return 	void
 	*/
 	public function edit() 
 	{
@@ -390,7 +389,7 @@ class Post extends Member_controller {
 				$data_post = array(
 					'title'         => $title,
 					'seotitle'      => seotitle($title),
-					'content'       => xss_filter($this->input->post('content')),
+					'content'       => xss_filter($this->input->post('content', TRUE)),
 					'id_category'   => xss_filter(decrypt($this->input->post('category')), 'sql'),
 					'image_caption' => xss_filter($this->input->post('image_caption')),
 					'tag'           => $tags,
@@ -434,67 +433,19 @@ class Post extends Member_controller {
 		if ( $this->input->is_ajax_request() )
 		{
 			$data_pk = $this->input->post('data');
+
 			foreach ($data_pk as $key)
 			{
 				$pk = xss_filter(decrypt($key),'sql');
 				$this->post_model->delete($pk);
 			}
+
 			$response['success'] = true;
 			$response['alert']['type'] = 'success';
 			$response['alert']['content'] = lang_line('form_message_delete_success');
+
 			$this->json_output($response);
 		}
-		else
-		{
-			show_404();
-		}
-	}
-
-
-	/**
-	 * Fungsi upload gambar pada fitur tinymce.
-	 * @access 	public
-	 * @return 	void | string | json
-	*/
-	public function tinymce_upload()
-	{
-		if ( $_SERVER['REQUEST_METHOD'] == 'POST' )
-		{
-			// Allowed origins to upload images.
-			$accepted_origins = array(site_url());
-
-			// Images upload path.
-			$upload_path = "content/uploads/post/";
-
-			reset($_FILES);
-			
-			$temp = current($_FILES);
-			$img_name  = date('YmdHis') .'_'. md5(date('YmdHis'));
-			$extension = pathinfo($temp['name'], PATHINFO_EXTENSION);
-
-			$this->load->library('upload', array(
-				'upload_path'   => CONTENTPATH . "uploads/post/",
-				'allowed_types' => 'gif|jpg|png|jpeg',
-				'file_name'     => $img_name,
-				'max_size'      => 1024 * 10
-			));
-
-			if ( $this->upload->do_upload('fupload') )
-			{
-				$response = array(
-					'location' => content_url("uploads/post/$img_name.$extension?" . strtotime(date('YmdHis')))
-				);
-				echo json_encode($response);
-			}
-
-			else
-			{
-				header("HTTP/1.1 400 Invalid extension.");
-				echo json_encode($response = 'ERROR');
-					return;
-			}
-		}
-
 		else
 		{
 			show_404();
@@ -523,9 +474,9 @@ class Post extends Member_controller {
 
 
 	/**
-	 * Fungsi untuk pengecekan seotitle untuk aksi tambah post.
+	 * Fungsi untuk validasi seotitle untuk aksi tambah post.
 	 * @access 	public
-	 * @return 	void | string | json
+	 * @return 	bool | void
 	*/
 	public function _cek_add_seotitle($seotitle = '') 
 	{
@@ -537,9 +488,9 @@ class Post extends Member_controller {
 	
 
 	/**
-	 * Fungsi untuk pengecekan seotitle untuk aksi ubah post.
+	 * Fungsi untuk validasi seotitle untuk aksi ubah post.
 	 * @access 	public
-	 * @return 	void | string | json
+	 * @return 	bool | void
 	*/
 	public function _cek_edit_seotitle($id, $seotitle = '') 
 	{

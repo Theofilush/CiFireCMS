@@ -1,5 +1,4 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Category_model extends CI_Model {
 
@@ -131,7 +130,6 @@ class Category_model extends CI_Model {
 		$query = $this->db->order_by('id', 'DESC');
 		$query = $this->db->get($this->_table);
 		$query = $query->result_array();
-
 		$return = $query;
 	}
 
@@ -228,4 +226,4 @@ class Category_model extends CI_Model {
 			return FALSE;
 		}
 	}
-} // End Class.
+} // End class.

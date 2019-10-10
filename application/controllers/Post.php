@@ -1,5 +1,4 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Post extends Web_controller {
 
@@ -20,12 +19,10 @@ class Post extends Web_controller {
 		{
 			$id_post = $this->post_model->id_post($this->seotitle);
 			
-			// SUBMIT Komentar.
-			if ( $_SERVER['REQUEST_METHOD'] == 'POST' ) 
+			if ( $_SERVER['REQUEST_METHOD'] == 'POST' )  // Submit Komentar.
 			{
 				return $this->_submit_comment($id_post);
 			}
-			
 			else
 			{
 				$data_post = $this->post_model->get_post($this->seotitle);
@@ -34,14 +31,7 @@ class Post extends Web_controller {
 
 				// link prev post & next post.
 				$this->vars['prev_post'] = $this->_prev_post($id_post); 
-				$this->vars['next_post'] = $this->_next_post($id_post); 
-
-				// $this->set_meta(array(
-				// 	'title' => $data_post['post_title'],
-				// 	'keywords' => $this->vars['result_post']['tag'].', '.$this->settings->website('meta_keyword'),
-				// 	'description' => cut($data_post['content'], 150),
-				// 	'image' => post_images($this->vars['result_post']['picture'], 'medium', TRUE)
-				// ));
+				$this->vars['next_post'] = $this->_next_post($id_post);
 
 				$this->meta_title($data_post['post_title']);
 				$this->meta_keywords($this->vars['result_post']['tag'].', '.$this->settings->website('meta_keyword'));
@@ -64,7 +54,13 @@ class Post extends Web_controller {
 
 	private function _submit_comment($id_post = 0)
 	{
-		if ( googleCaptcha()->success == TRUE )
+		if ( $this->captcha() == TRUE && googleCaptcha()->success == FALSE )
+		{
+			$this->alert->set('alert_comment', 'danger', 'Please complete the captcha');
+			redirect(uri_string().'#form_comment');
+		}
+
+		else
 		{
 			$this->form_validation->set_rules(array(
 				array(
@@ -87,18 +83,18 @@ class Post extends Web_controller {
 			if ( $this->form_validation->run() ) 
 			{
 				$id_user = ( login_status('member') == TRUE ? data_login('member', 'id') : '0' );
-				$active  = ( login_status('member') == TRUE ? 'Y': 'N' );
 				$parent  = ( !empty($this->input->post('parent')) ? $this->input->post('parent') : '0' );
-				$name = ( login_status('member') == TRUE ? data_login('member', 'name') : xss_filter($this->input->post('name'), 'xss') );
-				$email = ( login_status('member') == TRUE ? data_login('member', 'email') :  xss_filter($this->input->post('email')) );
+				$name    = ( login_status('member') == TRUE ? data_login('member', 'name') : xss_filter($this->input->post('name'), 'xss') );
+				$email   = ( login_status('member') == TRUE ? data_login('member', 'email') :  xss_filter($this->input->post('email')) );
+				$active  = ( login_status('member') == TRUE ? 'Y': 'N' );
 
 				$data_comment = array(
-					'id_user' => $id_user,
+					'id_user' => xss_filter($id_user, 'sql'),
 					'id_post' => xss_filter($id_post, 'sql'),
 					'parent'  => xss_filter(decrypt($parent), 'sql'),
 					'name'    => $name,
 					'email'   => $email,
-					'comment' => xss_filter($this->input->post('comment')),
+					'comment' => xss_filter($this->input->post('comment', TRUE)),
 					'ip'      => $this->CI->input->ip_address(),
 					'active'  => $active
 				);
@@ -107,17 +103,11 @@ class Post extends Web_controller {
 				$this->alert->set('alert_comment', 'success', 'Succes');
 				redirect(uri_string().'#form_comment');
 			}
-			
 			else 
 			{
 				$this->alert->set('alert_comment', 'danger', validation_errors());
 				redirect(uri_string().'#form_comment');
 			}
-		}
-		else
-		{
-			$this->alert->set('alert_comment', 'danger', 'Please complete the captcha');
-			redirect(uri_string().'#form_comment');
 		}
 	}
 

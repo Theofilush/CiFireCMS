@@ -9,7 +9,6 @@ class Login extends MY_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-
 		$this->CI =& get_instance();
 
 		$this->_language = strtolower($this->set_language());
@@ -63,7 +62,6 @@ class Login extends MY_Controller {
 			if ( $this->form_validation->run() )
 			{
 				$data = xss_filter($this->input->post('data'), 'xss');
-
 				$username = encrypt($data);
 				$cek_username = $this->login_model->cek_login_username($username);
 				$response['status'] =  $cek_username;
@@ -186,10 +184,10 @@ class Login extends MY_Controller {
 
 				if ( $this->form_validation->run() )
 				{
-					$email = $this->input->post('email', TRUE);
+					$user_email = $this->input->post('email', TRUE);
 					$query = $this->db
-						->select('email,password')
-						->where("BINARY email='$email'", NULL, FALSE)
+						->select('name,email,password')
+						->where("BINARY email='$user_email'", NULL, FALSE)
 						->where('level !=', '4')
 						->where('active', 'Y')
 						->get('t_user');
@@ -197,20 +195,33 @@ class Login extends MY_Controller {
 					if ( $query->num_rows() == 1 )
 					{
 						$data = $query->row_array();
-						$password = decrypt($data['password']);
+
+						$password      = decrypt($data['password']);
+						$full_name     = $data['name'];
+						$website_name  = $this->settings->website('web_name');
+						$website_email = $this->settings->website('web_email');
 
 						// Send activation link to email.
 						$this->load->library('email');
 						$this->email->initialize($this->settings->email_config());
-						$this->email->from(
-						                    $this->settings->website('web_email'),
-						                    $this->settings->website('web_name')
-						                   );
-						$this->email->to($email);
-						$this->email->subject('Forgot Password');
-						$this->email->set_newline("\r\n");
-						$this->email->message('<p>Your Password is : '. $password .'<p>');
+						$this->email->from($website_email, $website_name);
+						$this->email->to($user_email);
+						$this->email->subject('Forgot Password Administrator For '.$website_name);
+						// $this->email->set_newline("\r\n");
+
+						$this->email->message('<html><body>
+								Hi <b>'. $full_name .'</b>,<br /><br />
+								If you have never requested message information about forgotten password in <a href="'. site_url() .'" target="_blank" title="'. $website_name .'">'. $website_name .'</a>, please to ignore this email.<br /><br />
+								But if you really are asking for messages of this information, please to log in with the password and then change the default password to a more secure password.<br /><br />
+								-------------------------------------------------------<br />
+								Your password : '.$password.'<br />
+								-------------------------------------------------------<br /><br />
+								Warm regards,<br />
+								<a href="'. site_url() .'" target="_blank" title="'. $website_name .'">'. $website_name .'</a>
+							</body></html>');
+
 						$this->email->send();
+
 						// set allert and redirect;
 						$this->alert->set('forgot', 'success', lang_line('forgot_send'));
 						redirect(uri_string());
@@ -252,7 +263,6 @@ class Login extends MY_Controller {
 			return TRUE;
 		}
 	}
-
 
 
 	public function logout()

@@ -43,7 +43,7 @@
 								echo '<option value=""></option>';
 								$levels = $this->CI->user_model->select_level();
 								foreach ($levels as $res_level) {
-									echo '<option value="'. $res_level['id'] .'" '. $selected .'>'. $res_level['title'] .'</option>';
+									echo '<option value="'. $res_level['id'] .'">'. $res_level['title'] .'</option>';
 								}
 							?>
 						</select>

@@ -83,13 +83,7 @@ class Compogen extends Admin_controller {
 			// cek component db
 			$cek_mod_db   = $this->db->where('class', $class_name)->get('t_component')->num_rows();
 			$cek_db_table = $this->db->table_exists($table_name);
-
-			// if ( !empty($_POST['field']) ) 
-			// 	$count_field = count($_POST['field']);
-			// else 
-			// 	$count_field = 0;
-
-			$count_field = ( !empty($_POST['field']) ? count($_POST['field']) : 0 ) ;
+			$count_field  = ( !empty($_POST['field']) ? count($_POST['field']) : 0 ) ;
 
 			// cek fields.
 			if ( $count_field < 3 )
@@ -309,8 +303,7 @@ class Compogen extends Admin_controller {
 				}
 			}
 
-			// Error. Component is exists.
-			else
+			else // Error. Component is exists.
 			{
 				$response['success'] = false;
 				$response['alert']['type'] = 'error';

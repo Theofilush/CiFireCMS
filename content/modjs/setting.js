@@ -249,6 +249,17 @@ $(document).ready(function(){
 		}
 	});
 
+	$('#captcha').editable({
+		source: [
+			{value: 'N', text: 'N'},
+			{value: 'Y', text: 'Y'}
+		],
+		params: function(params) {
+			params.csrf_name = csrfToken;
+			return params;
+		}
+	});
+
 	$('#recaptcha_site_key').editable({
 		params: function(params) {
 			params.csrf_name = csrfToken;
@@ -496,5 +507,12 @@ $('.f2_edit').on('click', function(event){
 	event.preventDefault();
 	$('#modal_title').html('<i class="fa fa-upload mr-2"></i> Upload Logo')
 	$('#data_act').val('web_logo')
+	$('#modal_fedit').modal('show')
+});
+
+$('.f3_edit').on('click', function(event){
+	event.preventDefault();
+	$('#modal_title').html('<i class="fa fa-upload mr-2"></i> Upload Image')
+	$('#data_act').val('web_image')
 	$('#modal_fedit').modal('show')
 });

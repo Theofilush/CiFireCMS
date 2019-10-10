@@ -1,5 +1,4 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 $lang['mod_title'] = 'Pengaturan';
 $lang['mod_lang_date'] = 'Tanggal';
@@ -18,6 +17,7 @@ $lang['table_Web_slogan'] = 'Slogan Website';
 $lang['table_web_desc'] = 'Deskripsi Website';
 $lang['table_web_keyword'] = 'Kata Kunci Website';
 $lang['table_web_logo'] = 'Logo Webiste';
+$lang['table_web_image'] = 'Gambar Webiste';
 $lang['table_favicon'] = 'Favicon';
 $lang['table_email'] = 'E-Mail';
 $lang['table_tlpn'] = 'Telepon';

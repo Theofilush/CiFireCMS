@@ -131,7 +131,7 @@
 			<div id="copyrights">
 				<div class="container clearfix">
 					<div class="col_half pt-1">
-						Copyright <?php echo date('Y')?> <?php echo $this->settings->website('web_name')?> <a href="https://opensource.org/licenses/MIT" target="_blank">MIT License</a>. Theme Canvas By <a href="https://themeforest.net/user/semicolonweb/portfolio?ref=SemiColonWeb" target="_blank">SemiColonWeb</a>.
+						Copyright &copy; <?php echo date('Y')?> <?php echo $this->CI->settings->website('web_name'); ?>. All Right Reserved. Powered by CiFireCMS MIT License.
 					</div>
 
 					<div class="col_half col_last tright">

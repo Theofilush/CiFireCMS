@@ -1,11 +1,4 @@
 /*---------------------------------------
- * Custom JavaScript for member area.
- * Author : Adiman.
- * Site   : https://www.alweak.com
- *---------------------------------------
-*/
-
-/*---------------------------------------
  * Button Go to top.
  *---------------------------------------
 */
@@ -139,8 +132,8 @@ $('#form_post_add').on('submit',function(e){
 				$(location).attr('href',_MEMBER_URL + _MOD);
 			} else {
 				cfNotif(data['alert']);
-				$('.btn_submit_post').find('i').removeClass().addClass('fa fa-check');
 			}
+			$('.btn_submit_post').find('i').removeClass().addClass('fa fa-check');
 		}
 	})
 	return false;
@@ -379,32 +372,7 @@ tinymce.init({
     },
 	image_title: true,
 	image_caption: true,
-	image_advtab: true,
-	// without images_upload_url set, Upload tab won't show up.
-    images_upload_url: _MEMBER_URL + _MOD + '/tinymce-upload',
-    // override default upload handler to simulate successful upload.
-    images_upload_handler: function (blobInfo, success, failure) {
-        var xhr, formData;
-        xhr = new XMLHttpRequest();
-        xhr.withCredentials = false;
-        xhr.open('POST', _MEMBER_URL + _MOD + '/tinymce-upload');
-        xhr.onload = function() {
-            var json; 
-            if (xhr.status != 200) {
-                failure('HTTP Error: ' + xhr.status);
-                return;
-            }
-            json = JSON.parse(xhr.responseText);
-            if (!json || typeof json.location != 'string') {
-                failure('Invalid JSON: ' + xhr.responseText);
-                return;
-            }
-            success(json.location);
-        };
-        formData = new FormData();
-        formData.append('fupload', blobInfo.blob(), blobInfo.filename());
-        xhr.send(formData);
-    }
+	image_advtab: true,	
 });
 
 $('.tiny-text').click(function (e) {

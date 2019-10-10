@@ -1,7 +1,5 @@
-<?php 
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 /**
- * - File    : Sitemap.php
- *
  * This class used for generating Google Sitemap files
  *
  * @author     Osman Ungur <osmanungur@gmail.com>
@@ -11,8 +9,6 @@
  * @since      Class available since Version 1.0.0
  * @link       http://github.com/osmanungur/sitemap-php
  */
-
-defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Sitemap {
 

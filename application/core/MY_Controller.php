@@ -1,5 +1,4 @@
-<?php 
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 class MY_Controller extends CI_Controller {
 
@@ -19,7 +18,6 @@ class MY_Controller extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		
 		$this->CI =& get_instance();
 
 		$this->load->helper(array(
@@ -52,7 +50,6 @@ class MY_Controller extends CI_Controller {
 		$this->write_access = $this->user_role->access(login_level('admin'), $this->mod, 'write_access');
 		$this->delete_access = $this->user_role->access(login_level('admin'), $this->mod, 'delete_access');
 		$this->modify_access = $this->user_role->access(login_level('admin'), $this->mod, 'modify_access');
-
 		return $this;
 	}
 
@@ -82,7 +79,7 @@ class MY_Controller extends CI_Controller {
 
 	/**
 	 * - Fungsi ini digunakan untuk menentukan bahasa.
-	 * @return void
+	 * @return void | string
 	*/
 	public function set_language()
 	{
@@ -124,7 +121,7 @@ class MY_Controller extends CI_Controller {
 		$this->meta_description($meta_description);
 
 		// meta_image
-		$meta_image = ( !empty($param[0]['image']) ? $param[0]['image'] : favicon('logo') );
+		$meta_image = ( !empty($param[0]['image']) ? $param[0]['image'] : favicon('web_image') );
 		$this->meta_image($meta_image);
 
 		return $this;
@@ -181,14 +178,27 @@ class MY_Controller extends CI_Controller {
 	*/
 	public function set_cache()
 	{
+		$output = NULL;
 		if ( $this->settings->website('cache') == 'Y' )
-			return $this->output->cache($this->settings->website('cache_time'));
+		{
+			$output = $this->output->cache($this->settings->website('cache_time'));
+		}
+		return $output;
+	}
+
+
+	public function captcha()
+	{
+		if ($this->settings->website('captcha') == 'Y')
+			return TRUE;
+		else
+			return FALSE;
 	}
 
 
 	/**
 	 * - Fungsi ini digunakan untuk output json.
-	 * @return string|json
+	 * @return void | string | json
 	*/
 	public function json_output($parm)
 	{

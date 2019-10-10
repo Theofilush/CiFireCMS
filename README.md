@@ -1,5 +1,6 @@
 # CiFireCMS - Makes You Feel Home
-CiFireCMS adalah platform CMS open source gratis dibuat dengan framework CodeIgniter3. CiFireCMS sangat cocok bagi pengguna yang familiar dengan engine PopojiCMS namun ingin merasakan performa dari framework CodeIgniter3.
+
+CiFireCMS adalah platform CMS open source gratis Indonesia dibuat menggunakan framework CodeIgniter3. Dengan konsep yang menarik dan mudah digunakan oleh siapa sajan, cocok bagi pengguna yang familiar dengan engine PopojiCMS namun ingin merasakan merasakan konsep MVC dari framework CodeIgniter3.
 
 ## Sersyaratan System
 CiFireCMS baik dijalankan pada web server Apache 2.4.x PHP 7.3.x dan PHP 5.6.x (PHP 5.6-Native Not recommended).
@@ -110,9 +111,9 @@ define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'producti
 # Terima Kasih Kepada
 1. Tuhan Yang Maha Esa.
 2. Semua rekan-rekan yang berkontribusi untuk CiFireCMS.
-3. Codeigniter3 sebagai inti engine CiFireCMS.
-4. Cizthemes (greeky) sebagai pembuat template frontend.
-5. SemiColonWeb (Canvas) sebagai pembuat template frontend.
+3. Codeigniter3 sebagai core engine CiFireCMS.
+4. Cizthemes (greeky) sebagai pembuat template frontend versi 1.0.0.
+5. SemiColonWeb (Canvas) sebagai pembuat template frontend versi 1.1.0.
 6. Kopyov (Limitless) sebagai pembuat template backend.
 7. Creative-tim (Light Bootstrap Dashboard) sebagai pembuat template dasbor member.
 8. Easy Menu Manager sebagai pembuat component menu manager.
@@ -121,5 +122,4 @@ define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'producti
 
 
 # Lisensi
-
 CiFireCMS dilisensikan di bawah MIT License.

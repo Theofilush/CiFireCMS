@@ -26,3 +26,4 @@
 
 	<meta property="place:location:latitude" content="1234567890"/>
 	<meta property="place:location:longitude" content="1234567890"/>
+	

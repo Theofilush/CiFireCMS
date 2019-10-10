@@ -1,5 +1,4 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 /*
  |------------------------------------------------------------------
@@ -16,6 +15,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  | $lang['day_name'] = array('Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu');
  | 
 */
+ 
 function ci_date($date, $new_format)
 {
 	$CI =& get_instance();
@@ -71,7 +71,6 @@ function ci_date($date, $new_format)
 	}
 	return $prety_date;
 }
-
 
 
 function ci_timeago($datetime)

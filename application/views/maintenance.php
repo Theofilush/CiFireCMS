@@ -26,7 +26,7 @@
 <body>
 	<div class="main-content">
 		<h1>Website Is Under Construction</h1>
-		<small>Copyright &copy; CiFireCMS 2019. MIT License</small>
+		<small>Copyright &copy; <?=$this->settings->website('web_name');?> <?php echo date('Y'); ?>. Powered By CiFireCMS MIT License.</small>
 	</div>
 </body>
 </html>

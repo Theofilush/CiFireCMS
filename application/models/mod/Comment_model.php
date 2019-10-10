@@ -1,12 +1,10 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Comment_model extends CI_Model {
 
 	private $_table = 't_comment';
 	private $_column_order = array(null, 'active', 'name', 'comment', 'date');
 	private $_column_search = array('name', 'email', 'comment');
-
 
 	public function __construct()
 	{
@@ -153,7 +151,6 @@ class Comment_model extends CI_Model {
 
 		return $respon;
 	}
-
 
 
 	public function get_comment($id) 

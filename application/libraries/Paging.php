@@ -1,5 +1,9 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
+/**
+ * Class Paging
+ * Original script from PopojiCMS
+ * Edited by Adiman
+*/
 
 class Paging {
 
@@ -69,6 +73,7 @@ class Paging {
 		return $result_page;
 	}
 
+
 	public function alink($halaman_aktif, $jml_halaman, $url, $title = '') 
 	{
 		$result_page = "";
@@ -102,7 +107,7 @@ class Paging {
 			$number .= '<li class="page-item"><a class="page-link" href="'.$url.$title.'&page='.$i.'">'.$i.'</a></li>';
 		}
 
-		$number .= ($halaman_aktif + 2 < $jml_halaman ? '<li class="disabled"><a>...</a></li><li><a href="'.$url.$title.'&page='.$jml_halaman.'">'.$jml_halaman.'</a></li>' : " ");
+		$number .= ($halaman_aktif + 2 < $jml_halaman ? '<li class="page-item"><a class="page-link">...</a></li><li class="page-item"><a class="page-link" href="'.$url.$title.'&page='.$jml_halaman.'">'.$jml_halaman.'</a></li>' : " ");
 
 		$result_page .= $number;
 		
@@ -118,5 +123,4 @@ class Paging {
 
 		return $result_page;
 	}
-
 } // End Class.

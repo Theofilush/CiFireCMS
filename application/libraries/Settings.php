@@ -1,5 +1,4 @@
-<?php 
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Settings {
 	
@@ -82,9 +81,9 @@ class Settings {
 			'smtp_user' => $this->website('username'),
 			'smtp_pass' => decrypt($this->website('password')),
 			// 'smtp_crypto' => 'ssl',
-			// 'smtp_timeout' => 10,
-			// 'newline'   => "\r\n",
-			// 'crlf'      => "\r\n",
+			'smtp_timeout' => 10,
+			'newline'   => "\r\n",
+			'crlf'      => "\r\n",
 			'mailtype'  => 'html',
 			'charset'   => 'iso-8859-1', // iso-8859-1 or utf-8
 			'wordwrap'  => TRUE

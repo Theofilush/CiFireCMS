@@ -13,7 +13,7 @@
 ******************************************************* 
 -->
 <section id="content">
-	<div class="content-wrap">
+	<div class="content-wrap" style="padding-bottom:0;">
 		<div class="section header-stick bottommargin-lg clearfix" style="padding: 20px 0;">
 			<div>
 				<div class="container clearfix">

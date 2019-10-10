@@ -1,5 +1,4 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Category_model extends CI_Model {
 
@@ -18,7 +17,7 @@ class Category_model extends CI_Model {
 
 		$query = $this->db
 			->select('seotitle')
-			->where("BINARY seotitle='$seotitle'", NULL, FALSE)
+			->where("BINARY seotitle = '$seotitle'", NULL, FALSE)
 			->where('active','Y')
 			->get($this->table);
 
@@ -36,7 +35,7 @@ class Category_model extends CI_Model {
 	public function get_data($seotitle) 
 	{
 		$query = $this->db
-			->where("BINARY seotitle='$seotitle'", NULL, FALSE)
+			->where("BINARY seotitle = '$seotitle'", NULL, FALSE)
 			->where('active', 'Y')
 			->get($this->table);
 

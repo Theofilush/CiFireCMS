@@ -1,11 +1,9 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Gallery_model extends CI_Model {
 
 	public $vars;
 	private $_table = 't_gallery';
-
 
 	public function __construct()
 	{
@@ -134,4 +132,4 @@ class Gallery_model extends CI_Model {
 			return FALSE;
 		}
 	}
-} // End Class.
+} // End class.

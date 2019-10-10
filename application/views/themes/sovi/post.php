@@ -32,11 +32,11 @@
 								<h2><?php echo $result_post['post_title']?></h2>
 							</div>
 							<ul class="entry-meta clearfix">
-								<li><i class="icon-calendar3"></i><?php echo ci_date($result_post['datepost'], 'l, d F Y');?> &nbsp; <i class="icon-clock"></i> <?php echo ci_date($result_post['timepost'], 'h:i A');?></li>
 								<li><a href="#"><i class="icon-user"></i> <?php echo $result_post['author_name'];?></a></li>
+								<li><i class="icon-calendar3"></i><?php echo ci_date($result_post['datepost'], 'l, d F Y');?> &nbsp; <i class="icon-clock"></i> <?php echo ci_date($result_post['timepost'], 'h:i A');?></li>
 								<li><i class="icon-folder-open"></i> <a href="<?php echo  site_url('category/'.$result_post['category_seotitle']); ?>"><?php echo $result_post['category_title'];?></a></li>
-								<li><a href="#comments"><i class="icon-comments"></i> <?php echo $result_post['comment'];?> Komentar</a></li>
-								<li><i class="icon-eye"></i> <?php echo $result_post['hits'];?> kali di lihat</li>
+								<li><a href="#comments"><i class="icon-comments"></i> <?php echo $result_post['comment'];?> Comment</a></li>
+								<li><i class="icon-eye"></i> <?php echo $result_post['hits'];?> views</li>
 							</ul>
 
 							<div class="entry-image">
@@ -55,23 +55,25 @@
 								<div class="clear"></div>
 
 								<!-- Tag Cloud -->
-								<div class="tagcloud clearfix bottommargin">
+
+								<div class="tagcloud clearfix bottommarginX">
 									<?php
-										if ( ! empty($result_post['tag']) ) {
-											$data_tags = explode(',', $result_post['tag']);
-											foreach ($data_tags as $tag) {
-												$resultTag = $this->CI->db->where('seotitle', $tag)->get('t_tag')->row_array();
-												if ( $tag == $resultTag['seotitle'] )
-													echo '<a href="'.site_url('tag/'.$tag).'" rel="tag">'.$resultTag['title'].'</a>';
+										$tags = explode(',', $result_post['tag']);
+										if ( ! empty($result_post['tag']) && $tags > 0) {
+											foreach ($tags as $tag) {
+												$tag = seotitle($tag, NULL);
+												$resTag = $this->CI->db->where('seotitle', $tag)->get('t_tag')->row_array();
+												if ( $tag == $resTag['seotitle'] )
+													echo '<a href="'.site_url('tag/'.$tag).'" rel="tag"># '.$resTag['title'].'</a>';
 											}
 										}
 									?>
 								</div>
 								<div class="clear"></div>
 
-								<!-- Share -->
+								<!-- Share
 								<div class="si-share noborder clearfix">
-									<span>Share this Post:</span>
+									<div style="margin-right:8px;">Share : </div>
 									<div>
 										<a href="#" class="social-icon si-borderless si-facebook">
 											<i class="icon-facebook"></i>
@@ -94,7 +96,7 @@
 											<i class="icon-email3"></i>
 										</a>
 									</div>
-								</div>
+								</div> -->
 							</div>
 						</div>
 
@@ -114,7 +116,7 @@
 						<!-- Author Info -->
 						<div class="card">
 							<div class="card-header">
-								<strong>Editor: <a href="#"><?php echo $result_post['author_name']?></a></strong>
+								<strong>Editor : <a href="#"><?php echo $result_post['author_name']?></a></strong>
 							</div>
 							<div class="card-body">
 								<div class="author-image">
@@ -165,7 +167,7 @@
 						<!-- Comments -->
 						<?php if ( $result_post['post_comment'] == "Y" ): ?>
 						<div id="comments" class="clearfix">
-							<h3 id="comments-title"><span><?php echo $result_post['comment']?></span> Komentar</h3>
+							<h3 id="comments-title"><span><?php echo $result_post['comment']?></span> Comments</h3>
 
 							<!-- Comments List -->
 							<ol class="commentlist clearfix">
@@ -200,7 +202,7 @@
 											<p>
 												<?php 
 													if ($comment['active'] == 'X') {
-														echo '<span class="text-danger">Komentar ini telah diblokir</span>';
+														echo '<i class="text-danger">This comment is banned by Admin</i>';
 													} else {
 														echo auto_link($comment['comment']);
 													}
@@ -246,7 +248,7 @@
 													<p>
 														<?php 
 															if ($res_rep['active'] == 'X') {
-																echo '<i class="text-danger">Komentar ini telah diblokir</i>';
+																echo '<i class="text-danger">This comment is banned by Admin</i>';
 															} else {
 																echo auto_link($res_rep['comment']);
 															}
@@ -271,32 +273,32 @@
 							<!-- Comment Form -->
 							<div id="form_comment">
 								<div id="respond" class="clearfix">
-									<h3>Tinggalkan Komentar</h3>
+									<h3>Leave Your Comment</h3>
 									<?php $this->alert->show('alert_comment'); ?>
-									<?php echo form_open('','id="commentform" class="clearfix" autocomplete="off"');?>
+									<?php echo form_open('','id="commentform" class="clearfix"');?>
 
 										<input type="hidden" name="parent" class="comment_parent">
 
 										<?php if ( login_status('member') == TRUE ): ?>
 
 										<div class="col_half">
-											<label for="Nama">Nama</label>
-											<input type="text" name="name" id="Nama" size="22" tabindex="1" class="sm-form-control" value="<?php echo data_login('member', 'name')?>" required/>
+											<label for="Nama">Namae</label>
+											<input type="text" name="name" id="Nama" size="22" tabindex="1" class="sm-form-control" value="<?php echo data_login('member', 'name')?>"/>
 										</div>
 										<div class="col_half col_last">
 											<label for="email">Email</label>
-											<input type="email" name="email" id="email" size="22" tabindex="2" class="sm-form-control" value="<?php echo data_login('member', 'email')?>" required/>
+											<input type="email" name="email" id="email" size="22" tabindex="2" class="sm-form-control" value="<?php echo data_login('member', 'email')?>"/>
 										</div>
 
 										<?php else: ?>
 
 										<div class="col_half">
-											<label for="Nama">Nama</label>
-											<input type="text" name="name" id="Nama" size="22" tabindex="1" class="sm-form-control" required/>
+											<label for="Nama">Name</label>
+											<input type="text" name="name" id="Nama" size="22" tabindex="1" class="sm-form-control"/>
 										</div>
 										<div class="col_half col_last">
 											<label for="email">Email</label>
-											<input type="email" name="email" id="email" size="22" tabindex="2" class="sm-form-control" required/>
+											<input type="email" name="email" id="email" size="22" tabindex="2" class="sm-form-control"/>
 										</div>
 										
 										<?php endif ?>
@@ -304,13 +306,15 @@
 										<div class="clear"></div>
 
 										<div class="col_full">
-											<label for="comment">Komentar</label>
-											<textarea name="comment" cols="58" rows="7" tabindex="4" class="sm-form-control" required></textarea>
+											<label for="comment">Comment</label>
+											<textarea name="comment" cols="58" rows="7" tabindex="4" class="sm-form-control"></textarea>
 										</div>
 
 										<div class="col_full nobottommargin">
+											<?php if ($this->CI->captcha() == TRUE): ?>
 											<div class="g-recaptcha pull-right" data-sitekey="<?php echo $this->settings->website('recaptcha_site_key')?>" style="margin-bottom:5px;"></div>
 											<script src='https://www.google.com/recaptcha/api.js'></script>
+											<?php endif; ?>
 											<button type="submit" id="submit-button" tabindex="5" class="button button-3d m-0"><?php echo lang_line('button_submit')?></button>
 										</div>
 									<?php echo form_close();?>

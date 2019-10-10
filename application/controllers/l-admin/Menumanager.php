@@ -392,7 +392,6 @@ class Menumanager extends Admin_Controller {
 	}
 
 
-
 	function _get_label($row) 
 	{
 		$img_edit = base_url('content/images/menu/edit.png');
@@ -419,14 +418,12 @@ class Menumanager extends Admin_Controller {
 	}
 
 
-
 	private function get_menu_group_title($group_id) 
 	{
 		$result = $this->db->where('id', $group_id)->get('t_menu_group')->row_array();
 		return $result;
 	}
 	
-
 
 	private function get_menu_groups($group_id) 
 	{	

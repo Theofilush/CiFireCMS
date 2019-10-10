@@ -1,5 +1,4 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 class User_model extends CI_Model {
 
@@ -335,14 +334,14 @@ class User_model extends CI_Model {
 		{
 			$query = $this->db
 				->select('
-				         t_user.id          AS  user_id,
-					     t_user.level       AS  user_level,
-					     t_user.name        AS  user_name,
-					     t_user.username    AS  user_username,
-					     t_user.photo       AS  user_photo,
-					     t_user.active      AS  user_active,
-					     t_user_level.id    AS  level_id,
-					     t_user_level.title AS  level_title
+				         t_user.id           AS  user_id,
+					     t_user.level        AS  user_level,
+					     t_user.name         AS  user_name,
+					     t_user.username     AS  user_username,
+					     t_user.photo        AS  user_photo,
+					     t_user.active       AS  user_active,
+					     t_user_level.id     AS  level_id,
+					     t_user_level.title  AS  level_title
 					    ')
 				->join('t_user_level', 't_user_level.id = t_user.level')
 				->where("t_user.level != '1'",NULL,FALSE)
@@ -360,21 +359,21 @@ class User_model extends CI_Model {
 
 		$query = $this->db
 			->select('
-			         t_user.id          AS  user_id,
-				     t_user.level       AS  user_level,
-				     t_user.username    AS  user_username,
-				     t_user.password    AS  user_password,
-				     t_user.email       AS  user_email,
-				     t_user.name        AS  user_name,
-				     t_user.gender      AS  user_gender,
-				     t_user.birthday    AS  user_birthday,
-				     t_user.about       AS  user_about,
-				     t_user.address     AS  user_address,
-				     t_user.tlpn        AS  user_tlpn,
-				     t_user.photo       AS  user_photo,
-				     t_user.active      AS  user_active,
-				     t_user_level.id    AS  level_id,
-				     t_user_level.title AS  level_title
+			         t_user.id           AS  user_id,
+				     t_user.level        AS  user_level,
+				     t_user.username     AS  user_username,
+				     t_user.password     AS  user_password,
+				     t_user.email        AS  user_email,
+				     t_user.name         AS  user_name,
+				     t_user.gender       AS  user_gender,
+				     t_user.birthday     AS  user_birthday,
+				     t_user.about        AS  user_about,
+				     t_user.address      AS  user_address,
+				     t_user.tlpn         AS  user_tlpn,
+				     t_user.photo        AS  user_photo,
+				     t_user.active       AS  user_active,
+				     t_user_level.id     AS  level_id,
+				     t_user_level.title  AS  level_title
 				    ');
 
 		$query = $this->db->join('t_user_level', 't_user_level.id = t_user.level', 'left');
@@ -396,6 +395,15 @@ class User_model extends CI_Model {
 			return $result;
 		else
 			show_404();
+	}
+
+	public function get_id($username='')
+	{
+		$query = $this->db->select('id');
+		$query = $this->db->where("BINARY username = '$username'", NULL, FALSE);
+		$query = $this->db->get($this->_table);
+		$result = $query->row_array()['id'];
+		return $result;
 	}
 
 
@@ -561,7 +569,6 @@ class User_model extends CI_Model {
 
 	public function all_module()
 	{
-		
 		$query = $this->db->select('*,
 					t_user_role.id      AS  role_id,
 					t_user_role.level   AS  role_id_level,
@@ -579,7 +586,6 @@ class User_model extends CI_Model {
 
 	public function level_modules($level)
 	{
-		
 		$query = $this->db->select('*,
 					t_user_role.id      AS  role_id,
 					t_user_role.level   AS  role_id_level,
@@ -609,7 +615,6 @@ class User_model extends CI_Model {
 
 	public function levels()
 	{
-		
 		$query = $this->db->where("id > '1'", NULL, FALSE);
 		$query = $this->db->get('t_user_level');
 		$result = $query->result_array();
