@@ -1,11 +1,5 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-/**
- * - Fungsi untuk menulis ulang konten file pada application/cache/routes.php
- * - Fungsi ini digunakan setelah melakukan perubahan pada setingan konfigurasi slug url.
- * 
- * @return bool
-*/
 function check_internet_connection($addr = 'www.google.com')
 {
 	return (bool)  @fsockopen($addr, 80, $num, $error, 5);
@@ -13,12 +7,11 @@ function check_internet_connection($addr = 'www.google.com')
 
 
 /**
- * - Fungsi untuk menulis ulang konten file pada application/cache/routes.php
  * - Fungsi ini digunakan setelah melakukan perubahan pada setingan konfigurasi slug url.
  * 
  * @return void
 */
-function save_routes()
+function slug_routes()
 {
 	$CI =& get_instance();
 	$CI->load->database();
@@ -48,7 +41,7 @@ function save_routes()
 	}
 
 	$output = implode("\n", $data);
-	write_file(APPPATH . 'cache/routes.php', $output);
+	write_file(APPPATH . 'config/slug_routes.php', $output);
 }
 
 

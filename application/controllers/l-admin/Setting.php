@@ -133,12 +133,14 @@ class Setting extends Admin_controller {
 			{
 				$value = trim($this->input->post('value'));
 				$this->setting_model->update('slug_url', array('value' => $value));
+				slug_routes();
 			}
 
 			elseif ( $act == 'slug_title' )
 			{
 				$value = trim($this->input->post('value'));
 				$this->setting_model->update('slug_title', array('value' => $value));
+				slug_routes();
 			}
 
 			elseif ( $act == 'page_item' )
@@ -403,8 +405,6 @@ class Setting extends Admin_controller {
 				redirect(site_url('sitemap.xml'), 'refresh');
 			}
 		}
-
-		save_routes();
 	}
 
 
