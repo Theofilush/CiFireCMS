@@ -19,12 +19,12 @@ class Menu {
 		if ( isset($_SESSION['lang_active']) )
 		{
 			$active_lang = $_SESSION['lang_active'];
-			require_once(APPPATH . 'language/' . $active_lang . '/main_lang.php');
+			require(APPPATH . 'language/' . $active_lang . '/main_lang.php');
 		}
 		else
 		{
 			$active_lang = seotitle($this->CI->settings->website('language'));
-			require_once(APPPATH . 'language/' . $active_lang . '/main_lang.php');
+			require(APPPATH . 'language/' . $active_lang . '/main_lang.php');
 		}
 		
 		$this->langMenu = $lang;
