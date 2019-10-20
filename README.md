@@ -98,7 +98,14 @@ define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'producti
 * Masuk ke alamat ``http://nama-web-anda/l-admin``
 * Masukkan data login seperti yg telah diinputkan pada saat proses instalasi.
 
-#### Konfigurasi Mail SMTP.
+
+## Halaman Member
+
+* Log In ``http://nama-web-anda/l-member``
+* Register ``http://nama-web-anda/l-member/register``
+
+
+#### Mail SMTP.
 ```
  protocol    = SMTP or smtp
  smtp_host   = ssl://nama.smtp.host
@@ -112,10 +119,10 @@ define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'producti
 1. Tuhan Yang Maha Esa.
 2. Semua rekan-rekan yang berkontribusi untuk CiFireCMS.
 3. Codeigniter3 sebagai core engine CiFireCMS.
-4. Cizthemes (greeky) sebagai pembuat template frontend versi 1.0.0.
-5. SemiColonWeb (Canvas) sebagai pembuat template frontend versi 1.1.0.
-6. Kopyov (Limitless) sebagai pembuat template backend.
-7. Creative-tim (Light Bootstrap Dashboard) sebagai pembuat template dasbor member.
+4. Cizthemes sebagai pembuat template frontend versi 1.0.0.
+5. SemiColonWeb sebagai pembuat template frontend versi 1.1.0.
+6. Kopyov sebagai pembuat template backend.
+7. Creative-tim sebagai pembuat template dasbor member.
 8. Easy Menu Manager sebagai pembuat component menu manager.
 9. Jquery, Bootstrap dan semua plugins jquery yang dipakai pada CiFireCMS.
 10. DwiraSurvivor PopojiCMS untuk inspirasi, saran serta rekomendasi sehingga engine CiFireCMS bisa rilis.
